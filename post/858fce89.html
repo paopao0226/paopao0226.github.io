@@ -1,0 +1,947 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="对于2021年冬季学期由Stanford开设的CS224n课程的学习笔记，这里是第五讲：语言模型和循环神经网络RNN">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS224N课程P5：语言模型和循环神经网络RNN">
+<meta property="og:url" content="http://paopao0226.site/post/858fce89.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="对于2021年冬季学期由Stanford开设的CS224n课程的学习笔记，这里是第五讲：语言模型和循环神经网络RNN">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230222003634859.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230222004026447.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230222141846312.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230222141942561.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230222152537188.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230222154353928.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230223101802873.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230223103952303.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230223104322631.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230223105726127.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230223195826684.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230223110946985.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230223111645649.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230223155724007.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230223160155425.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230223160334272.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230224205344605.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230224212741199.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230224215758241.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230224220030722.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230225130306741.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230225132714269.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230227161352840.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230227170222450.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230227174320318.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230224222100023.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230224222745535.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230224223820258.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230227180339522.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230227180407007.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230227180421040.png">
+<meta property="og:image" content="http://paopao0226.site/post/858fce89/image-20230227180433386.png">
+<meta property="article:published_time" content="2023-02-20T08:31:30.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.610Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="自然语言处理">
+<meta property="article:tag" content="Stanford CS224n">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/858fce89/image-20230222003634859.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CS224N课程P5：语言模型和循环神经网络RNN - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover5.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS224N课程P5：语言模型和循环神经网络RNN"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-20 16:31" pubdate>
+          2023年2月20日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          46 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CS224N课程P5：语言模型和循环神经网络RNN</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="课程词汇"><a href="#课程词汇" class="headerlink" title="课程词汇"></a>课程词汇</h1><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs txt">magnitude - 大小；量级<br>consecutive - 连续的<br>granularity - 粒度<br>incoherent - 不连贯的<br>subtlety - 微妙之处；巧妙<br>chug - 一饮而尽；一次性处理<br>thrall - 使成为奴隶；受奴役的<br></code></pre></td></tr></table></figure>
+
+<h1 id="课程内容"><a href="#课程内容" class="headerlink" title="课程内容"></a>课程内容</h1><h2 id="网络优化与正则化"><a href="#网络优化与正则化" class="headerlink" title="网络优化与正则化"></a>网络优化与正则化</h2><h3 id="正则化"><a href="#正则化" class="headerlink" title="正则化"></a>正则化</h3><p>一个完整的损失函数一般会包含一个正则化项，用于降低模型过拟合程度：</p>
+<p><img src="/post/858fce89/image-20230222003634859.png" srcset="/img/loading.gif" lazyload alt="image-20230222003634859"></p>
+<h3 id="Dropout"><a href="#Dropout" class="headerlink" title="Dropout"></a>Dropout</h3><p>参见<a href="/post/cbfc2cb0.html#%E5%8F%82%E6%95%B0%E5%92%8C%E6%95%B0%E6%8D%AE">[网络优化与正则化笔记 - Ywj226]</a>。Dropout可以有效解决因特征依赖导致的特征的不完全性。</p>
+<p><img src="/post/858fce89/image-20230222004026447.png" srcset="/img/loading.gif" lazyload alt="image-20230222004026447"></p>
+<p><img src="/post/858fce89/image-20230222141846312.png" srcset="/img/loading.gif" lazyload alt="image-20230222141846312"></p>
+<h3 id="非线性函数"><a href="#非线性函数" class="headerlink" title="非线性函数"></a>非线性函数</h3><p><img src="/post/858fce89/image-20230222141942561.png" srcset="/img/loading.gif" lazyload alt="image-20230222141942561"></p>
+<h3 id="参数初始化"><a href="#参数初始化" class="headerlink" title="参数初始化"></a>参数初始化</h3><p>常用的参数初始化方法是将权重设置为(-r,r)的均匀分布，且不能将其设置为0矩阵，防止出现对称问题，但是偏置bias从经验来说是可以置0的。现有的初始化方法中，还有根据扇入扇出的规模做初始化的Xavier方法。</p>
+<p><img src="/post/858fce89/image-20230222152537188.png" srcset="/img/loading.gif" lazyload alt="image-20230222152537188"></p>
+<h3 id="优化方法和学习率"><a href="#优化方法和学习率" class="headerlink" title="优化方法和学习率"></a>优化方法和学习率</h3><p>参见<a href="/post/cbfc2cb0.html#%E5%AD%A6%E4%B9%A0%E7%8E%87">[网络优化与正则化笔记 - Ywj226]</a>。</p>
+<p><img src="/post/858fce89/image-20230222154353928.png" srcset="/img/loading.gif" lazyload alt="image-20230222154353928"></p>
+<h2 id="语言模型和RNN"><a href="#语言模型和RNN" class="headerlink" title="语言模型和RNN"></a>语言模型和RNN</h2><p>语言模型的定义为：预测下一个单词是什么的任务；如输入法的智能推荐，搜索引擎的下拉框，都是语言模型的具体应用。更为正式的，定义语言模型的形式如下：给定一个单词序列$x^{(1)},x^{(2)},…,x^{(T)}$，此段文本的出现概率为：<br>$$<br>P(x^{(1)},…,x^{(T)})&#x3D;P(x^{(1)}) \times P(x^{(2)}|x^{(1)})\times …\times P(x^{(T)}|x^{(T-1)},…,x^{(1)}) &#x3D; \prod_{t&#x3D;1}^T P(x^{(t)}|x^{(t-1)},…,x^{(1)})<br>$$<br>其中$x^{(t)}$可以是词汇$V&#x3D;\lbrace w_1,…,w_{|V|}\rbrace$中的单词，最后的$P(x^{(t)}|x^{(t-1)},…,x^{(1)})$就是语言模型的概率表示。我们也可以将语言模型理解为对一段文本出现的概率做估计或推断。</p>
+<h3 id="n-gram语言模型"><a href="#n-gram语言模型" class="headerlink" title="n-gram语言模型"></a>n-gram语言模型</h3><p>典型的对语言模型的学习可以通过学习一个n-gram语言模型来实现。一个n-gram是n个连续单词所形成的组(chunk)，如：</p>
+<p><img src="/post/858fce89/image-20230223101802873.png" srcset="/img/loading.gif" lazyload alt="image-20230223101802873"></p>
+<p>对n-gram的出现频率做计算，可以有效的预测下一个单词是什么，也是思路比较简单的做法。n-gram模型基于马尔可夫独立假设：$x^{(t+1)}$的预测只基于前面的$n-1$个单词。所以语言模型的概率表示可以等价为：</p>
+<p><img src="/post/858fce89/image-20230223103952303.png" srcset="/img/loading.gif" lazyload alt="image-20230223103952303"></p>
+<p><img src="/post/858fce89/image-20230223104322631.png" srcset="/img/loading.gif" lazyload alt="image-20230223104322631"></p>
+<p>在n-gram模型中，我们可以将概率问题用计数代替，而由于特定的n-gram的块在语料中出现频率极少甚至为0，其可能会导致模型的稀疏性，即绝大部分的概率为零，这会降低模型本身的效果。针对于此，在分子和分母上的稀疏性做简要改进：</p>
+<ul>
+<li>分子上：平滑技术，在每个单词$w\in V$的计数上加上一个小值$\delta$，防止其置0；</li>
+<li>分母上：回退技术，将(n-1)-gram回退成(n-2)-gram,…直到分母不为零（unigram）。</li>
+</ul>
+<p><img src="/post/858fce89/image-20230223105726127.png" srcset="/img/loading.gif" lazyload alt="image-20230223105726127"></p>
+<p>在n-gram中，由于语言模型的概率基于n-gram的计数，因此模型需要存储在语料中的<strong>所有n-gram的数量，</strong>这个存储规模是很大的，而且增加n-gram的n和增加语料规模都会大幅增加存储。</p>
+<p>n-gram的工作流程为，每次移动到一个n-gram块，获取下一次单词的概率分布并从中采样（采样结果可能不是概率最大的单词），逐个往下预测直到句子结束或遇到结束符。使用n-gram生成的文本一般在语法上有很惊人的效果，但在连贯性上有所缺点。</p>
+<p><img src="/post/858fce89/image-20230223195826684.png" srcset="/img/loading.gif" lazyload alt="image-20230223195826684"></p>
+<p><img src="/post/858fce89/image-20230223110946985.png" srcset="/img/loading.gif" lazyload alt="image-20230223110946985"></p>
+<h3 id="神经网络语言模型"><a href="#神经网络语言模型" class="headerlink" title="神经网络语言模型"></a>神经网络语言模型</h3><h4 id="基于窗口的神经网络模型"><a href="#基于窗口的神经网络模型" class="headerlink" title="基于窗口的神经网络模型"></a>基于窗口的神经网络模型</h4><p>将n-gram的每个块作为一个窗口，放到基于窗口的神经网络模型中训练相对位置关系。</p>
+<p><img src="/post/858fce89/image-20230223111645649.png" srcset="/img/loading.gif" lazyload alt="image-20230223111645649"></p>
+<p>固定窗口的网络模型可以解决n-gram稀疏的问题和存储的问题，但因为窗口固定，其固定涉及到的范围较小，且更改窗口大小需要一起扩大权重$W$的维度，且是平方级增大；在固定窗口中由于不同位置的权重不同，存在因位置导致的不对称的问题，$x^{(1)}$和$x^{(2)}$乘以完全不同的权重，输入的处理不对称。</p>
+<p><img src="/post/858fce89/image-20230223155724007.png" srcset="/img/loading.gif" lazyload alt="image-20230223155724007"></p>
+<h3 id="循环神经网络RNN（Recurrent-Neural-Network）"><a href="#循环神经网络RNN（Recurrent-Neural-Network）" class="headerlink" title="循环神经网络RNN（Recurrent Neural Network）"></a>循环神经网络RNN（Recurrent Neural Network）</h3><p>一个简单的RNN语言模型架构图如下：</p>
+<p><img src="/post/858fce89/image-20230223160155425.png" srcset="/img/loading.gif" lazyload alt="image-20230223160155425"></p>
+<p>单词离散向量经词嵌入之后，需要过一个从头到尾的一个模型，模型的每个隐状态由当前词和历史隐状态组成。</p>
+<p>RNN大致解决了固定窗口神经网络的问题，但是由于速度和实际用起来的一些问题，简单RNN还需要有所优化。</p>
+<p><img src="/post/858fce89/image-20230223160334272.png" srcset="/img/loading.gif" lazyload alt="image-20230223160334272"></p>
+<h4 id="RNN语言模型的训练"><a href="#RNN语言模型的训练" class="headerlink" title="RNN语言模型的训练"></a>RNN语言模型的训练</h4><p>给定一个大规模的语料，将其喂到RNN-LM中，在每个时间步$t$计算其计算输出分布，在第$t$步的损失函数是预测概率分布$\pmb {\hat y}^{(t)}$和真实的下一个单词$\pmb y^{(t)}$（$\pmb x^{(t+1)}$的one-hot向量）的交叉熵：<br>$$<br>J^{(t)}(\theta)&#x3D; CE( \pmb y^{(t)},\pmb {\hat y}^{(t)} ) &#x3D; -\sum_{ w\in V }\pmb y_w^{ (t) } \log \pmb { \hat y }_ w^{(t)} &#x3D; -\log \pmb{\hat y}_ {\pmb x_{ t+1} }^{(t)}<br>$$<br>模型的总体损失是对每个$t$的损失加和：<br>$$<br>J(\theta) &#x3D; {1 \over T}\sum_{t&#x3D;1}^T J^{(t)}(\theta) &#x3D; {1 \over T}\sum_{t&#x3D;1}^T -\log \pmb{ \hat y }_ {\pmb x_ {t+1} }^{(t)}<br>$$<br><img src="/post/858fce89/image-20230224205344605.png" srcset="/img/loading.gif" lazyload alt="image-20230224205344605"></p>
+<p>训练RNN的整理流程就是从左到右按照每个时刻$t$分别获得预测概率，计算与下一个单词的损失loss，最后其加和就是总的loss，需要注意的是：</p>
+<ol>
+<li>在实际训练中，句子的前后都会加上开始标记[start]和结束标记[end]</li>
+<li>这里用到了Teacher Forcing的技巧，与Free-Running相对应，其训练方式有所不同：Free-Running不会干扰模型的训练过程，每次生成的单词作为下一步的单词输入；而Teacher Forcing每次的输入都是句子里对应位置的单词，而非模型生成，以防止模型因之前的错误影响后面的训练。</li>
+</ol>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs txt">例如：Mary is watching you.输入[start]，模型训练得到第一个单词为&quot;a&quot;，原序列第一个单词为&quot;Mary&quot;。<br>Free-Running过程会直接将其作为下一步的输入，即下一步输入&quot;a&quot;;<br>Teacher-Forcing会记录当前的惩罚loss，并将原来的下一个单词作为输入，即下一步输入&quot;is&quot;。<br></code></pre></td></tr></table></figure>
+
+<p>在计算RNN的损失和梯度时，每次都需要计算一次，在对整个语料一次性计算的过程，其时间和空间代价都十分的昂贵，实际上操作时，会将$\pmb x^{(1)},…,\pmb x^{(T)}$看作一组句子或一组文档，并参照随机梯度下降的思路，每次只随机的采用一个或一个batch的句子计算损失和梯度，更新参数，这样就可以降低RNN的计算难度。</p>
+<p>以上的过程主要通过前向过程计算了模型的损失，同样的，模型也需要后向的过程以计算梯度。</p>
+<p><img src="/post/858fce89/image-20230224212741199.png" srcset="/img/loading.gif" lazyload alt="image-20230224212741199"></p>
+<p>问题在于如何计算关于<strong>重复的</strong>权重矩阵$W_h$的偏导数$J^{(t)}(\theta)$，其答案和loss一样，同样是对每个时间步$i$的偏导做加和：<br>$$<br>{ {\partial J^{(t)} } \over {\partial \pmb W_h } }&#x3D; \sum_{i&#x3D;1}^t { {\partial J^{(t)} } \over {\partial \pmb W_h } } \bigg|_{(i)}<br>$$<br>整体梯度等于每个时间$i$的梯度加和，其推导过程就是链式法则中的分叉过程，对每段进行加和：</p>
+<p><img src="/post/858fce89/image-20230224215758241.png" srcset="/img/loading.gif" lazyload alt="image-20230224215758241"></p>
+<p>而梯度的合理计算过程就是从模型最后的时刻$t$开始反向传播，每次传播计算一次梯度，将其加到总和中，反向传播到最开始，即可以计算出整体的梯度值。需要注意的是，实际上反向传播的过程中会应用<strong>截断</strong>的技巧，将反向传播的步数限制在~20，这样就可以更为有效的实现传播和梯度的计算，梯度的值也不会有过多的影响。</p>
+<p><img src="/post/858fce89/image-20230224220030722.png" srcset="/img/loading.gif" lazyload alt="image-20230224220030722"></p>
+<h4 id="语言模型的评估"><a href="#语言模型的评估" class="headerlink" title="语言模型的评估"></a>语言模型的评估</h4><p>语言模型的标准评估指标是困惑度(perplexity)。</p>
+<p><img src="/post/858fce89/image-20230225130306741.png" srcset="/img/loading.gif" lazyload alt="image-20230225130306741"></p>
+<p>困惑度的表达式和交叉熵损失$J(\theta)$的指数幂是一致的，越小的困惑度代表其表现越好。<br>$$<br>\prod_{t&#x3D;1}^T \left( {1 \over {\pmb {\hat y}_ {\pmb x_{t+1} }^{(t)} } }\right) ^{1&#x2F;T} &#x3D; \exp \left( {1\over T} \sum_{t&#x3D;1}^T-\log \pmb{\hat y}_ {\pmb x_{t+1}^{(t)} } \right) &#x3D; \exp(J(\theta))<br>$$<br>目前已有的模型中，LSTM在困惑度评估中的表现相对比较好，因为语言中有一些固定情况是没办法准确预测下一个单词的（如something指代的是什么），因此困惑度一般都会有20左右的起底。</p>
+<p><img src="/post/858fce89/image-20230225132714269.png" srcset="/img/loading.gif" lazyload alt="image-20230225132714269"></p>
+<h3 id="梯度消失与梯度爆炸"><a href="#梯度消失与梯度爆炸" class="headerlink" title="梯度消失与梯度爆炸"></a>梯度消失与梯度爆炸</h3><h4 id="梯度消失"><a href="#梯度消失" class="headerlink" title="梯度消失"></a>梯度消失</h4><p>在反向传播的梯度计算中，当梯度的数值比较小时，随着梯度的传播，这些小值会通过乘积变得越来越小，以导致反向传播的后面的神经元，其接收到的梯度会及其小，过小的梯度会导致参数更新放缓甚至不更新，从而使长文本的更新失效。</p>
+<p><img src="/post/858fce89/image-20230227161352840.png" srcset="/img/loading.gif" lazyload alt="image-20230227161352840"></p>
+<p><img src="/post/858fce89/image-20230227170222450.png" srcset="/img/loading.gif" lazyload alt="image-20230227170222450"></p>
+<p>梯度消失的简要证明如下：</p>
+<p>首先，RNN的隐状态公式为：<br>$$<br>\pmb h^{(t)} &#x3D; \sigma\left(\pmb W_h\pmb h^{(t-1)}+\pmb W_x \pmb x^{(t)}+\pmb b_1 \right)<br>$$<br>考虑将非线性消去，即$\sigma(x)&#x3D;x$，则有<br>$$<br>\begin{align}<br>{ {\partial \pmb h^{(t)} } \over {\partial \pmb h^{(t-1)}} } &amp; &#x3D; {\rm diag} \left( \sigma’ \left(\pmb W_h\pmb h^{(t-1)}+\pmb W_x \pmb x^{(t)}+\pmb b_1 \right)\right )\pmb W_h \\ &amp; &#x3D; \pmb {I\ W}_ h &#x3D; \pmb W_ h<br>\end{align}<br>$$<br>考虑损失函数$J^{(i)}(\theta)$在第$i$步的梯度，对于在前面第$j$步的隐状态$\pmb h^{(j)}$，令$l &#x3D; i-j$<br>$$<br>\begin{align}<br>{ {\partial J^{(i)}(\theta)} \over {\partial \pmb h^{(j)}} } &amp; &#x3D; { {\partial J^{(i)}(\theta)} \over {\partial \pmb h^{(j)}} } \prod_{j\le t\le i} { {\partial \pmb h^{(t)}} \over {\partial \pmb h^{(t-1)}} } \\<br>&amp; &#x3D; { {\partial J^{(i)}(\theta)} \over {\partial \pmb h^{(i)}} } \prod_{j\le t\le i} \pmb W_h \\<br>&amp; &#x3D; { {\partial J^{(i)}(\theta)} \over {\partial \pmb h^{(i)}} } \pmb W_h^l<br>\end{align}<br>$$<br>如果$\pmb W_h$很小，则经过$l$次乘积之后，这个乘积会趋近于极小，从而导致梯度消失问题。这个“很小”的评价可以用特征值，考虑$\pmb W_h$的特征值全部都小于1（充分不必要条件），即有$\lambda_1,…,\lambda_n &lt; 1$，对应特征向量为$\pmb q_1,…,\pmb q_n$，我们可以将上面的结果写作特征表示：<br>$$<br>{ {\partial J^{(i)}(\theta)} \over {\partial \pmb h^{(i)}} } \pmb W_h^l &#x3D; \sum_{i&#x3D;1}^n c_i \lambda_i^l\pmb q_i \approx 0<br>$$<br>对于非线性映射$\sigma$，对上述的推理逻辑没有影响，除了需要证明$\lambda_i &lt; \gamma$。</p>
+<h4 id="梯度爆炸"><a href="#梯度爆炸" class="headerlink" title="梯度爆炸"></a>梯度爆炸</h4><p>如果梯度变得过大，随机梯度下降的更新步会变得非常大，这可能会导致梯度摆荡甚至可能收敛到一个无效位置（如INF或NaN），进而导致网络收敛变慢或无法收敛的情况。<br>$$<br>\theta_{new}&#x3D; \theta_{old}-\alpha\nabla_{\theta}J(\theta)<br>$$<br>针对于梯度爆炸的问题，可以采取梯度截断的办法，设定一个梯度的阈值，当梯度超过既定的阈值则将其裁剪，相当于原方向继续走一步，但是走相对小的一步，防止梯度爆炸情况出现。</p>
+<p><img src="/post/858fce89/image-20230227174320318.png" srcset="/img/loading.gif" lazyload alt="image-20230227174320318"></p>
+<p>实际上，梯度裁剪是一个十分重要的细节，但梯度爆炸是一个相对比较容易解决的问题。</p>
+<h2 id="RNN生成文本"><a href="#RNN生成文本" class="headerlink" title="RNN生成文本"></a>RNN生成文本</h2><p>使用RNN的过程也可以应用到文本生成的任务中，具体来说，从开始标记<code>&lt;s&gt;</code>训练，每个timestep会生成下一个单词的概率分布，对每个timestep做一次sample，然后将sample的结果放到下一个timestep训练，直至遇到结束标记<code>&lt;/s&gt;</code>，将生成的单词连成句子，就大致实现了文本的生成过程。使用这种过程就可以大致实现风格化的文本生成，如生成一个哈利波特风格的文本段落等等，还蛮有趣的。</p>
+<p><img src="/post/858fce89/image-20230224222100023.png" srcset="/img/loading.gif" lazyload alt="image-20230224222100023"></p>
+<p><img src="/post/858fce89/image-20230224222745535.png" srcset="/img/loading.gif" lazyload alt="image-20230224222745535"></p>
+<p><img src="/post/858fce89/image-20230224223820258.png" srcset="/img/loading.gif" lazyload alt="image-20230224223820258"></p>
+<h2 id="RNN的应用"><a href="#RNN的应用" class="headerlink" title="RNN的应用"></a>RNN的应用</h2><p><img src="/post/858fce89/image-20230227180339522.png" srcset="/img/loading.gif" lazyload alt="image-20230227180339522"></p>
+<p><img src="/post/858fce89/image-20230227180407007.png" srcset="/img/loading.gif" lazyload alt="image-20230227180407007"></p>
+<p><img src="/post/858fce89/image-20230227180421040.png" srcset="/img/loading.gif" lazyload alt="image-20230227180421040"></p>
+<p><img src="/post/858fce89/image-20230227180433386.png" srcset="/img/loading.gif" lazyload alt="image-20230227180433386"></p>
+<h1 id="课后问题"><a href="#课后问题" class="headerlink" title="课后问题"></a>课后问题</h1>
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">#自然语言处理</a>
+      
+        <a href="/tags/Stanford-CS224n/">#Stanford CS224n</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS224N课程P5：语言模型和循环神经网络RNN</div>
+      <div>http://paopao0226.site/post/858fce89.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月20日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/c4e50226.html" title="CS224N课程P6：LSTM和机器翻译">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS224N课程P6：LSTM和机器翻译</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/d3496c78.html" title="hexo博客实现搜索引擎优化SEO">
+                        <span class="hidden-mobile">hexo博客实现搜索引擎优化SEO</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

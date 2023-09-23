@@ -1,0 +1,985 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="从0手搓一个简单的Transformer架构出来，并简单调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从0复现transformers经典架构">
+<meta property="og:url" content="http://paopao0226.site/post/92486878.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="从0手搓一个简单的Transformer架构出来，并简单调用">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/92486878/image-20230825222703098.png">
+<meta property="og:image" content="http://paopao0226.site/post/92486878/image-20230830224045849.png">
+<meta property="og:image" content="http://paopao0226.site/post/92486878/image-20230831195638650.png">
+<meta property="og:image" content="http://paopao0226.site/post/92486878/image-20230831203843543.png">
+<meta property="og:image" content="http://paopao0226.site/post/92486878/image-20230831205902518.png">
+<meta property="article:published_time" content="2023-08-25T13:09:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.746Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="transformer">
+<meta property="article:tag" content="pytorch">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/92486878/image-20230825222703098.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>从0复现transformers经典架构 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover11.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="从0复现transformers经典架构"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-08-25 21:09" pubdate>
+          2023年8月25日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          15k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          127 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">从0复现transformers经典架构</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="从0复现transformers经典架构"><a href="#从0复现transformers经典架构" class="headerlink" title="从0复现transformers经典架构"></a>从0复现transformers经典架构</h1><p>因为个人觉得自己的<code>pytorch</code>水平实在是菜，故想着自己复现一个经典模型，复现过程中提一提自己的代码水平。</p>
+<p>本文参考自教程<a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=U0s0f995w14&t=2791s">Pytorch Transformers from Scratch (Attention is all you need) - YouTube</a>，这个教程中详尽介绍了Transformer的实现过程，我跟了一遍之后能够自己再次复现，十分有效。在行文过程中，本文也会就比较陌生的torch函数补充讲解一丢丢。</p>
+<p>注意：此教程中未实现论文中所说的一些trick，如sin函数的pos_embedding等，这些会在之后的过程中予以完善。</p>
+<h2 id="自注意力机制"><a href="#自注意力机制" class="headerlink" title="自注意力机制"></a>自注意力机制</h2><h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>Transformer中最为核心的部分就是将mask的自注意力机制融入到了框架中，这个部分也是最难实现的部分。点积自注意力机制的框架在论文中如图所示：</p>
+<p><img src="/post/92486878/image-20230825222703098.png" srcset="/img/loading.gif" lazyload alt="image-20230825222703098"></p>
+<p>其中，注意力部分的公式如下：<br>$$<br>{\rm Attention}(Q,K,V) &#x3D; {\rm softmax}(\frac{QK^\top}{\sqrt{d_k}})V<br>$$<br>图片的左边表示注意力实现时的过程，在两个MatMul之间需要执行一系列操作。</p>
+<p>首先说明：创建一个block（class），最重要的就是<code>__init__</code>和<code>forward</code>两个部分，其中<code>__init__</code>定义基本参数和需要跟着模型训练的参数；<code>forward</code>函数用于定义基本逻辑。以自注意力模块的部分为例，<code>__init__</code>函数定义模型的embed_size，以及逻辑实现过程中需要的层(<code>nn.XXX</code>)。<code>SelfAttention</code>的代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">SelfAttention</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,embed_size,heads</span>):<br>        <span class="hljs-built_in">super</span>(SelfAttention,self).__init__()<br>        self.embed_size = embed_size<br>        self.heads = heads<br>        self.heads_dim = embed_size // heads<br>		<span class="hljs-comment"># assert</span><br>        <span class="hljs-keyword">assert</span> (self.heads_dim * heads == embed_size), <span class="hljs-string">&quot;Embed size must be divided by num of heads&quot;</span><br>		<span class="hljs-comment"># q k v</span><br>        self.v = nn.Linear(self.heads_dim,self.heads_dim)<br>        self.k = nn.Linear(self.heads_dim,self.heads_dim)<br>        self.q = nn.Linear(self.heads_dim,self.heads_dim)<br><br>        self.fnn = nn.Linear(self.embed_size,self.embed_size)<br>    <br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self,value,key,query,mask</span>):<br>        N = value.shape[<span class="hljs-number">0</span>]<br>        v_len,k_len,q_len = value.shape[<span class="hljs-number">1</span>],key.shape[<span class="hljs-number">1</span>],query.shape[<span class="hljs-number">1</span>]<br><br>        <span class="hljs-comment"># divide into heads_dim</span><br>        value = value.reshape(N,v_len,self.heads,self.heads_dim)<br>        key = key.reshape(N,k_len,self.heads,self.heads_dim)<br>        query = query.reshape(N,q_len,self.heads,self.heads_dim)<br><br>        <span class="hljs-comment"># linear </span><br>        value = self.v(value)<br>        key = self.k(key)<br>        query = self.q(query)<br><br>        <span class="hljs-comment"># matmul</span><br>        <span class="hljs-comment"># query shape: N, q_len, heads, heads_dim</span><br>        <span class="hljs-comment"># key shape: N, k_len, heads, heads_dim</span><br>        <span class="hljs-comment"># energy shape: N, heads, q_len, k_len</span><br>        energy = torch.einsum(<span class="hljs-string">&quot;nqhd,nkhd-&gt;nhqk&quot;</span>,[query,key])<br><br>        <span class="hljs-comment"># scale</span><br>        energy = energy / self.embed_size ** (<span class="hljs-number">1</span>/<span class="hljs-number">2</span>)<br><br>        <span class="hljs-comment"># mask</span><br>        <span class="hljs-keyword">if</span> mask <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>            energy = energy.masked_fill(mask == <span class="hljs-number">0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-1e20&#x27;</span>))<br>        <br>        <span class="hljs-comment"># softmax</span><br>        energy = torch.softmax(energy,dim=-<span class="hljs-number">1</span>)<br>        <span class="hljs-comment"># matmul &amp; concat </span><br>        <span class="hljs-comment"># energy shape: N, heads, q_len, k_len</span><br>        <span class="hljs-comment"># value shape: N, v_len, heads, heads_dim</span><br>        <span class="hljs-comment"># output shape: N, q_len, heads, heads_dim</span><br>        out = torch.einsum(<span class="hljs-string">&#x27;nhqk,nkhd-&gt;nqhd&#x27;</span>,[energy,value]).reshape(N,q_len,self.heads*self.heads_dim)<br><br>        <span class="hljs-comment"># concat &amp; linear</span><br>        out = self.fnn(out)<br><br>        <span class="hljs-keyword">return</span> out<br></code></pre></td></tr></table></figure>
+
+<p>从<code>__init__</code>函数中看到，多头自注意力机制的“多头”是在这里进行划分；且为达到Multi-head Attention中对<code>Q、K、V</code>分开操作，以及最后的线性变换，需要设置对应的<code>Linear</code>层。</p>
+<p>从<code>__forward</code>函数中看到，这段代码实现了基本的Scale Dot-Prodution Attention，按照</p>
+<figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs tex">Divide into heads -&gt; Linear Func -&gt; Matmul(energy) -&gt; Scale -&gt; Mask(masked<span class="hljs-built_in">_</span>fill) -&gt; Softmax(at dim -1) -&gt; Matmul<br></code></pre></td></tr></table></figure>
+
+<p>的顺序逐步进行矩阵变换与点乘。</p>
+<p>第 20-23 行对应的是<code>Divide into heads</code>步骤。<code>forward</code>接收的<code>Q、K、V</code>参数的shape是<code>N x seq_len x embed_size</code>，其中<code>N</code>表示一个batch里的总数，<code>seq_len</code>代表sequence的长度，<code>embed_size</code>在这里也对应于<code>self.embed_size</code>的参数。为了完成多头注意力机制，对于<code>Q、K、V</code>要做<code>reshape</code>操作，将原shape重构成<code>[N, key_len, heads, heads_dim]</code>，其中<code>H</code>代表头的数量(heads)，<code>D</code>代表每个头的维度dim，其中和定义的一样，<code>embed_size = heads * heads_dim</code>。</p>
+<p>第 25-28 行对应<code>Q、K、V</code>的线性变换操作，不再赘述</p>
+<p>第 30-37 行对应第一个Matmul操作和Scale放缩，是对<code>Q</code>和<code>K</code>完成点乘。这里有矩阵shape的变换如注释所示，从两个单独的矩阵变成一个乘积矩阵，实现方法有以下两种：</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-comment"># 1、逐步操作</span><br><span class="hljs-comment"># 修改Q和K的shape </span><br><span class="hljs-attribute">query</span> = query.permute(<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>) # shape:<span class="hljs-meta"> [N, n_heads, query_len, head_dim]</span><br><span class="hljs-attribute">key</span> = key.permute(<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>) # shape:<span class="hljs-meta"> [N, n_heads, key_len, head_dim]</span><br><span class="hljs-attribute">energy</span> = (Q @ K.permute(<span class="hljs-number">0</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>,<span class="hljs-number">2</span>)) / self.embed_size ** (<span class="hljs-number">1</span>/<span class="hljs-number">2</span>) # energy shape:<span class="hljs-meta"> [N, n_heads, query_len, key_len]</span><br><br><span class="hljs-comment"># 2、爱因斯坦求和</span><br><span class="hljs-attribute">energy</span> = torch.einsum(&#x27;nqhl,nkhl-&gt;nhqk&#x27;,[query,key])<br><span class="hljs-attribute">energy</span> = energy / self.embed_size ** (<span class="hljs-number">1</span>/<span class="hljs-number">2</span>)<br></code></pre></td></tr></table></figure>
+
+<p>其中，第一种方法逐步操作比较好理解，我们的目标shape为<code>[N, n_heads, query_len, key_len]</code>，方便之后和<code>V</code>点乘时的操作，需要保留<code>N</code>和<code>heads</code>这两个维度，因此首先对<code>Q</code>和<code>K</code>进行维度操作，这里用到了矩阵维度变换中常用的两种操作（见下注解1），将这两个维度前置。完成reshape操作之后，Q @ K.permute获得了结果为<code>[N, n_heads, query_len, key_len]</code>的乘积。</p>
+<p>第二种是一种特化表示法（见下注解2）的使用，逻辑和上面其实大差不差，但是操作上会简化很多。这样基本就实现了<code>Q @ K</code>的维度操作，这里难度比较大。</p>
+<p>第 39-41 行实现Mask部分的操作，如果设置了mask，自注意力就将mask填充到注意力的结果中。这里使用到了masked_fill方法。</p>
+<p>第 43-44 行完成softmax操作，对最后一维（数值维）进行softmax</p>
+<p>第 45-49 行完成第二个Matmul操作，这里的方式和前面讲解的基本一致，需要注意的是我们最后得到结果理论上应该是query的shape，即在注意力计算之后shape不变，因此需要首先reshape成<code>[N, q_len, heads, heads_dim]</code>，然后再将最后两维合并成<code>[N, q_len, embed_size]</code></p>
+<p>第 51-52 行完成注意力计算后的线性变换。至此完成点积注意力的实现。</p>
+<h3 id="注解"><a href="#注解" class="headerlink" title="注解"></a>注解</h3><blockquote>
+<p><strong>注解1：维度修改(torch.view)和维度转置(torch.permute)</strong></p>
+</blockquote>
+<p>参见<a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_41735859/article/details/106049688">pytorch中reshape()、view()、permute()、transpose()总结_景唯acr的博客-CSDN博客</a></p>
+<p><strong>torch.view和torch.reshape</strong>两个方法为维度修改操作，是针对维度进行修改，可以删除或者增加维度，<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=pytorch&spm=1001.2101.3001.7020">pytorch</a> 中的 torch.reshape() 大致相当于 tensor.contiguous().view()。使用torch.view()时需要保证tensor的连续性contiguous</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">a.contiguous().view()<br></code></pre></td></tr></table></figure>
+
+<p>torch.permute和torch.transpose两个方法为维度转置操作，transpose 只能一次转换两个维度，permute 可以一次转换多个维度。具体来说，permute通过对原shape从左到右标号，然后重新设置先后顺序，来达到多个维度的转置。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">a.permute(<span class="hljs-number">0</span>,<span class="hljs-number">2</span>,<span class="hljs-number">1</span>,<span class="hljs-number">3</span>) <span class="hljs-comment"># 将原来的0,1,2,3的维度顺序修改为0,2,1,3</span><br></code></pre></td></tr></table></figure>
+
+<p>注意，permute和transpose都不能实现维度的增加或减少。</p>
+<blockquote>
+<p><strong>注解2：爱因斯坦求和(torch.einsum)</strong></p>
+</blockquote>
+<p>参见：<a target="_blank" rel="noopener" href="https://blog.csdn.net/a2806005024/article/details/96462827">Pytorch中, torch.einsum详解-CSDN博客</a></p>
+<p>爱因斯坦求和是一种对求和公式简洁高效的记法，以一种统一的方式表示各种各样的张量运算（内积、外积、转置、点乘、矩阵的迹、其他自定义运算），简化基本运算的操作。当然这个维度变换需要一定的学习成本。以上面的代码为例</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># query shape: n q h l(下标表示)</span><br><span class="hljs-comment"># key shape: n k h l(下标表示)</span><br><span class="hljs-comment"># einsum: nqhl,nkql(代表两个矩阵乘)-&gt;nhqk(代表最后想要的shape)</span><br>energy = torch.einsum(<span class="hljs-string">&#x27;nqhl,nkhl-&gt;nhqk&#x27;</span>,[query,key])<br></code></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注解3：掩码填充(torch.masked_fill)</strong></p>
+</blockquote>
+<p>函数签名：masked_fill_(mask, value)</p>
+<p>用value填充tensor中满足mask表达式的部分</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># 判定mask中为0的部分，将其填充为-1e20，使其在注意力计算中的比重降为极低</span><br>energy = energy.masked_fill(mask == <span class="hljs-number">0</span>, <span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;-1e20&#x27;</span>))<br></code></pre></td></tr></table></figure>
+
+<h2 id="Transformer-Block"><a href="#Transformer-Block" class="headerlink" title="Transformer Block"></a>Transformer Block</h2><h3 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h3><p><img src="/post/92486878/image-20230830224045849.png" srcset="/img/loading.gif" lazyload alt="image-20230830224045849"></p>
+<p>在Transform的Encoder和Decoder中，有一段Block可以复用，如红框所示，这里我们首先实现这个Block。</p>
+<p>在图中可以看出，Block按照</p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs txt">Multi-head Attention(SelfAttention) -&gt; Add&amp;Norm -&gt; Feed Forward -&gt; Add&amp;Norm<br></code></pre></td></tr></table></figure>
+
+<p>的顺序构筑，更多的，在<code>Add &amp; Norm</code>之后一般需要接上一个<code>Dropout</code>，在ffn层中一般也要接进去<code>Dropout</code>来提高随机性，因此在<code>__init__</code>部分需要率先对这些层完成预定义。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">TransformerBlock</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,</span><br><span class="hljs-params">                 embed_size,</span><br><span class="hljs-params">                 heads,</span><br><span class="hljs-params">                 forward_expansion,</span><br><span class="hljs-params">                 dropout</span>):<br>        <span class="hljs-built_in">super</span>(TransformerBlock,self).__init__()<br>        self.embed_size = embed_size<br>        self.heads = heads<br>        self.attention = SelfAttention(<br>            embed_size=embed_size,<br>            heads=heads<br>        )<br>        self.norm1 = nn.LayerNorm(embed_size)<br>        self.ffn = nn.Sequential(OrderedDict([<br>            (<span class="hljs-string">&#x27;hidden_layer&#x27;</span>,nn.Linear(embed_size,forward_expansion*embed_size)),<br>            (<span class="hljs-string">&#x27;activation&#x27;</span>,nn.ReLU()),<br>            (<span class="hljs-string">&#x27;dropout&#x27;</span>,nn.Dropout(dropout)),<br>            (<span class="hljs-string">&#x27;output_layer&#x27;</span>,nn.Linear(forward_expansion*embed_size,embed_size))<br>        ]))<br>        self.norm2 = nn.LayerNorm(embed_size)<br>        self.dropout = nn.Dropout(dropout)<br></code></pre></td></tr></table></figure>
+
+<p>前面的基本参数和attention的定义比较简单，两个norm层在Transformer中使用的是LayerNorm（相对于BatchNorm，见讲解）；ffn（feed forward）层先将数据映射到高维空间，然后非线性激活并加入dropout，最后还原，这样先高维后低维的操作可以更好的提取抽象特征；最后的dropout就是两部分之间的随机后处理。</p>
+<p>在<code>__init__</code>的参数列表中，<code>embed_size</code>和<code>heads</code>是Attention所需参数；<code>forward_expansion</code>用于ffn层的高维映射，从<code>embed_size</code>映射到<code>forward_expansion * embed_size</code>，即成比例扩大；<code>dropout</code>是<code>Dropout</code>层的drop单位比例。</p>
+<p>在<code>forward</code>方法中，输入可以看图片中Block的指入的指针，即下面的<code>Q、K、V</code>三个部分，在计算attention时还需加入<code>mask</code>的处理。<code>forward</code>就实现了Block的基本逻辑</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self,value,key,query,mask</span>):<br>    <span class="hljs-comment"># multi-head attention</span><br>    att = self.attention(value,key,query,mask)<br>    <span class="hljs-comment"># add &amp; norm 1</span><br>    att = self.dropout(self.norm1(att + query))<br>    <span class="hljs-comment"># feed forward</span><br>    out = self.ffn(att)<br>    <span class="hljs-comment"># add &amp; norm 2</span><br>    out = self.dropout(self.norm2(out + att))<br>    <span class="hljs-keyword">return</span> out<br></code></pre></td></tr></table></figure>
+
+<p>首先，调用attention，传入<code>Q、K、V</code>和<code>mask</code>，执行多头注意力操作；后先将attention的值和输入的其中一部分（这里为query，因为Decoder中只有query是从input中输入的）加和做残差，输入到norm1之后执行dropout；后面执行ffn层，并将ffn的输出out和att加和做残差，输入到norm2之后执行dropout。这样就完成了此TransformerBlock的基本逻辑。</p>
+<h3 id="注解-1"><a href="#注解-1" class="headerlink" title="注解"></a>注解</h3><blockquote>
+<p><strong>注解：LayerNorm和BatchNorm的区别</strong></p>
+</blockquote>
+<p>参见：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/608655896">BatchNorm与LayerNorm的理解 - 知乎 (zhihu.com)</a>，<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/74516930">NLP中 batch normalization与 layer normalization - 知乎 (zhihu.com)</a></p>
+<p>Batch 顾名思义是对一个batch进行操作。假设我们有 10行 3列 的数据，即我们的batchsize &#x3D; 10，每一行数据有三个特征，假设这三个特征是【身高、体重、年龄】。那么BN是针对每一列（特征）进行缩放，例如算出【身高】的均值与方差，再对身高这一列的10个数据进行缩放。体重和年龄同理。这是一种“列缩放”。</p>
+<p>而layer方向相反，它针对的是每一行进行缩放。即只看一笔数据，算出这笔所有特征的均值与方差再缩放。这是一种“行缩放”。</p>
+<p>在NLP中，由于BatchNorm操作时是对每句话的第一个词、第二个词、…、第m个词操作，缺乏合理性，而LayerNorm是以每句话为单位操作，因此LayerNorm在NLP中使用的更为广泛。</p>
+<h2 id="Encoder"><a href="#Encoder" class="headerlink" title="Encoder"></a>Encoder</h2><p><img src="/post/92486878/image-20230831195638650.png" srcset="/img/loading.gif" lazyload alt="image-20230831195638650"></p>
+<p>Encoder部分用于对语料的编码，使其能够在提取信息后用于自注意力机制。前文提到的Transformer Block已经实现了Block的构筑，在具体到Encoder部分时我们就只需要完成以下部分：</p>
+<ul>
+<li>输入编码：完成Word_Embedding和Position_Embedding</li>
+<li>模块堆叠：实现Block x N</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Encoder</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,</span><br><span class="hljs-params">                 src_vocab_size,</span><br><span class="hljs-params">                 embed_size,</span><br><span class="hljs-params">                 heads,</span><br><span class="hljs-params">                 forward_expansion,</span><br><span class="hljs-params">                 dropout,</span><br><span class="hljs-params">                 n_layers,</span><br><span class="hljs-params">                 max_len,</span><br><span class="hljs-params">                 device</span>):<br>        <span class="hljs-built_in">super</span>(Encoder,self).__init__()<br>        self.embed_size = embed_size<br>        self.device = device<br>        <span class="hljs-comment"># embedding module</span><br>        self.word_embedding = nn.Embedding(src_vocab_size,embed_size)<br>        self.position_embedding = nn.Embedding(max_len,embed_size)<br>        <span class="hljs-comment"># N x Transformer block</span><br>        self.layers = nn.ModuleList([<br>            TransformerBlock(<br>                embed_size=embed_size,<br>                heads=heads,<br>                forward_expansion=forward_expansion,<br>                dropout=dropout<br>            ) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n_layers)<br>        ])<br>        self.dropout = nn.Dropout(dropout)<br><br>        <span class="hljs-keyword">return</span> out<br></code></pre></td></tr></table></figure>
+
+<p>因此，<code>__init__</code>部分就只需完成两个Embedding的定义，多个TransformerBlock的序列定义（nn.ModuleList），还有其中随机Drop用的Dropout层；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># Embedding层</span><br>self.word_embedding = nn.Embedding(src_vocab_size,embed_size)<br>self.position_embedding = nn.Embedding(max_len,embed_size)<br><span class="hljs-comment"># 多个Block堆叠</span><br>self.layers = nn.ModuleList([<br>    TransformerBlock(<br>        embed_size=embed_size,<br>        heads=heads,<br>        forward_expansion=forward_expansion,<br>        dropout=dropout<br>    ) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n_layers)<br>])<br></code></pre></td></tr></table></figure>
+
+<p><code>forward</code>部分实现基本逻辑，首先定义位置的概念。这里简化位置的定义，直接用0~seq_len-1的位置硬编号来表示word的绝对位置，当然这种基于顺序的位置编码一定是有效的。</p>
+<p>对于位置，首先设置一个从0到seq_len-1的<code>(1,seq_len)</code>维tensor，然后使用expand将其扩为<code>（N,seq_len）</code>维（见注解），最后送到device中供运算。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">position = torch.arange(<span class="hljs-number">0</span>,seq_len).expand(N,seq_len).to(self.device)<br></code></pre></td></tr></table></figure>
+
+<p>之后，使用定义好的两个embedding模块对原tensor和位置进行编码，相加之后过一个dropout，就实现了对输入的预处理，相加结果存为<code>out</code>，并在下面每次调用一层Transformer Block时作为<code>Q、K、V</code>输入到网络中，获得中间结果并再次存回<code>out</code>供下层输入。在图中我们也可以看到，Encoder的<code>Q、K、V</code>在定义上是一致的，都是输入编码。</p>
+<h3 id="注解-2"><a href="#注解-2" class="headerlink" title="注解"></a>注解</h3><blockquote>
+<p><strong>注解：tensor扩张（torch.repeat和torch.expand）</strong></p>
+</blockquote>
+<p>参见：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/555322123">「PyTorch」repeat() 和 expand() - 知乎 (zhihu.com)</a></p>
+<p><code>torch.repeat</code>会复制数据本身，将其从维度上扩展</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">x = torch.rand(<span class="hljs-number">1</span>, <span class="hljs-number">3</span>)<br><span class="hljs-meta">&gt;&gt;&gt; </span>x.repeat(<span class="hljs-number">3</span>, <span class="hljs-number">2</span>)<br>tensor([[<span class="hljs-number">0.7953</span>, <span class="hljs-number">0.4801</span>, <span class="hljs-number">0.7178</span>, <span class="hljs-number">0.7953</span>, <span class="hljs-number">0.4801</span>, <span class="hljs-number">0.7178</span>],<br>        [<span class="hljs-number">0.7953</span>, <span class="hljs-number">0.4801</span>, <span class="hljs-number">0.7178</span>, <span class="hljs-number">0.7953</span>, <span class="hljs-number">0.4801</span>, <span class="hljs-number">0.7178</span>],<br>        [<span class="hljs-number">0.7953</span>, <span class="hljs-number">0.4801</span>, <span class="hljs-number">0.7178</span>, <span class="hljs-number">0.7953</span>, <span class="hljs-number">0.4801</span>, <span class="hljs-number">0.7178</span>]])<br></code></pre></td></tr></table></figure>
+
+<p>上例中，x从第一维（可以理解成行维）扩展三倍（即从一行-&gt;三行），从第二维（理解成列维）扩展两倍（即从三列-&gt;六列）。</p>
+<p><code>torch.expand</code>在平铺的时候只能扩张大小为 1 的维度，但其不会复制数据，因此效率高于<code>torch.repeat</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs python">y = torch.rand(<span class="hljs-number">3</span>, <span class="hljs-number">1</span>, <span class="hljs-number">4</span>)<br><span class="hljs-meta">&gt;&gt;&gt; </span>y.expand(<span class="hljs-number">3</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>)<br>tensor([[[<span class="hljs-number">0.1799</span>, <span class="hljs-number">0.5697</span>, <span class="hljs-number">0.9464</span>, <span class="hljs-number">0.7371</span>],<br>         [<span class="hljs-number">0.1799</span>, <span class="hljs-number">0.5697</span>, <span class="hljs-number">0.9464</span>, <span class="hljs-number">0.7371</span>],<br>         [<span class="hljs-number">0.1799</span>, <span class="hljs-number">0.5697</span>, <span class="hljs-number">0.9464</span>, <span class="hljs-number">0.7371</span>]],<br><br>        [[<span class="hljs-number">0.6830</span>, <span class="hljs-number">0.6944</span>, <span class="hljs-number">0.0609</span>, <span class="hljs-number">0.6319</span>],<br>         [<span class="hljs-number">0.6830</span>, <span class="hljs-number">0.6944</span>, <span class="hljs-number">0.0609</span>, <span class="hljs-number">0.6319</span>],<br>         [<span class="hljs-number">0.6830</span>, <span class="hljs-number">0.6944</span>, <span class="hljs-number">0.0609</span>, <span class="hljs-number">0.6319</span>]],<br><br>        [[<span class="hljs-number">0.3938</span>, <span class="hljs-number">0.3009</span>, <span class="hljs-number">0.9311</span>, <span class="hljs-number">0.6702</span>],<br>         [<span class="hljs-number">0.3938</span>, <span class="hljs-number">0.3009</span>, <span class="hljs-number">0.9311</span>, <span class="hljs-number">0.6702</span>],<br>         [<span class="hljs-number">0.3938</span>, <span class="hljs-number">0.3009</span>, <span class="hljs-number">0.9311</span>, <span class="hljs-number">0.6702</span>]]])<br></code></pre></td></tr></table></figure>
+
+<p>上例中，y从第二维（单维度）扩展三倍。</p>
+<h2 id="Decoder-Block"><a href="#Decoder-Block" class="headerlink" title="Decoder Block"></a>Decoder Block</h2><p><img src="/post/92486878/image-20230831203843543.png" srcset="/img/loading.gif" lazyload alt="image-20230831203843543"></p>
+<p>在实现Transformer Block时我们就提到，Decoder中也有复用的部分，我们完成了复用部分的实现，那其余的部分则需另外实现，这里就是对Decoder部分的另外实现。</p>
+<p>在图中可以看出，除了TransformerBlock之外，只有下面的<code>mask-attention</code>模块和携带的<code>add&amp;norm</code>需要实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-comment"># DecoderBlock = TransformerBlock + Additional Block</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">DecoderBlock</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,</span><br><span class="hljs-params">                 embed_size,</span><br><span class="hljs-params">                 heads,</span><br><span class="hljs-params">                 forward_expansion,</span><br><span class="hljs-params">                 dropout</span>):<br>        <span class="hljs-built_in">super</span>(DecoderBlock,self).__init__()<br>        self.embed_size = embed_size<br>        self.heads = heads<br>        <span class="hljs-comment"># Masked Attention</span><br>        self.attention = SelfAttention(<br>            embed_size=embed_size,<br>            heads=heads<br>        )<br>        <span class="hljs-comment"># Add &amp; Norm</span><br>        self.norm = nn.LayerNorm(embed_size)<br>        <span class="hljs-comment"># Transformer Block</span><br>        self.transformer_block = TransformerBlock(<br>            embed_size=embed_size,<br>            heads=heads,<br>            forward_expansion=forward_expansion,<br>            dropout=dropout<br>        )<br>        self.dropout = nn.Dropout(dropout)`<br></code></pre></td></tr></table></figure>
+
+<p>和前面实现的部分基本一致，<code>__init__</code>部分实现逻辑需要的模块，这里即为一个Attention、一个LayerNorm，还有一个TransformerBlock；Dropout常规随机处理。</p>
+<p><code>forward</code>的实现也没有什么花样，将其逻辑串起来即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self,value,key,x,src_mask,trg_mask</span>):<br>    <span class="hljs-comment"># masked multi-head attention</span><br>    att = self.attention(x,x,x,trg_mask)<br>    <span class="hljs-comment"># add &amp; norm</span><br>    att = self.dropout(self.norm(att + x))<br>    <span class="hljs-comment"># transform block</span><br>    out = self.transformer_block(value,key,att,src_mask)<br>    <span class="hljs-keyword">return</span> out<br></code></pre></td></tr></table></figure>
+
+<p>这里我们不区分Decoder的<code>Q、K、V</code>分别是什么，这个区分放到Decoder中来实现。<code>Masked Multi-head Attention</code>的<code>mask</code>使用的是目标语言即<code>trg_mask</code>，而TransformerBlock的部分使用的是从Encoder传过来的语言的<code>src_mask</code>。</p>
+<h2 id="Decoder"><a href="#Decoder" class="headerlink" title="Decoder"></a>Decoder</h2><p>和Encoder的设置基本一致，Decoder主要将DecoderBlock中未涉及到的输入部分和堆叠部分予以实现，因此<code>__init__</code>部分大部分基本和Encoder一致，不再赘述；除Encoder中涉及到的部分外，Decoder在输出部分会有一个<code>Linear</code>和<code>Softmax</code>，将Decoder的结果映射回到既有维度，<code>Softmax</code>直接使用函数调用，而<code>Linear</code>则需要预定义在<code>__init__</code>中训练。</p>
+<p><img src="/post/92486878/image-20230831205902518.png" srcset="/img/loading.gif" lazyload alt="image-20230831205902518"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Decoder</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self,</span><br><span class="hljs-params">                 trg_vocab_size,</span><br><span class="hljs-params">                 embed_size,</span><br><span class="hljs-params">                 heads,</span><br><span class="hljs-params">                 forward_expansion,</span><br><span class="hljs-params">                 dropout,</span><br><span class="hljs-params">                 n_layers,</span><br><span class="hljs-params">                 max_len,</span><br><span class="hljs-params">                 device</span>) :<br>        <span class="hljs-built_in">super</span>(Decoder,self).__init__()<br>        <span class="hljs-comment"># 和Encoder基本一致</span><br>        <span class="hljs-comment"># -------------------</span><br>        self.embed_size = embed_size<br>        self.device = device<br>        self.word_embedding = nn.Embedding(trg_vocab_size,embed_size)<br>        self.position_embedding = nn.Embedding(max_len,embed_size)<br>        self.layers = nn.ModuleList([<br>            DecoderBlock(<br>                embed_size=embed_size,<br>                heads=heads,<br>                forward_expansion=forward_expansion,<br>                dropout=dropout<br>            ) <span class="hljs-keyword">for</span> _ <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n_layers)<br>        ])<br>        self.dropout = nn.Dropout(dropout)<br>        <span class="hljs-comment"># --------------------</span><br>        <span class="hljs-comment"># 输出线性映射</span><br>        self.fnn = nn.Linear(embed_size,trg_vocab_size)<br></code></pre></td></tr></table></figure>
+
+<p>而<code>forward</code>执行Decoder的步骤，像Encoder一样对输入和位置编码并送到Attention中，执行Add &amp; Norm，后将Decoder的中间结果作为<code>query</code>，Encoder的输出作为<code>key</code>和<code>value</code>输入到TransformerBlock中，以达到用<code>key</code>检索<code>query</code>的能力。最后将Decoder的输出套上线性层和Softmax。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self,x,enc_out,src_mask,trg_mask</span>):<br>        N,seq_len = x.shape<br>        position = torch.arange(<span class="hljs-number">0</span>,seq_len).expand(N,seq_len).to(self.device)<br>    <br>        <span class="hljs-comment">#decoder embedding</span><br>        word_embedding = self.word_embedding(x)<br>        position_embedding = self.position_embedding(position)<br>        out = self.dropout(word_embedding+position_embedding) <br><br>        <span class="hljs-comment">#stacking</span><br>        <span class="hljs-keyword">for</span> layer <span class="hljs-keyword">in</span> self.layers:<br>            out = layer(enc_out,enc_out,out,src_mask,trg_mask)<br>        <br>        out = self.fnn(out)<br>        <span class="hljs-keyword">return</span> out <br></code></pre></td></tr></table></figure>
+
+<h2 id="Transformer"><a href="#Transformer" class="headerlink" title="Transformer"></a>Transformer</h2><p>将<code>Encoder</code>和<code>Decoder</code>组装起来，即可完成Transformer的搭建，这个模块的功能十分简单，获取Encoder和Decoder的输入，分别送到Encoder和Decoder完成整体训练即可。这里需要注意的是<code>src_mask</code>和<code>trg_mask</code>需要在组装时提前实现。</p>
+<p>首先是<code>__init__</code>函数，接收<code>src</code>和<code>trg</code>的<code>vocab_size</code>和<code>pad_idx（一般一致）</code>，并将两个部分需要的参数传进来。参数中，大部分是<code>Encoder</code>和<code>Decoder</code>需要的参数（后面八个），前面的四个为source和target序列的基本参数。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">Transformer</span>(nn.Module):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, </span><br><span class="hljs-params">                 <span class="hljs-comment"># src and trg basic param</span></span><br><span class="hljs-params">                 src_vocab_size,</span><br><span class="hljs-params">                 trg_vocab_size,</span><br><span class="hljs-params">                 src_pad_idx,</span><br><span class="hljs-params">                 trg_pad_idx,</span><br><span class="hljs-params">                 <span class="hljs-comment"># model param</span></span><br><span class="hljs-params">                 embed_size=<span class="hljs-number">256</span>,</span><br><span class="hljs-params">                 heads=<span class="hljs-number">8</span>,</span><br><span class="hljs-params">                 forward_expansion=<span class="hljs-number">4</span>,</span><br><span class="hljs-params">                 dropout=<span class="hljs-number">0</span>,</span><br><span class="hljs-params">                 max_len=<span class="hljs-number">100</span>,</span><br><span class="hljs-params">                 device=<span class="hljs-string">&quot;cuda&quot;</span>,</span><br><span class="hljs-params">                 n_encoder_layers=<span class="hljs-number">6</span>,</span><br><span class="hljs-params">                 n_decoder_layers=<span class="hljs-number">6</span></span>):<br>        <br>        <span class="hljs-built_in">super</span>(Transformer,self).__init__()<br>        self.encoder = Encoder(<br>            src_vocab_size=src_vocab_size,<br>            embed_size=embed_size,<br>            heads=heads,<br>            forward_expansion=forward_expansion,<br>            dropout=dropout,<br>            max_len=max_len,<br>            device=device,<br>            n_layers=n_encoder_layers<br>        )<br><br>        self.decoder = Decoder(<br>            trg_vocab_size=trg_vocab_size,<br>            embed_size=embed_size,<br>            heads=heads,<br>            forward_expansion=forward_expansion,<br>            dropout=dropout,<br>            max_len=max_len,<br>            device=device,<br>            n_layers=n_decoder_layers<br>        )<br>        self.src_pad_idx = src_pad_idx<br>        self.trg_pad_idx = trg_pad_idx<br>        self.device = device<br></code></pre></td></tr></table></figure>
+
+<p>然后在Transformer中定义mask的获取方法</p>
+<p>对于source部分，实现一个padding mask，我们按照是否为<code>src_pad_idx</code>来判断，如果是则代表token是补足的padding token，没有作用，应该设为无限小的mask。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">src_mask</span>(<span class="hljs-params">self, src</span>):<br>    <span class="hljs-comment"># [N, 1, 1, seq_len], 便于之后做广播运算</span><br>    src_mask = (src != self.src_pad_idx).unsqueeze(<span class="hljs-number">1</span>).unsqueeze(<span class="hljs-number">2</span>)<br>    <span class="hljs-keyword">return</span> src_mask.to(self.device)<br></code></pre></td></tr></table></figure>
+
+<p>对于decoder部分，实现一个sequence mask，旨在mask掉未来的token，使得模型专注于前面的sequence。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">trg_mask</span>(<span class="hljs-params">self, trg</span>):<br>    <span class="hljs-comment"># shape</span><br>    N, trg_len = trg.shape<br>    <span class="hljs-comment"># trg_pad_mask, padding mask</span><br>    trg_pad_mask = (trg != self.trg_pad_idx).unsqueeze(<span class="hljs-number">1</span>).unsqueeze(<span class="hljs-number">2</span>)<br>    <span class="hljs-comment"># 首先创建一个下三角的mask</span><br>    <span class="hljs-comment"># 再使用按位与，将pad_mask也加进去（广播）</span><br>    trg_mask = torch.tril(torch.ones((trg_len, trg_len))).<span class="hljs-built_in">bool</span>().to(self.device) &amp; trg_pad_mask<br>    <span class="hljs-keyword">return</span> trg_mask.to(self.device)<br></code></pre></td></tr></table></figure>
+
+<p>最后将<code>forward</code>实现即可，forward接收<code>source seq</code>和<code>target seq</code>，生成对应mask，将其先放到<code>Encoder</code>生成<code>encoder_output</code>后，其作为<code>k、v</code>加入到<code>Decoder</code>中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self,src,trg</span>):<br>    <span class="hljs-comment"># generate masks</span><br>    src_masks = self.src_mask(src)<br>    trg_masks = self.trg_mask(trg)<br><br>    <span class="hljs-comment"># encoder output</span><br>    enc_out = self.encoder(src,src_masks)<br>    <span class="hljs-comment"># decoder output</span><br>    out = self.decoder(trg,enc_out,src_masks,trg_masks)<br>    <span class="hljs-keyword">return</span> out<br></code></pre></td></tr></table></figure>
+
+<p>综上便完成了整体Transformer的搭建</p>
+<h2 id="Test-code"><a href="#Test-code" class="headerlink" title="Test code"></a>Test code</h2><p>下附一个简单测试代码，没有什么实际含义，主要是用于测试矩阵shape是否对齐。下一篇具体就德语到英语的翻译模型来继续应用咱的Transformer:))))</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&quot;__main__&quot;</span>:<br>    <span class="hljs-comment"># device = torch.device(&#x27;cuda&#x27; if torch.cuda.is_available else &quot;cpu&quot;)</span><br>    device = <span class="hljs-string">&quot;cuda&quot;</span><br>    <br>    x = torch.tensor([[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">9</span>,<span class="hljs-number">5</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">8</span>,<span class="hljs-number">7</span>,<span class="hljs-number">3</span>,<span class="hljs-number">4</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">7</span>,<span class="hljs-number">2</span>]]).to(device)<br>    trg = torch.tensor([[<span class="hljs-number">1</span>,<span class="hljs-number">7</span>,<span class="hljs-number">4</span>,<span class="hljs-number">3</span>,<span class="hljs-number">5</span>,<span class="hljs-number">9</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>],[<span class="hljs-number">1</span>,<span class="hljs-number">5</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>,<span class="hljs-number">4</span>,<span class="hljs-number">7</span>,<span class="hljs-number">6</span>,<span class="hljs-number">2</span>]]).to(device)<br>    src_pad_idx = <span class="hljs-number">0</span><br>    trg_pad_idx = <span class="hljs-number">0</span><br>    src_vocab_size = <span class="hljs-number">10</span><br>    trg_vocab_size = <span class="hljs-number">10</span><br><br>    model = Transformer(<br>        src_vocab_size=src_vocab_size,<br>        trg_vocab_size=trg_vocab_size,<br>        src_pad_idx=src_pad_idx,<br>        trg_pad_idx=trg_pad_idx<br>    ).to(device)<br><br>    out = model(x, trg[:, :-<span class="hljs-number">1</span>])<br>    <span class="hljs-comment"># out = torch.softmax(out,dim=2)</span><br>    output = model(x, trg[:, :-<span class="hljs-number">1</span>])<br>    output_dim = output.shape[-<span class="hljs-number">1</span>]<br>    output = output.contiguous().view(-<span class="hljs-number">1</span>, output_dim) <span class="hljs-comment">#batch_size * sequence_length, output_dim</span><br>    trg = trg[:, <span class="hljs-number">1</span>:].contiguous().view(-<span class="hljs-number">1</span>) <span class="hljs-comment">#batch_size * sequence_length</span><br>    <span class="hljs-built_in">print</span>(output.shape,trg.shape)     <br>    <span class="hljs-built_in">print</span>(output)<br>    <span class="hljs-built_in">print</span>(trg)       <br>    <span class="hljs-comment"># 获取概率最高的索引</span><br>    predicted_indices = torch.argmax(out, dim=<span class="hljs-number">2</span>)<br><br>    <span class="hljs-comment">#去掉序列末尾</span><br>    predicted_indices = predicted_indices[:, :-<span class="hljs-number">1</span>]<br><br>    <span class="hljs-comment"># 输出预测的下一个数</span><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Predicted Next Token Indices:&quot;</span>)<br>    <span class="hljs-built_in">print</span>(predicted_indices)<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/python/">#python</a>
+      
+        <a href="/tags/transformer/">#transformer</a>
+      
+        <a href="/tags/pytorch/">#pytorch</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>从0复现transformers经典架构</div>
+      <div>http://paopao0226.site/post/92486878.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年8月25日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/aaeeb3aa.html" title="Linux服务器后台执行指令——tmux">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Linux服务器后台执行指令——tmux</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/dd88fd87.html" title="Linux服务器命令行配置conda虚拟环境">
+                        <span class="hidden-mobile">Linux服务器命令行配置conda虚拟环境</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

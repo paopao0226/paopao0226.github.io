@@ -1,0 +1,923 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="针对于《神经网络与深度学习》课程中循环神经网络的笔记记录，对于课程内容与思路再次进行总结与梳理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="循环神经网络笔记">
+<meta property="og:url" content="http://paopao0226.site/post/502e77b9.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="针对于《神经网络与深度学习》课程中循环神经网络的笔记记录，对于课程内容与思路再次进行总结与梳理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105181433396.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105181553093.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105181741496.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105184130797.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105191923213.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105192348310.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105192636241.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105192648785.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105193115078.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105193252275.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221105203351536.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221107165707431.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221108002209549.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221108010138710.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221108144940826.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221108145549521.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221108145650940.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221108145952075.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221108151013889.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221108151057898.png">
+<meta property="og:image" content="http://paopao0226.site/post/502e77b9/image-20221108151123921.png">
+<meta property="article:published_time" content="2022-11-05T10:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.306Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="神经网络与深度学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/502e77b9/image-20221105181433396.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>循环神经网络笔记 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover4.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="循环神经网络笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-05 18:00" pubdate>
+          2022年11月5日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          5.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          49 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">循环神经网络笔记</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="《神经网络与机器学习》第五章笔记"><a href="#《神经网络与机器学习》第五章笔记" class="headerlink" title="《神经网络与机器学习》第五章笔记"></a>《神经网络与机器学习》第五章笔记</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p><img src="/post/502e77b9/image-20221105181433396.png" srcset="/img/loading.gif" lazyload alt="image-20221105181433396"></p>
+<h3 id="有限自动机"><a href="#有限自动机" class="headerlink" title="有限自动机"></a>有限自动机</h3><p>有限状态机是一种用来进行对象行为建模的工具，其作用主要是描述对象在它的生命周期内所经历的状态序列，以及如何响应来自外界的各种事件。在计算机科学中，有限状态机被广泛用于建模应用行为、硬件电路系统设计、软件工程，编译器、网络协议、和计算与语言的研究。</p>
+<p><img src="/post/502e77b9/image-20221105181553093.png" srcset="/img/loading.gif" lazyload alt="image-20221105181553093"></p>
+<h3 id="图灵机"><a href="#图灵机" class="headerlink" title="图灵机"></a>图灵机</h3><p>控制器可以存储当前自身的状态；读写头，可以读、写存储带上小方格的数字&#x2F;字母。在工作过程中，图灵机可以根据读写头读到数字&#x2F;字母和程序更改自身的状态。</p>
+<p><img src="/post/502e77b9/image-20221105181741496.png" srcset="/img/loading.gif" lazyload alt="image-20221105181741496"></p>
+<p>以上的机器中都用到了之前的状态对之后的状态的影响和修改，这要求机器本身需要有记忆能力，即对之前的状态进行保存与修正。循环神经网络，即为在前馈网络等的基础上加入记忆元素的网络。</p>
+<h3 id="延时神经网络"><a href="#延时神经网络" class="headerlink" title="延时神经网络"></a>延时神经网络</h3><p>建立额外的延时单元保存网络的历史信息（包括输入、输出、隐状态等）。<br>$$<br>\pmb h_t ^{(l)} &#x3D; f(\pmb h_t ^{(l-1)},\pmb h_{t-1} ^{(l-1)},…,\pmb h_{t-K} ^{(l-1)})<br>$$<br>其中$K$在不同层数$l$上有所不同。延时单元本身基于前馈神经网络。</p>
+<h3 id="自回归模型"><a href="#自回归模型" class="headerlink" title="自回归模型"></a>自回归模型</h3><p>一种时间序列模型，使用变量$y$的历史信息来预测当前的$y$，即：<br>$$<br>\pmb y_t &#x3D; w_0 + \sum_{k&#x3D;1} ^K w_k \pmb y_{t-k} + \epsilon_t<br>$$<br>其中，$w_0$是模型偏置，可以理解为$b$；$\epsilon_t$是模型噪声，可以使用高斯噪声$\epsilon _t \sim N(0,\sigma^2)$</p>
+<p>有外部输入的非线性模型是在上述模型的基础上进一步引入输入$\pmb x$的影响。<br>$$<br>\pmb y_t &#x3D; f(\pmb x_t ,\pmb x_{t-1},…,\pmb x_{t-K_x},\pmb y_{t-1}, \pmb y_{t-2},…,\pmb y_{t-K_y})<br>$$<br>其中$f(·)$表示非线性函数，其可以是一个前馈网络，$K_x$和$K_y$是超参数。</p>
+<h3 id="循环神经网络"><a href="#循环神经网络" class="headerlink" title="循环神经网络"></a>循环神经网络</h3><p>循环神经网络在借用了自回归的变量存储思路，使用一个带自反馈的神经元来处理任意长度的时序数据，这相对于之前的延时模型和自回归模型有很大的改进。<br>$$<br>\pmb h_t &#x3D; f(\pmb h_{t-1},\pmb x_t)<br>$$<br>其中$\pmb h_{t-1}$是对前一个活性值状态的记忆，这种记忆的实现可以采用之前提到的延时器等实现，这种基于输入$x$和前一整体状态$\pmb h$的思想与残差思想有所重合。</p>
+<p>循环神经网络比前馈神经网络更加符合生物神经网络的结构，也因此在序列识别任务，如语音、自然语言等任务上有很广泛的应用。</p>
+<p>循环神经网络的时间维度上由于按时间扩展，其深度很深；在每个时间刻度的层次维度上只有一个$\pmb h_t$作为非线性处理输入给出输出，因此深度较浅。</p>
+<p><img src="/post/502e77b9/image-20221105184130797.png" srcset="/img/loading.gif" lazyload alt="image-20221105184130797"></p>
+<h2 id="循环网络的相关定理"><a href="#循环网络的相关定理" class="headerlink" title="循环网络的相关定理"></a>循环网络的相关定理</h2><h4 id="定理1：循环神经网络的通用近似定理"><a href="#定理1：循环神经网络的通用近似定理" class="headerlink" title="定理1：循环神经网络的通用近似定理"></a>定理1：循环神经网络的通用近似定理</h4><p>如果一个完全连接的循环神经网络有足够数量的$sigmoid$型隐藏神经元，它可以以任意的准确率去近似一个任意的非线性动力系统。<br>$$<br>\begin{align}<br>\pmb s_t &amp; &#x3D; g(\pmb s_{t-1}, \pmb x_t) \\\<br>\pmb y_t &amp; &#x3D; o(\pmb s_t)<br>\end{align}<br>$$<br>其中$\pmb s_t$是每个时刻的隐状态，$\pmb x_t$是外部输入，$g(·)$是可测的状态转换函数，$o(·)$是连续输出函数，且对状态空间的紧致性没有限制。</p>
+<p>这个定理告诉我们，一个完全连接的循环神经网络可以近似任意一个可行程序。</p>
+<h4 id="定理2：图灵完备"><a href="#定理2：图灵完备" class="headerlink" title="定理2：图灵完备"></a>定理2：图灵完备</h4><p>所有的图灵机都可以被一个使用$sigmoid$型激活函数的神经元构成的全连接循环网络来进行模拟，即可以实现图灵机的所有功能，解决所有的可计算问题。</p>
+<h2 id="循环神经网络的应用种类"><a href="#循环神经网络的应用种类" class="headerlink" title="循环神经网络的应用种类"></a>循环神经网络的应用种类</h2><h3 id="序列到类别的模式"><a href="#序列到类别的模式" class="headerlink" title="序列到类别的模式"></a>序列到类别的模式</h3><p>序列到序列的模型，可以理解为输入为一个$\pmb x$的序列，输出为一个表示类别的标量$\hat y$。</p>
+<p><img src="/post/502e77b9/image-20221105191923213.png" srcset="/img/loading.gif" lazyload alt="image-20221105191923213"></p>
+<p>序列到类别的应用包括情感分类（文本输入到情感类别）等。</p>
+<h3 id="同步的序列到序列的模式"><a href="#同步的序列到序列的模式" class="headerlink" title="同步的序列到序列的模式"></a>同步的序列到序列的模式</h3><p>同步的序列到序列模式，输入为一个$\pmb x$的序列，输出也为一个序列$\pmb {\hat y}&#x3D;[\hat y_1,\hat y_2,…,\hat y_T]$。同步的性质表示为在每个隐状态中，都是一个$\pmb x_i$经处理到输出结果$\hat y_i$。</p>
+<p><img src="/post/502e77b9/image-20221105192348310.png" srcset="/img/loading.gif" lazyload alt="image-20221105192348310"></p>
+<p>同步序列到序列的模式应用包括中文分词（文本单词输入到每个部分的位置类型输出）、信息抽取（文本单词输入到每个部分的信息类型输出）、语音识别（语音序列输入到每个子段的识别结果）等。</p>
+<p><img src="/post/502e77b9/image-20221105192636241.png" srcset="/img/loading.gif" lazyload alt="image-20221105192636241"></p>
+<p><img src="/post/502e77b9/image-20221105192648785.png" srcset="/img/loading.gif" lazyload alt="image-20221105192648785"></p>
+<h3 id="异步的序列到序列的模式"><a href="#异步的序列到序列的模式" class="headerlink" title="异步的序列到序列的模式"></a>异步的序列到序列的模式</h3><p>异步的序列到序列模式，其输入输出也均为序列，与同步的模型不同的是，异步模型的输入与输出不在同一个隐状态函数中处理，大部分都是先输入一段信息，然后开始处理，进行输出，因此这种模型一般都可以分为$Encoder$与$Decoder$部分，其中$Encoder$负责对输入的信息进行编码，形成网络可识别的数据类型；$Decoder$负责完成网络逻辑并进行输出。</p>
+<p><img src="/post/502e77b9/image-20221105193115078.png" srcset="/img/loading.gif" lazyload alt="image-20221105193115078"></p>
+<p>异步序列到序列的模式应用包括机器翻译（先输入文本序列，经编码后处理输出为另一段文本序列）。</p>
+<p><img src="/post/502e77b9/image-20221105193252275.png" srcset="/img/loading.gif" lazyload alt="image-20221105193252275"></p>
+<h2 id="参数学习与梯度"><a href="#参数学习与梯度" class="headerlink" title="参数学习与梯度"></a>参数学习与梯度</h2><p>给定训练样本$\pmb{(x,y)}$，其中$\pmb x&#x3D;{x_1,x_2,…,x_T}$是输入序列，$\pmb y&#x3D; y_1,y_2,…,y_T$是标签序列，循环神经网络在时刻$t$的瞬时损失函数可以表示为：<br>$$<br>\begin{align}<br>\mathcal L_t &amp; &#x3D; \mathcal L(\pmb y_t,g(\pmb h_t)) \\\\<br>\mathcal L &amp; &#x3D; \sum_{t&#x3D;1} ^T \mathcal L_t<br>\end{align}<br>$$<br>对梯度的计算可以参考反向传播算法，针对每个时刻的梯度求解，如下图：</p>
+<p><img src="/post/502e77b9/image-20221105203351536.png" srcset="/img/loading.gif" lazyload alt="image-20221105203351536"></p>
+<p>对于简易循环神经网络，其状态转移方法如下：<br>$$<br>\pmb h_{t+1} &#x3D; f(\pmb z_{t+1}) &#x3D; f(U\pmb h_t + W \pmb x_{t+1} + b)<br>$$<br>其中$U,W$为超参数，每个层可能有所不同。在反向传播的过程中，$\delta_{t,k}$为第$t$时刻的损失对第$k$步隐藏神经元的净输入$z_k$的导数，即<br>$$<br>\begin{align}<br>\delta_{t,k} &amp; &#x3D; {\partial \mathcal L_t \over \partial z_k} \\\\<br>&amp; &#x3D; {\partial h_k \over \partial z_k}·{\partial z_{k+1} \over \partial h_k}·{\partial \mathcal L_t \over \partial z_{k+1}}\\\\<br>&amp; &#x3D; diag(f^ \prime(z_k)) U^\top\delta_{t,k+1}  \\\\<br>&amp; &#x3D; \prod_ {\tau&#x3D;k} ^{t-1}(diag(f^ \prime(z_\tau)) U^\top)\delta_{t,t}<br>\end{align}<br>$$<br>对于整个网络的损失梯度可以表示为：<br>$$<br>\begin{align}<br>\partial \mathcal L\over \partial U &amp; &#x3D; \sum_ {t&#x3D;1} ^T {\partial \mathcal L_t \over \partial U} \\\\<br>&amp; &#x3D; \sum_ {t&#x3D;1} ^T {\sum_ {k&#x3D;1} ^t} {\partial \mathcal L_t \over \partial U^{(k)}	} \\\\<br>&amp; &#x3D; \sum_ {t&#x3D;1} ^T {\sum_ {k&#x3D;1} ^t} {\partial \mathcal L_t \over \partial z_k}·{\partial z_k \over \partial U^{(k)}	}\\\\<br>&amp; &#x3D; \sum_ {t&#x3D;1} ^T {\sum_ {k&#x3D;1} ^t} \ \delta_ {t,k}\pmb h_{k-1}^T<br>\end{align}<br>$$<br>对于梯度公式$\delta_{t,k} &#x3D; \prod_ {\tau&#x3D;k} ^{t-1}(diag(f^ \prime(z_\tau)) U^\top)\delta_{t,t}$，不妨设其中$\lambda  &#x3D; diag(f^ \prime(z_\tau)) U^\top$，则$\delta_{t,k} \cong \lambda^{t-k}  \delta_{t,t}$。当$\lambda&gt;1,t-k\rightarrow +\infty$时，梯度趋于无穷大，可能引发梯度爆炸问题；当$\lambda&lt;1,t-k\rightarrow +\infty$时，梯度趋于0，可能引发梯度消失问题；由于梯度爆炸或消失问题，实际上循环神经网络只能学习到短周期的依赖关系，即长程依赖问题。</p>
+<p><img src="/post/502e77b9/image-20221107165707431.png" srcset="/img/loading.gif" lazyload alt="image-20221107165707431"></p>
+<p>因此，要保证$\lambda$尽可能等于1。更多的，解决长程依赖问题的方法可以通过线性依赖关系、门控网络等方法解决。</p>
+<h3 id="线性依赖关系"><a href="#线性依赖关系" class="headerlink" title="线性依赖关系"></a>线性依赖关系</h3><p>将循环关系从非线性关系中摘出来。<br>$$<br>h_t &#x3D; h_{t-1} + g(x_t;\theta)<br>$$<br>但这种完全摘出来的方法可能会对循环本身造成伤害，故可以增加非线性<br>$$<br>h_t&#x3D;h_{t-1}+g(x_t,h_{t-1};\theta)<br>$$<br>这种表示方式就可以联想到残差网络的两路处理方法。</p>
+<h2 id="GRU-Gated-Recurrent-Unit"><a href="#GRU-Gated-Recurrent-Unit" class="headerlink" title="GRU(Gated Recurrent Unit)"></a>GRU(Gated Recurrent Unit)</h2><p>针对于前文提到的加入非线性的线性依赖，可以继续加入门控网络，控制线性和非线性部分的比重，提高灵活性<br>$$<br>h_t&#x3D; z_t\odot h_{t-1} + (1-z_t)\odot g(x_t,h_{t-1};\theta),\ z_t\in(0,1)^d,\ d&#x3D;Dim(h_t)<br>$$<br>其中$z_t$是门控部分，若$z_t&#x3D;1$则遗忘$h_{t-1}$，取非线性部分；若$z_t&#x3D;0$则遗忘非线性部分，取$h_t &#x3D; h_{t-1}$，当然上述是加入门控的一种思路，实现比这要复杂许多。</p>
+<p>更多的，由于线性依赖中的非线性关系$g(x_t,h_{t-1};\theta)$是包含记忆单元$h_{t-1}$的，因此可以类似于$z_t$的思路将$h_{t-1}$前面加上一个门控$r_t$，即可得到$GRU$门控循环网络的两个主要门控。<br>$$<br>\begin{align}<br>\pmb {\hat h_t} &amp; &#x3D; tanh( W_c \pmb x_t+ U(\pmb r_t \odot \pmb h_{t-1})+\pmb b_n) \\\\<br>\pmb h_t &amp; &#x3D; \pmb z_t\odot \pmb h_{t-1} + (1-\pmb z_t)\odot \pmb {\hat h_t}<br>\end{align}<br>$$<br>对于两个门控，本身也可以用线性组合过非线性函数来实现。<br>$$<br>\begin{align}<br>重置门: \pmb r_t &#x3D; \sigma(W_r \pmb x_t+ U_r \pmb h_{t-1}+ \pmb b_r) \\\\<br>更新门: \pmb z_t &#x3D; \sigma(W_z\pmb  x_t+ U_z\pmb h_{t-1}+ \pmb b_z)<br>\end{align}<br>$$<br><img src="/post/502e77b9/image-20221108002209549.png" srcset="/img/loading.gif" lazyload alt="image-20221108002209549"></p>
+<h2 id="LSTM-Long-Short-Term-Memory"><a href="#LSTM-Long-Short-Term-Memory" class="headerlink" title="LSTM(Long Short-Term Memory)"></a>LSTM(Long Short-Term Memory)</h2><p>基于GRU的门控思路，可以在最后输出时再加入一个输出门，用于控制输出与否和输出的强度，即网络表示为：<br>$$<br>\begin{align}<br>\pmb {\hat c_t} &amp; &#x3D; tanh(W_c \pmb x_t+ U_c\pmb h_{t-1}+\pmb b_c) \\\\<br>\pmb c_t &amp; &#x3D; \pmb f_t\odot \pmb c_{t-1} + \pmb i_t\odot \pmb {\hat h_t} \\\\<br>\pmb h_t &amp; &#x3D; \pmb o_t \odot tanh(\pmb c_t)<br>\end{align}<br>$$<br>其中每个门也都可以使用输入$x_i$和历史记忆$h_{i-1}$表示。<br>$$<br>\begin{align}<br>输入门: \pmb i_t &amp; &#x3D; \sigma(W_i\pmb x_t+ U_i\pmb h_{t-1}+ \pmb b_i) \\\\<br>遗忘门: \pmb f_t &amp; &#x3D; \sigma(W_f\pmb x_t+ U_f\pmb h_{t-1}+ \pmb b_f) \\\\<br>输出门: \pmb o_t &amp; &#x3D; \sigma(W_o\pmb x_t+ U_o\pmb h_{t-1}+ \pmb b_o)<br>\end{align}<br>$$<br><img src="/post/502e77b9/image-20221108010138710.png" srcset="/img/loading.gif" lazyload alt="image-20221108010138710"></p>
+<p>LSTM根据使用的门控不同，其也有许多派生的种类，如没有遗忘门：$\pmb c_t &#x3D; \pmb c_{t-1}+ \pmb i_t \odot \pmb {\hat c_t}$；耦合输入门和遗忘门：$\pmb f_t+\pmb i_t &#x3D; 1$等。</p>
+<h2 id="深层模型（非时间维度上的加深）"><a href="#深层模型（非时间维度上的加深）" class="headerlink" title="深层模型（非时间维度上的加深）"></a>深层模型（非时间维度上的加深）</h2><h3 id="堆叠神经网络"><a href="#堆叠神经网络" class="headerlink" title="堆叠神经网络"></a>堆叠神经网络</h3><p>在非时间维度上堆叠多层$h$非线性层。</p>
+<p><img src="/post/502e77b9/image-20221108144940826.png" srcset="/img/loading.gif" lazyload alt="image-20221108144940826"></p>
+<h3 id="双向神经网络"><a href="#双向神经网络" class="headerlink" title="双向神经网络"></a>双向神经网络</h3><p>使用双向的隐含状态</p>
+<p><img src="/post/502e77b9/image-20221108145549521.png" srcset="/img/loading.gif" lazyload alt="image-20221108145549521"></p>
+<h2 id="非序列模型"><a href="#非序列模型" class="headerlink" title="非序列模型"></a>非序列模型</h2><h3 id="递归神经网络"><a href="#递归神经网络" class="headerlink" title="递归神经网络"></a>递归神经网络</h3><p>被指向结点使用指向节点的多个状态信息。</p>
+<p><img src="/post/502e77b9/image-20221108145650940.png" srcset="/img/loading.gif" lazyload alt="image-20221108145650940"></p>
+<h3 id="图神经网络"><a href="#图神经网络" class="headerlink" title="图神经网络"></a>图神经网络</h3><p><img src="/post/502e77b9/image-20221108145952075.png" srcset="/img/loading.gif" lazyload alt="image-20221108145952075"></p>
+<p>对于一个任意的图结构$G(V,E)$，可以得</p>
+<p>更新函数：<br>$$<br>\begin{align}<br>\pmb m_t ^{(v)} &#x3D; \sum_{u\in N(v)} f(\pmb h_{t-1} ^{(v)},\pmb h_{t-1} ^ {(v)}, \pmb e^{(u,v)}) \\\\<br>\pmb h_t ^{(v)} &#x3D; g(\pmb h_{t-1} ^{(v)},\pmb m_t ^{(v)})<br>\end{align}<br>$$<br>读出函数<br>$$<br>\pmb y_t &#x3D; g({h_T ^{(v)} | v \in \mathcal V})<br>$$</p>
+<h2 id="其他应用"><a href="#其他应用" class="headerlink" title="其他应用"></a>其他应用</h2><p>语言生成模型</p>
+<p><img src="/post/502e77b9/image-20221108151013889.png" srcset="/img/loading.gif" lazyload alt="image-20221108151013889"></p>
+<p>序列到序列的机器翻译</p>
+<p><img src="/post/502e77b9/image-20221108151057898.png" srcset="/img/loading.gif" lazyload alt="image-20221108151057898"></p>
+<p>对话系统</p>
+<p><img src="/post/502e77b9/image-20221108151123921.png" srcset="/img/loading.gif" lazyload alt="image-20221108151123921"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h3><ul>
+<li>引入记忆环节，提高时序的利用效率</li>
+<li>图灵完备，可拟合任意一个程序单元</li>
+</ul>
+<h3 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h3><ul>
+<li>长程依赖问题$\rightarrow GRU&#x2F;LSTM$</li>
+<li>记忆容量问题$\rightarrow 遗忘门$</li>
+<li>并行能力，时间依赖</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">#神经网络与深度学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>循环神经网络笔记</div>
+      <div>http://paopao0226.site/post/502e77b9.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月5日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/383a95d9.html" title="Hadoop安装指南">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">Hadoop安装指南</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/2d2ab2fb.html" title="Python课程作业四——maillog分析">
+                        <span class="hidden-mobile">Python课程作业四——maillog分析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

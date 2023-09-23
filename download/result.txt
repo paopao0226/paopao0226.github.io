@@ -1,0 +1,118 @@
+id:1801	mail:mail not found	status:success	ip:202.206.240.88
+id:1820	mail:sunkang@189.cn	status:success	ip:121.14.53.136
+id:1808	mail:mail not found	status:success	ip:211.83.32.132
+id:1822	mail:20065357@cqu.edu.cn	status:success	ip:222.178.10.26
+id:1821	mail:KINGDA160@189.cn	status:success	ip:121.14.53.136
+id:1823	mail:hot@zju.edu.cn	status:deferral	ip:210.32.157.174
+id:1819	mail:mail not found	status:failure	ip:202.118.251.57
+id:1826	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1824	mail:yukliang@swu.edu.cn	status:success	ip:222.178.188.145
+id:1825	mail:hufq@nimte.ac.cn	status:success	ip:159.226.251.12
+id:1827	mail:07281019@mail.bjtu.edu.cn	status:success	ip:218.249.29.198
+id:1828	mail:5161718@5d6d.cn	status:success	ip:65.54.188.78
+id:1831	mail:9880528@nau.edu.cn	status:failure	ip:210.28.92.5
+id:1832	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1829	mail:mla@pzhs.gov.cn	status:deferral	ip:ip not found
+id:1834	mail:wujianfeng@ceopen.cn	status:failure	ip:123.100.5.253
+id:1836	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1835	mail:jdzhang@sdau.edu.cn	status:success	ip:202.194.133.2
+id:1833	mail:lenghong@cqit.edu.cn	status:failure	ip:202.202.145.26
+id:1839	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1838	mail:wangzhk@mail.sy.ln.cn	status:failure	ip:202.96.74.68
+id:1841	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1830	mail:13390879990@189.cn	status:success	ip:121.14.53.136
+id:1847	mail:xhg@now.net.cn	status:failure	ip:202.105.179.53
+id:1844	mail:wangd@mail.hunu.edu.cn	status:deferral	ip:ip not found
+id:1848	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1774	mail:mail not found	status:deferral	ip:ip not found
+id:1842	mail:zhangjunqi@tongji.edu.cn	status:deferral	ip:202.120.189.252
+id:1849	mail:07281070@bjtu.edu.cn	status:success	ip:218.249.29.198
+id:1845	mail:18970780130@189.cn	status:success	ip:121.14.53.136
+id:1846	mail:shen@kalsoft.online.sh.cn	status:deferral	ip:ip not found
+id:1850	mail:guoyd@bitc.edu.cn	status:success	ip:114.251.211.1
+id:1851	mail:zhengli@mail.zwu.edu.cn	status:success	ip:61.153.150.5
+id:1854	mail:wan_long@vobile.cn	status:failure	ip:218.108.90.52
+id:1857	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1698	mail:mail not found	status:deferral	ip:59.64.164.18
+id:1754	mail:mail not found	status:deferral	ip:59.64.164.18
+id:1858	mail:jinwugang@zju.edu.cn	status:deferral	ip:210.32.157.174
+id:1843	mail:ychen17@mail.yf.sh.cn	status:failure	ip:222.66.170.212
+id:1860	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1859	mail:shju@home.ipe.ac.cn	status:success	ip:159.226.251.12
+id:1852	mail:huibo@online.sh.cn	status:deferral	ip:61.129.163.90
+id:1861	mail:liuhang@kayait.cn	status:success	ip:58.68.254.101
+id:1864	mail:jin@mail.bitsoft.cn	status:failure	ip:ip not found
+id:1865	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1855	mail:skyvense@online.sh.cn	status:deferral	ip:61.129.163.90
+id:1862	mail:zhihong@public.hr.hl.cn	status:deferral	ip:ip not found
+id:1868	mail:zhaoliang02@tsinghua.org.cn	status:success	ip:211.151.65.104
+id:1867	mail:chuanli247@sjtu.edu.cn	status:failure	ip:202.112.26.50
+id:1870	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1869	mail:tootzhou@online.sh.cn	status:deferral	ip:61.129.163.90
+id:1863	mail:020733@smail.tongji.edu.cn	status:failure	ip:202.120.189.252
+id:1873	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1871	mail:chenxi@mails.tsinghua.edu.cn	status:success	ip:166.111.8.45
+id:1874	mail:wj@avceit.cn	status:failure	ip:ip not found
+id:1877	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1880	mail:tangdy@dl.cn	status:success	ip:124.93.228.8
+id:1878	mail:yuanpc@nova.gov.cn	status:success	ip:183.60.61.225
+id:1881	mail:shenzhyc@online.sh.cn	status:deferral	ip:61.129.163.90
+id:1883	mail:zhaoyualiang@dl.cn	status:failure	ip:124.93.228.8
+id:1885	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1886	mail:020131@smail.tongji.ude.cn	status:failure	ip:ip not found
+id:1888	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1875	mail:fresh@emails.bjpu.edu.cn	status:deferral	ip:ip not found
+id:1891	mail:xrbcs@public.cs.hn.cn	status:deferral	ip:ip not found
+id:1894	mail:slkdj@fuce.cn	status:failure	ip:ip not found
+id:1895	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1892	mail:wfg2000@163.nx.cn	status:failure	ip:202.100.100.180
+id:1896	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1897	mail:huangxiwei@tsinghua.org.cn	status:success	ip:211.151.65.104
+id:1899	mail:dhcui04@mails.gscas.ac.cn	status:failure	ip:210.76.203.2
+id:1900	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1889	mail:tianyi@cad.zju.edu.cn	status:failure	ip:210.32.131.2
+id:1903	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1890	mail:hdl@seu.edu.cn	status:failure	ip:58.192.112.17
+id:1904	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1872	mail:quzhen_01@mails.tsinghua.edu.cn	status:failure	ip:166.111.8.45
+id:1906	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1905	mail:19870307@nau.edu.cn	status:failure	ip:210.28.92.5
+id:1907	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1893	mail:shengkai@sea.csut.edu.cn	status:deferral	ip:ip not found
+id:1908	mail:yewen@mx.cei.gov.cn	status:success	ip:203.207.119.41
+id:1909	mail:123@dashengwang.cn	status:failure	ip:223.7.210.240
+id:1910	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1914	mail:07281065@bjtu.edu.cn	status:success	ip:218.249.29.198
+id:1917	mail:07hsliang@stu.edu.cn	status:failure	ip:202.104.245.181
+id:1919	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1837	mail:ykesong@lmu.cn	status:success	ip:59.61.216.10
+id:1912	mail:chenxinghong@zzy.cn	status:failure	ip:174.36.142.83
+id:1922	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1916	mail:liweim@public1.jd.jx.cn	status:deferral	ip:ip not found
+id:1923	mail:charles_lee@online.sh.cn	status:deferral	ip:61.129.163.90
+id:1921	mail:18915519876@189.cn	status:success	ip:121.14.53.136
+id:1913	mail:dengml@cqzkb.edu.cn	status:deferral	ip:ip not found
+id:1924	mail:tiffany@mail.ustc.edu.cn	status:deferral	ip:202.141.160.8
+id:1920	mail:13322002083@189.cn	status:success	ip:121.14.53.136
+id:1925	mail:zhangfeng@chica.cn	status:failure	ip:222.73.10.245
+id:1929	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1898	mail:xiecy@mail.huptt.zj.cn	status:success	ip:202.96.111.18
+id:1931	mail:zhuxn@bupt.edu.cn	status:deferral	ip:211.68.71.7
+id:1840	mail:zjning@flink.net.cn	status:deferral	ip:ip not found
+id:1915	mail:xu@baokeelectronic.cn	status:failure	ip:125.77.194.242
+id:1934	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1932	mail:guolihong@njit.edu.cn	status:failure	ip:202.119.160.124
+id:1937	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1935	mail:hucm@buaa.edu.cn	status:success	ip:219.239.227.27
+id:1938	mail:huang_yi@szpst.cn	status:failure	ip:110.75.167.95
+id:1940	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1933	mail:fulian@mail.dhu.edu.cn	status:success	ip:202.101.6.180
+id:1902	mail:murphy312@zju.edu.cn	status:deferral	ip:210.32.157.174
+id:1930	mail:dongbiao@amdocschina.cn	status:success	ip:165.160.10.151
+id:1943	mail:zhenxiajIuyou@bit.edu.cn	status:success	ip:219.143.204.7
+id:1936	mail:cjcjc@online.sh.cn	status:deferral	ip:61.129.163.90
+id:1941	mail:hli@home.swjtu.edu.cn	status:deferral	ip:202.115.64.9
+id:1927	mail:wang04@mails.tsinghua.edu.cn	status:failure	ip:166.111.8.45
+id:1948	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found
+id:1946	mail:zjsteelstr@mail.sxptt.zj.cn	status:failure	ip:60.191.88.145
+id:1950	mail:dataguru@phx1-ss-2-lb.cnet.com	status:success	ip:ip not found

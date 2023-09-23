@@ -1,0 +1,875 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="针对于《神经网络与深度学习》课程中机器学习基础内容的笔记记录，对于课程内容与思路再次进行总结与梳理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习概述笔记">
+<meta property="og:url" content="http://paopao0226.site/post/6d1ba54c.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="针对于《神经网络与深度学习》课程中机器学习基础内容的笔记记录，对于课程内容与思路再次进行总结与梳理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/6d1ba54c/image-20221019140106669.png">
+<meta property="og:image" content="http://paopao0226.site/post/6d1ba54c/image-20221019142704903.png">
+<meta property="og:image" content="http://paopao0226.site/post/6d1ba54c/image-20221019143017193.png">
+<meta property="og:image" content="http://paopao0226.site/post/6d1ba54c/image-20221019143858287.png">
+<meta property="og:image" content="http://paopao0226.site/post/6d1ba54c/image-20221019143915122.png">
+<meta property="og:image" content="http://paopao0226.site/post/6d1ba54c/image-20221019144632273.png">
+<meta property="article:published_time" content="2022-10-18T14:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.282Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="神经网络与深度学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/6d1ba54c/image-20221019140106669.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>机器学习概述笔记 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover14.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="机器学习概述笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-18 22:00" pubdate>
+          2022年10月18日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">机器学习概述笔记</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="《神经网络与机器学习》第二章笔记"><a href="#《神经网络与机器学习》第二章笔记" class="headerlink" title="《神经网络与机器学习》第二章笔记"></a>《神经网络与机器学习》第二章笔记</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><h3 id="机器学习的三要素"><a href="#机器学习的三要素" class="headerlink" title="机器学习的三要素"></a>机器学习的三要素</h3><p>模型、学习准则、优化</p>
+<h2 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h2><p>模型：$f(\boldsymbol{x} ; \boldsymbol{w},b)&#x3D;\boldsymbol{w}^{\top} \boldsymbol{x}+b$，使用增广矩阵表示</p>
+<h2 id="概率基础"><a href="#概率基础" class="headerlink" title="概率基础"></a>概率基础</h2><h4 id="伯努利分布"><a href="#伯努利分布" class="headerlink" title="伯努利分布"></a>伯努利分布</h4><p>在一次试验中，事件A出现的概率为$µ$，不出现的概率为$1 − µ$。若用变量X表示事件A出现的次数，则X的取值为0和1，其相应的分布为<br>$$<br>P(X)&#x3D;μ^{X}(1-μ)^{1-X}<br>$$</p>
+<h4 id="二项分布"><a href="#二项分布" class="headerlink" title="二项分布"></a>二项分布</h4><p>在n次伯努利分布中，若以变量X表示事件A出现的次数，则X 的取值为{0,… ,n}<br>$$<br>P(x&#x3D;k)&#x3D;C^k_ nμ^{k}(1-μ)^{1-k}<br>$$</p>
+<h4 id="累计随机变量-CDF"><a href="#累计随机变量-CDF" class="headerlink" title="累计随机变量(CDF)"></a>累计随机变量(CDF)</h4><p>$$<br>cdf(x) &#x3D; \begin{cases}<br>P(X \le x) &amp; \text{if X是离散随机变量} \\[2ex]<br>\int^x_ {-\infty} &amp; \text{if X是连续变量} \\<br>\end{cases}<br>$$</p>
+<h3 id="条件概率"><a href="#条件概率" class="headerlink" title="条件概率"></a>条件概率</h3><p>对于离散随机向量$(X,Y)$，已知$X &#x3D; x$的条件下，随机变量$Y &#x3D; y$的条件概率为：<br>$$<br>p(y|x) &#x3D; P(Y&#x3D;y|X&#x3D;x) &#x3D; {p(x,y) \over p(x)}<br>$$</p>
+<h3 id="贝叶斯公式"><a href="#贝叶斯公式" class="headerlink" title="贝叶斯公式"></a>贝叶斯公式</h3><p>两个条件概率 $p(y|x)$ 和 $p(x|y)$ 之间的关系<br>$$<br>p(y|x)&#x3D;{p(x|y)p(y) \over p(x)}<br>$$</p>
+<h3 id="期望"><a href="#期望" class="headerlink" title="期望"></a>期望</h3><p>随机变量的均值<br>$$<br>\mathbb E[X] &#x3D;<br>\begin{cases}<br>\sum^N_ {n&#x3D;1}{x_ np(x_ n)} \\[2em]<br>\int_\mathbb R xp(x) dx<br>\end{cases}<br>$$</p>
+<h3 id="大数定律"><a href="#大数定律" class="headerlink" title="大数定律"></a>大数定律</h3><p>当样本足够大时，样本的均值将无限接近于分布期望</p>
+<h3 id="最大似然与最大后验"><a href="#最大似然与最大后验" class="headerlink" title="最大似然与最大后验"></a>最大似然与最大后验</h3><p>根据贝叶斯公式$p(w|x) &#x3D; {p(x|w)p(w) \over p(x)}$得<br>$$<br>p(w|x) \propto p(x|w)p(w)<br>$$<br>其中，我们称$p(x|w)$是基于先验的似然函数，$p(w)$是先验，$p(w|x)$是后验函数，即：<br>$$<br>后验(posterior) \propto 似然(likelihood) \times 先验(prior)<br>$$<br>似然函数是关于统计模型$p(x;w)$的参数w的函数，和概率$p(x;w)$的表示方法一致，但看待角度不同，概率$p(x;w)$是描述固定参数$w$后，随机变量$x$的分布情况，是对$x$的看待角度；似然$p(x;w)$则是描述已知随机变量$x$时，不同参数$w$对分布产生的影响，是对$w$的看法。</p>
+<p>一般我们看到的是这样的表示形式<br>$$<br>p(w|X,y;\nu,\sigma) \propto p(y|X,w;\sigma) \times p(w,\nu), (2.1)<br>$$<br>最大似然估计是找到一组参数$w$使得似然函数$p(y|X,w;\sigma)$最大，即<br>$$<br>MLE&#x3D;\arg\max_w\ p(y|X,w;\sigma)&#x3D;\arg\max_w\ log(p(y|X,w;\sigma))<br>$$<br>令${\partial logp(y|X,w;\sigma) \over \partial w} &#x3D; 0$，可得$w^{ML}&#x3D;(XX^\top)^{-1}Xy$（计算略）。</p>
+<p>后验是对似然与先验的综合考量，更多的，最大后验估计是找到一组$w$使得后验函数$p(w|X,y;\nu,\sigma)$最大，即有<br>$$<br>MAP&#x3D;\arg\max_w\ p(w|X,y;\nu,\sigma)<br>\propto \arg\max_w\ p(y|X,w;\sigma) \times p(w,\nu) \\<br>&#x3D; \arg\max_w\ log(p(y|X,w;\sigma) \times p(w,\nu))<br>&#x3D; \arg\max_w\ log(p(y|X,w;\sigma))+ \arg\max_w\ p(w,\nu)\\<br>&#x3D; MLE+||w||<br>$$<br>可知，MAP就是在MLE的基础上加入了正则化惩罚项。更多的，我们可以得出以下表格（计算略）</p>
+<p><img src="/post/6d1ba54c/image-20221019140106669.png" srcset="/img/loading.gif" lazyload alt="image-20221019140106669"></p>
+<h2 id="几个关键点"><a href="#几个关键点" class="headerlink" title="几个关键点"></a>几个关键点</h2><p>常见的机器学习类型包括监督学习、无监督学习与强化学习三种</p>
+<p><img src="/post/6d1ba54c/image-20221019142704903.png" srcset="/img/loading.gif" lazyload alt="image-20221019142704903"></p>
+<h3 id="模型选择问题——验证集"><a href="#模型选择问题——验证集" class="headerlink" title="模型选择问题——验证集"></a>模型选择问题——验证集</h3><p>引入验证集，将训练集按照7:3或者8:2的比例分成训练集和验证集，其中验证集用于选择在验证集上表现最好的模型。</p>
+<h3 id="数据稀疏问题——交叉验证"><a href="#数据稀疏问题——交叉验证" class="headerlink" title="数据稀疏问题——交叉验证"></a>数据稀疏问题——交叉验证</h3><p>将训练集分成S组，每次使用S-1组作为训练集，剩下的一组作为验证集，选择在验证集上平均性能最好的一组。</p>
+<p><img src="/post/6d1ba54c/image-20221019143017193.png" srcset="/img/loading.gif" lazyload alt="image-20221019143017193"></p>
+<h3 id="期望风险中的偏差与方差求解"><a href="#期望风险中的偏差与方差求解" class="headerlink" title="期望风险中的偏差与方差求解"></a>期望风险中的偏差与方差求解</h3><p><img src="/post/6d1ba54c/image-20221019143858287.png" srcset="/img/loading.gif" lazyload alt="image-20221019143858287"></p>
+<p><img src="/post/6d1ba54c/image-20221019143915122.png" srcset="/img/loading.gif" lazyload alt="image-20221019143915122"></p>
+<p>偏差与方差都是在模型中需要去考虑和中和的点。</p>
+<p><img src="/post/6d1ba54c/image-20221019144632273.png" srcset="/img/loading.gif" lazyload alt="image-20221019144632273"></p>
+<h3 id="PAC学习"><a href="#PAC学习" class="headerlink" title="PAC学习"></a>PAC学习</h3><p>根据大数定律，当训练集大小$|D|$趋向无穷大时，泛化错误趋向于0，即经验风险趋近于期望风险。</p>
+<p>PAC学习的表达式如下：<br>$$<br>P((\mathcal R(\mathcal f) - \mathcal R^{emp}_\mathcal D(f)) \le \epsilon) \ge 1-\delta<br>$$<br>其中，$(\mathcal R(\mathcal f) - \mathcal R^{emp}_\mathcal D(f)) \le \epsilon$表示经验误差与结构误差需近似正确，$\epsilon \in (0,0.5)$；$P(…)\ge 1 - \delta $ 表示可能性，$\delta \in (0,0.5)$。如果固定$\epsilon和\delta$，可以反过来计算出样本的复杂度为（计算略）<br>$$<br>n(\epsilon,\delta) \ge {1 \over 2\epsilon^2}(ln|\mathcal F|+ln{2\over\delta})<br>$$<br>公式表明，如果希望模型的假设空间$|\mathcal F|$越大，泛化误差越小，那么其需要的样本数量$n$也就越多。</p>
+<h2 id="常见定理"><a href="#常见定理" class="headerlink" title="常见定理"></a>常见定理</h2><h3 id="天下没有午餐定理"><a href="#天下没有午餐定理" class="headerlink" title="天下没有午餐定理"></a>天下没有午餐定理</h3><p>对于基于迭代的最优化算法，<b>不存在某种算法对所有问题（有限的搜索空间内）都有效。</b>如果一个算法对某些问题有效，那么它一定在另外一些问题上比纯随机搜索算法更差。</p>
+<h3 id="丑小鸭定理"><a href="#丑小鸭定理" class="headerlink" title="丑小鸭定理"></a>丑小鸭定理</h3><p>丑小鸭与白天鹅之间的区别和两只白天鹅之间的区别一样大，即特征差别一样大。<b>比较时需要确定比较标准。</b></p>
+<h3 id="奥卡姆剃刀原理"><a href="#奥卡姆剃刀原理" class="headerlink" title="奥卡姆剃刀原理"></a>奥卡姆剃刀原理</h3><p>在效力相同情况下，简单的模型要优于更为复杂的模型</p>
+<h3 id="归纳偏置"><a href="#归纳偏置" class="headerlink" title="归纳偏置"></a>归纳偏置</h3><p>很多学习算法经常会对学习的问题做一些假设，这些假设就称为<strong>归纳偏置</strong>，归纳偏置在贝叶斯学习中也经常称为先验（Prior）。</p>
+<p>索引-&gt;B树</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">#神经网络与深度学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>机器学习概述笔记</div>
+      <div>http://paopao0226.site/post/6d1ba54c.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年10月18日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/ca7258e9.html" title="mathjax常用符号列表">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">mathjax常用符号列表</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/c6d2374f.html" title="pip国内镜像源">
+                        <span class="hidden-mobile">pip国内镜像源</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

@@ -1,0 +1,972 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="针对于《神经网络与深度学习》课程中注意力机制与外部记忆的笔记记录，对于课程内容与思路再次进行总结与梳理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="注意力机制与外部记忆笔记">
+<meta property="og:url" content="http://paopao0226.site/post/27dfad29.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="针对于《神经网络与深度学习》课程中注意力机制与外部记忆的笔记记录，对于课程内容与思路再次进行总结与梳理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230120004646576.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230120004913881.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230120005454592.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230124170855923.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230125003358328.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126004631128.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126004743312.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126003515471.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126004358890.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126004959194.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126010019708.png">
+<meta property="og:image" content="http://paopao0226.site/2020063017264495.gif">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126013456670.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126012419701.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126013436851.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126145731384.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126154355402.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/ntm1.jpeg">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126154945547.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126174322446.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126174923319.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230126234400661.png">
+<meta property="og:image" content="http://paopao0226.site/post/27dfad29/image-20230127000447421.png">
+<meta property="article:published_time" content="2023-01-25T10:52:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.422Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="神经网络与深度学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/27dfad29/image-20230120004646576.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>注意力机制与外部记忆笔记 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover14.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="注意力机制与外部记忆笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-25 18:52" pubdate>
+          2023年1月25日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          7.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          61 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">注意力机制与外部记忆笔记</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="注意力机制与外部记忆"><a href="#注意力机制与外部记忆" class="headerlink" title="注意力机制与外部记忆"></a>注意力机制与外部记忆</h1><h2 id="鸡尾酒会效应"><a href="#鸡尾酒会效应" class="headerlink" title="鸡尾酒会效应"></a>鸡尾酒会效应</h2><p>人脑处理过载的输入信息时，会使用注意力和记忆机制来解决。</p>
+<p>鸡尾酒会效应内容是：当一个人在吵闹的鸡尾酒会上和朋友聊天时，尽管周围噪音干扰很多，他还是可以听到朋友的谈话内容，而忽略其他人的声音<strong>（聚焦式注意力）</strong>。同时，如果背景声中有重要的词（比如他的名字），他会马上注意到<strong>（显著性注意力）</strong>。这就体现了注意力机制中十分重要的两种机制：聚焦和显著。</p>
+<ul>
+<li>聚焦式注意力（会聚）：指有预定目的、依赖任务的，主动有意识地聚焦于某一对象的注意力。</li>
+<li>显著性注意力（汇聚）：是由外界刺激驱动的注意，不需要主动干预，也和任务无关，对于重点信息造成的刺激会进行捕捉。</li>
+</ul>
+<h2 id="注意力机制"><a href="#注意力机制" class="headerlink" title="注意力机制"></a>注意力机制</h2><p>用$\pmb X&#x3D;[\pmb x_1,…,\pmb x_n]\in \mathbb R^{D\times N}$表示$N$组输入信息，其中$D$维向量$\pmb x_n\in \mathbb R^D,n\in[1,N]$表示一组输入信息，注意力机制的计算可以分为两步：一是在所有输入信息上计算注意力分布，二是根据注意力分布来计算输入信息的加权平均。</p>
+<h3 id="软性注意力"><a href="#软性注意力" class="headerlink" title="软性注意力"></a>软性注意力</h3><p>软性注意力不是0-1分布（选or不选），而是依概率$p$分布，以$p$的概率选择，这样方便求导操作，从而便于搭模型。</p>
+<p>软性注意力机制可以分为以下两步：</p>
+<ol>
+<li><p>计算注意力分布$\alpha$；<br>$$<br>\alpha_n&#x3D;p(z&#x3D;n|\pmb X,\pmb q)&#x3D;softmax(s(\pmb x_n,\pmb q))&#x3D; { { \exp(s(\pmb x_n,\pmb q)) }\over { { \sum_{j&#x3D;1}^N}\exp(s(\pmb x_n,\pmb q)) } }<br>$$<br>其中$s(\pmb x_n,\pmb q)$是打分函数，是用来计算其重要程度，分数越高其重要性越强。打分函数的模型有以下几种：</p>
+<p><img src="/post/27dfad29/image-20230120004646576.png" srcset="/img/loading.gif" lazyload alt="image-20230120004646576"></p>
+</li>
+<li><p>根据$\alpha$来计算输入信息的加权平均；<br>$$<br>att(\pmb X,\pmb q)&#x3D;\sum_{n&#x3D;1}^N \alpha_n\pmb x_n&#x3D;\mathbb E_{z\sim p(\pmb z|\pmb X,\pmb q)}[\pmb {x_z}]<br>$$</p>
+</li>
+</ol>
+<p>为了能够有效计算，引入查询向量来计算注意力分布。</p>
+<p><img src="/post/27dfad29/image-20230120004913881.png" srcset="/img/loading.gif" lazyload alt="image-20230120004913881"></p>
+<p>注意力机制在自然语言处理方向中有很多的应用在：</p>
+<p><img src="/post/27dfad29/image-20230120005454592.png" srcset="/img/loading.gif" lazyload alt="image-20230120005454592"></p>
+<h3 id="硬性注意力"><a href="#硬性注意力" class="headerlink" title="硬性注意力"></a>硬性注意力</h3><p>离散的注意力机制，输出结果是0-1向量，即选或不选。硬性注意力一般会选取最高概率$att(\pmb X,\pmb q)&#x3D;\pmb x_\hat n$​来进行最大采样或在注意力分布上随机采样来实现。这会使得最终的损失函数与注意力分布之间的函数关系不可导，无法使用反向传播算法进行训练。因此，硬性注意力通常需要使用强化学习来进行训练，为了使用反向传播算法，一般使用软性注意力来代替硬性注意力。</p>
+<h3 id="键值对注意力"><a href="#键值对注意力" class="headerlink" title="键值对注意力"></a>键值对注意力</h3><p>更一般地，我们可以用键值对（key-value pair）格式来表示输入信息，其中“键”用来计算注意力分布$\alpha_n$，“值“用来计算聚合信息。<br>$$<br>att( [ \pmb K, \pmb V],\pmb q)&#x3D;\sum_{n&#x3D;1}^N \alpha_ n \pmb v_ n&#x3D; \sum_{n&#x3D;1}^N{ { \exp(s( \pmb k_ n, \pmb q))} \over{ \sum_ j \exp(s( \pmb k_ j, \pmb q))} } \pmb v_ n<br>$$<br>当$\pmb{K&#x3D;V}$时，键值对注意力就会退化成软性注意力。</p>
+<h3 id="多头注意力"><a href="#多头注意力" class="headerlink" title="多头注意力"></a>多头注意力</h3><p>多头注意力是利用多个查询$\pmb Q&#x3D;[\pmb q_1,…,\pmb q_M]$来并行地从输入信息中选取多组信息，用多个查询并行处理，每个注意力关注输入信息的不同部分。<br>$$<br>att((\pmb K,\pmb V),\pmb Q)&#x3D;att((\pmb K,\pmb V),\pmb q_1)\oplus\ …\  \oplus att((\pmb K,\pmb V),\pmb q_M)<br>$$</p>
+<h3 id="结构化注意力"><a href="#结构化注意力" class="headerlink" title="结构化注意力"></a>结构化注意力</h3><p>设定输入信息<strong>本身具有层次结构</strong>，比如文本可以分为词、句子、段落、篇章等不同粒度的层次，彼此之间有着关联影响，我们可以使用层次化的注意力来进行更好的信息选择。此外，还可以假设注意力为上下文相关的二项分布，然后就可以用一种图模型来构建更为复杂的结构化注意力分布。</p>
+<h3 id="指针网络"><a href="#指针网络" class="headerlink" title="指针网络"></a>指针网络</h3><p>我们可以只利用注意力机制中的第一步，将注意力分布作为一个软性的指针来指出相关信息的位置。</p>
+<p><img src="/post/27dfad29/image-20230124170855923.png" srcset="/img/loading.gif" lazyload alt="image-20230124170855923"></p>
+<p>如上图所示，收到’&gt;’信息之后，模型开始计算注意力分布，$h_4$的隐状态输出和$h_1$的相似度最大，因此取$h_5$输入20，$h_5$注意力计算出隐状态和$h_3$相似度最大，故$h_6$输入10，以此类推，实现文本数据从大到小排序。$h_i$的隐状态可以通过RNN实现。</p>
+<h2 id="自注意力机制"><a href="#自注意力机制" class="headerlink" title="自注意力机制"></a>自注意力机制</h2><p>当使用神经网络来处理一个变长的向量序列时，我们通常可以使用卷积网络或循环网络进行编码来得到一个相同长度的输出向量序列。</p>
+<p><img src="/post/27dfad29/image-20230125003358328.png" srcset="/img/loading.gif" lazyload alt="image-20230125003358328"></p>
+<p>如果要建立输入序列之间的长距离依赖关系，可以使用以下两种方法：一种方法是增加网络的层数，通过一个深层网络来获取远距离的信息交互；另一种方法是使用全连接网络。全连接网络是一种非常直接的建模远距离依赖的模型，但是无法处理变长的输入序列。不同的输入长度，其连接权重的大小也是不同的。这时我们就可以利用注意力机制来<strong>“动态”地生成不同连接的权重</strong>，这就是自注意力模型。</p>
+<p>为了提高模型能力，自注意力模型经常采用查询-键-值（Query-Key-Value，QKV）模式：</p>
+<p><img src="/post/27dfad29/image-20230126004631128.png" srcset="/img/loading.gif" lazyload alt="image-20230126004631128"></p>
+<p>自注意力的计算方式如下：假设输入序列为$\pmb X&#x3D;[\pmb x_1,…,\pmb x_N]\in \mathbb R^{D_x\times N}$，输出序列为$\pmb H&#x3D;[\pmb h_1,…,h_N]\in \mathbb R^{D_v \times N}$；自注意力首先会分别与三个权重矩阵相乘，生成$\pmb {Q,K,V}$三个向量序列，分别代表查询向量、键向量和值向量：<br>$$<br>\begin{align}<br>\pmb Q&#x3D;\pmb W_q\pmb \in \mathbb R^{D_k\times N} \\<br>\pmb K&#x3D;\pmb W_k\pmb \in \mathbb R^{D_k\times N} \\<br>\pmb V&#x3D;\pmb W_v\pmb \in \mathbb R^{D_v\times N}<br>\end{align}<br>$$<br>通过$\pmb {K,V}$来进行键值对注意力机制求解，获得隐状态$h_n$<br>$$<br>\pmb h_n &#x3D; att((\pmb K,\pmb V),\pmb q_n)&#x3D;\sum_{j&#x3D;1}^N\alpha_{nj}\pmb v_j&#x3D;\sum_{j&#x3D;1}^N softmax(s(\pmb k_j,\pmb q_n))\pmb v_j<br>$$<br>其中$n,j\in[1,N]$为输出和输入向量序列的位置，$\alpha_{nj}$表示第$n$个输出关注到第$j$个输入的权重。自注意力的”自”就来源于查询向量$\pmb Q$是自有的。</p>
+<p><img src="/post/27dfad29/image-20230126004743312.png" srcset="/img/loading.gif" lazyload alt="image-20230126004743312"></p>
+<p>如果使用缩放点积来作为注意力打分函数，输出向量序列可以简写为<br>$$<br>\pmb H &#x3D; \pmb V softmax({ {\pmb K^\top \pmb Q} \over {\sqrt{D_k}} })<br>$$<br><img src="/post/27dfad29/image-20230126003515471.png" srcset="/img/loading.gif" lazyload alt="image-20230126003515471"></p>
+<p>其中实线表示可学习的权重，虚线表示动态生成的权重．由于自注意力模型的权重是<strong>动态生成的</strong>，因此可以处理变长的信息序列。</p>
+<h3 id="多头自注意力"><a href="#多头自注意力" class="headerlink" title="多头自注意力"></a>多头自注意力</h3><p>自注意力也可以扩展到多头形式，将一个向量矩阵通过不同参数矩阵形成不同的结果，然后拼接起来。</p>
+<p><img src="/post/27dfad29/image-20230126004358890.png" srcset="/img/loading.gif" lazyload alt="image-20230126004358890"></p>
+<h3 id="Transformer编码器"><a href="#Transformer编码器" class="headerlink" title="Transformer编码器"></a>Transformer编码器</h3><p>自注意力机制通过动态生成权重，解决了变长问题，但丢失了位置信息，因此Transformer引入了位置编码与更多的操作来实现动态权重和位置信息的统一，从而大幅度提高了模型的处理能力。</p>
+<ul>
+<li>位置编码：在编码前加入位置编码向量，表示位置的相对信息</li>
+<li>层归一化：防止梯度爆炸</li>
+<li>直连边：方便线性逼近，提高运行效率</li>
+<li>逐位FNN：先升维后降维</li>
+</ul>
+<p><img src="/post/27dfad29/image-20230126004959194.png" srcset="/img/loading.gif" lazyload alt="image-20230126004959194"></p>
+<p>Transformer的过程同样是从一个点位出发，建模与其他点位的关系，且上面的一个编码器可以累加，提高模型的表达能力与处理能力。</p>
+<p><img src="/post/27dfad29/image-20230126010019708.png" srcset="/img/loading.gif" lazyload alt="image-20230126010019708"></p>
+<p><img src="/2020063017264495.gif" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>目前，基于Transformer的模型非常非常多，这个还需要以后专门钻研学习。</p>
+<p><img src="/post/27dfad29/image-20230126013456670.png" srcset="/img/loading.gif" lazyload alt="image-20230126013456670"></p>
+<h2 id="人脑中的记忆"><a href="#人脑中的记忆" class="headerlink" title="人脑中的记忆"></a>人脑中的记忆</h2><p>记忆是人脑对于外界信息做出的内部存储，人脑的记忆过程可以分为工作记忆（短期记忆）、情景记忆、结构记忆（长期记忆），且人脑的记忆特点是联想记忆，即是指一种学习和记住不同对象之间关系的能力。联想记忆是指一种可以通过内容匹配的方法进行寻址的信息存储方式，也称为<strong>基于内容寻址的存储</strong>。</p>
+<p><img src="/post/27dfad29/image-20230126012419701.png" srcset="/img/loading.gif" lazyload alt="image-20230126012419701"></p>
+<h2 id="结构化外部记忆"><a href="#结构化外部记忆" class="headerlink" title="结构化外部记忆"></a>结构化外部记忆</h2><p>为了增强网络容量，我们可以引入辅助记忆单元，将一些和任务相关的信息保存在辅助记忆中，在需要时再进行读取，这样可以有效地增加网络容量．这个引入的辅助记忆单元一般称为<strong>外部记忆</strong>。</p>
+<p>外部记忆主要由主网络、外部记忆和读写操作三部分构成，	</p>
+<p><img src="/post/27dfad29/image-20230126013436851.png" srcset="/img/loading.gif" lazyload alt="image-20230126013436851"></p>
+<p>外部记忆定义为矩阵$M\in R^{d\times k}$，其中$k$是记忆片段的数量，$d$是每个记忆片段的大小；外部记忆的类型可以分为：</p>
+<ul>
+<li>只读<ul>
+<li>记忆网络：专用于存储的网络结构</li>
+<li>RNN中的$h_t$：用循环网络的隐状态存储部分信息</li>
+</ul>
+</li>
+<li>可读写<ul>
+<li>NTM</li>
+</ul>
+</li>
+</ul>
+<p>要实现类似于人脑神经网络的联想记忆能力，就需要<strong>按内容寻址的方式</strong>进行定位，然后进行读取或写入操作．按内容寻址通常使用<strong>注意力机制</strong>来进行。通过引入外部记忆，可以将神经网络的参数和记忆容量“分离”，即在少量增加网络参数的条件下可以大幅增加网络容量．因此，我们可以将注意力机制看作一个接口，将信息的存储与计算分离。</p>
+<h3 id="记忆网络"><a href="#记忆网络" class="headerlink" title="记忆网络"></a>记忆网络</h3><p>端到端记忆网络采用一种可微的网络结构，可以多次从外部记忆中读取信息。在端到端记忆网络中，外部记忆单元是只读的。为了实现更复杂的计算，我们可以让主网络和外部记忆进行多轮交互。</p>
+<p>给定一组需要存储的信息$m_{1,N}$，外部记忆首先将其分成寻址片段$A&#x3D;[\pmb a_1,…,\pmb a_n]$和输出片段$C&#x3D;[\pmb c_1,…,\pmb c_n]$。开始阶段，主网络接收输入$\pmb x$并通过预测函数$f(·)$，生成输入$\pmb q_1&#x3D;f(\pmb x)$，然后执行下面的步骤：</p>
+<ol>
+<li><p>使用键值对注意力从外部记忆读取相关信息<br>$$<br>\pmb r^{(k)}&#x3D;\pmb C^{(k)}softmax(\pmb A^{(k)}\pmb q^{(k)})<br>$$</p>
+</li>
+<li><p>整合注意力读取的结果，生成新的查询向量<br>$$<br>\pmb q^{(k+1)}&#x3D;\pmb r^{(k)}+\pmb q^{(k)}<br>$$</p>
+</li>
+</ol>
+<p>以上过程可以迭代$K$次，以实现复杂计算。</p>
+<p><img src="/post/27dfad29/image-20230126145731384.png" srcset="/img/loading.gif" lazyload alt="image-20230126145731384"></p>
+<h3 id="神经图灵机"><a href="#神经图灵机" class="headerlink" title="神经图灵机"></a>神经图灵机</h3><p>图灵机是一种抽象数学模型，主要用来模拟任何可计算问题，通过控制器从无限长的纸带上读写记忆。</p>
+<p><img src="/post/27dfad29/image-20230126154355402.png" srcset="/img/loading.gif" lazyload alt="image-20230126154355402"></p>
+<p>图灵机由控制器、符号表、读写头、寄存器和纸带五个部分组成，其中可以看出当今计算机架构的一些影子，而神经图灵机基于此，主要由两个部件构成：控制器和外部记忆。其中控制器通过读写操作完成对外部记忆的处理和读取，外部记忆定义为矩阵$M\in \mathbb R^{D\times N}$，其中$D$表示记忆片段大小，$N$表示记忆片段数量；控制器为一个前馈或循环神经网络。整个架构是可微分的。</p>
+<p><img src="/post/27dfad29/ntm1.jpeg" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>神经图灵机在每个时刻$t$，控制器接受当前时刻的输入$\pmb x_t$、上一时刻的输出$\pmb h_{t-1}$和上一时刻从外部记忆中读取的信息$\pmb r_{t-1}$，并产生输出$\pmb h_t$，同时生成和读写外部记忆相关的三个向量：查询向量$\pmb q_t$、删除向量$\pmb e_t$和增加向量$\pmb a_t$．然后对外部记忆$\pmb M_t$进行读写操作，生成读向量$\pmb r_t$和新的外部记忆$\pmb M_{t+1}$。</p>
+<h4 id="读操作"><a href="#读操作" class="headerlink" title="读操作"></a>读操作</h4><p>在时刻$t$，外部记忆的内容为$\pmb M_t&#x3D;[\pmb m_{t,1},…,\pmb m_{t,N}]$，读操作为从外部记忆$\pmb M_t$中读取信息$\pmb r_t\in\mathbb R^D$，首先通过注意力机制来进行基于内容的寻址，即<br>$$<br>\alpha_{t,n}&#x3D;softmax(s(\pmb m_{t,n},\pmb q_t))<br>$$<br>根据注意力分布$\alpha_t$，可以计算读向量$\pmb r_t$，作为下一个时刻控制器的输入：<br>$$<br>\pmb r_t&#x3D;\sum_{n&#x3D;1}^N \alpha_n \pmb m_{t,n}<br>$$</p>
+<h4 id="写操作"><a href="#写操作" class="headerlink" title="写操作"></a>写操作</h4><p>外部记忆的写操作可以分解为两个子操作：删除和增加，分别基于删除向量和增加向量按比例操作。通过写操作得到下一时刻的外部记忆$\pmb M_{t+1}$<br>$$<br>\pmb m_{t+1,n}&#x3D;\pmb m_{t,n}(1-\alpha_{t,n}\pmb e_t)+\alpha_{t,n}\pmb a_{t,n}\ \ \ \   \forall n\in[1,N]<br>$$<br><img src="/post/27dfad29/image-20230126154945547.png" srcset="/img/loading.gif" lazyload alt="image-20230126154945547"></p>
+<h2 id="基于神经动力学的联想学习"><a href="#基于神经动力学的联想学习" class="headerlink" title="基于神经动力学的联想学习"></a>基于神经动力学的联想学习</h2><p>结构化的外部记忆更多是受现代计算机架构的启发，将计算和存储功能进行分离，这些外部记忆的结构也缺乏生物学的解释性。为了具有更好的生物学解释性，还可以将基于神经动力学（Neurodynamics）的联想记忆模型引入到神经网络以增加网络容量。</p>
+<h3 id="自联想和异联想"><a href="#自联想和异联想" class="headerlink" title="自联想和异联想"></a>自联想和异联想</h3><p>联想记忆模型（Associative Memory Model）主要是通过神经网络的动态演化来进行联想，有两种应用场景．</p>
+<ol>
+<li>输入的模式和输出的模式在<strong>同一空间</strong>，这种模型叫作自联想模型（Auto Associative Model）。自联想模型可以通过前馈神经网络或者循环神经网络来实现，也常称为自编码器（Auto-Encoder，AE）。</li>
+<li>输入的模式和输出的模式<strong>不在同一空间</strong>，这种模型叫作异联想模型（Hetero-Associative Model）．从广义上讲，<strong>大部分机器学习问题都可以被看作异联想</strong>，因此异联想模型可以作为分类器使用。</li>
+</ol>
+<p><img src="/post/27dfad29/image-20230126174322446.png" srcset="/img/loading.gif" lazyload alt="image-20230126174322446"></p>
+<h3 id="Hopfield网络"><a href="#Hopfield网络" class="headerlink" title="Hopfield网络"></a>Hopfield网络</h3><p>hopfield网络将神经网络作为记忆的存储和检索模型，是一种循环神经网络模型，由一组互相连接的神经元组成。Hopfield 网络也可以认为是所有神经元都互相连接的不分层的神经网络。<strong>每个神经元既是输入单元，又是输出单元，没有隐藏神经元。</strong>一个神经元和自身没有反馈相连，不同神经元之间连接权重是对称的。</p>
+<p><img src="/post/27dfad29/image-20230126174923319.png" srcset="/img/loading.gif" lazyload alt="image-20230126174923319"></p>
+<h4 id="更新规则"><a href="#更新规则" class="headerlink" title="更新规则"></a>更新规则</h4><p>假设一个Hopfield网络有$M$个神经元，第$i$个神经元的更新规则为：<br>$$<br>s_i&#x3D;\begin{cases} +1 \ \ \ \ if \sum_{j&#x3D;1}^Mw_{ij}s_j+b_i\ge0 \\ -1 \ \ \ \ otherwise, \end{cases}<br>$$<br>其中<br>$$<br>\begin{cases}w_ii&#x3D;0 \ \ \ \ \forall i\in[1,M] \\ w_{ij}&#x3D;w_{ji} \ \ \ \ \forall i,j\in[1,M]\end{cases}<br>$$<br>从$s_i$的更新方式中可以看出Hopfield网络的规则是使用相邻单元的权重进行更新，每次做线性加和。更新方式中，异步更新每次更新一个神经元，其可以随机或者固定；同步更新一次性更新所有神经元，更新时满足非线性阶跃函数$f(·)$<br>$$<br>\pmb s_t&#x3D;f(\pmb W\pmb s_{t-1}+\pmb b)<br>$$<br>其中$\pmb s_0&#x3D;\pmb x,\pmb W&#x3D;[ w_{ij} ]_ { M\times M }$为连接权重，$\pmb b&#x3D;[b_i]_ {M \times 1}$为偏置向量。</p>
+<h4 id="能量函数"><a href="#能量函数" class="headerlink" title="能量函数"></a>能量函数</h4><p>在Hopfield网络中，我们给每个不同的网络状态定义一个标量属性，称为“能量”。<br>$$<br>E&#x3D;-{1\over 2}\sum_{i,j}w_{ij}s_is_j-\sum_ib_is_i &#x3D; -{1\over 2}\pmb{s^\top Ws-b^\top s}<br>$$<br>符合物理规律，Hopfield网络应该是稳定的，即能量函数经过多次迭代后会达到收敛状态。<strong>权重对称</strong>是一个重要特征，因为它保证了能量函数在神经元激活时单调递减，而不对称的权重可能导致周期性振荡或者混乱。</p>
+<h4 id="检索过程（联想记忆）"><a href="#检索过程（联想记忆）" class="headerlink" title="检索过程（联想记忆）"></a>检索过程（联想记忆）</h4><p>给定一个外部输入，网络经过演化会达到某个稳定状态。Hopfield网络存在有限的吸引点（Attractor），即能量函数的局部最小点。</p>
+<p>检索过程如下：</p>
+<ul>
+<li>每个吸引点$\pmb u$都对应一个“管辖”区域$\mathcal R_{\pmb u}$．若输入向量$\pmb x$落入这个区域，网络最终会收敛到$\pmb u$。</li>
+<li>吸引点可以看作是网络中存储的信息。</li>
+</ul>
+<p><img src="/post/27dfad29/image-20230126234400661.png" srcset="/img/loading.gif" lazyload alt="image-20230126234400661"></p>
+<h4 id="存储过程"><a href="#存储过程" class="headerlink" title="存储过程"></a>存储过程</h4><p>信息存储是指将一组向量$\pmb x_1,…,\pmb x_N$存储在网络中的过程，存储过程主要是调整神经元之间的连接权重，因此可以看作是一种学习过程。</p>
+<p>神经元$i$和$j$之间的连接权重为：<br>$$<br>w_{ij}&#x3D;{1\over N}\sum_{n&#x3D;1}^N x_i^{(n)}x_j^{(n)}<br>$$<br>其中$x_i^{(n)}$是第$i$个神经元的第$n$个分量。这个公式表达了这样的意思：如果两个神经元经常同时激活，则它们之间的连接会加强；否则则会消失。这种学习方式和人脑的赫布法则十分的类似。权重的更新公式可以使得权重更新时所得到的能量相对最低，其证明可以将能量式在权重$w_{ij}$上求导。</p>
+<p>这种通过神经元之间权重来存储的方式，其存储容量相对有限，模型容量一般与网络结构和学习方式有关。Hopfield 网络的最大容量为$0.14M$，玻尔兹曼机的容量为$0.6m$， 但是其学习效率比较低，需要非常长时间的演化才能达到均衡状态。</p>
+<p><img src="/post/27dfad29/image-20230127000447421.png" srcset="/img/loading.gif" lazyload alt="image-20230127000447421"></p>
+<h3 id="联想记忆增加网络容量"><a href="#联想记忆增加网络容量" class="headerlink" title="联想记忆增加网络容量"></a>联想记忆增加网络容量</h3><p>既然联想记忆具有存储和检索功能，我们可以利用联想记忆来增加网络容量。和结构化的外部记忆相比，联想记忆具有更好的生物学解释性。比如，我们可以将一个联想记忆模型作为部件引入 LSTM 网络中，从而在不引入额外参数的情况下增加网络容量。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">#神经网络与深度学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>注意力机制与外部记忆笔记</div>
+      <div>http://paopao0226.site/post/27dfad29.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月25日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/888256ea.html" title="无监督学习笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">无监督学习笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/1b20cec9.html" title="Hexo+Github+Netlify+CMS实现全站访问加速与在线编辑">
+                        <span class="hidden-mobile">Hexo+Github+Netlify+CMS实现全站访问加速与在线编辑</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

@@ -1,0 +1,952 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="针对Hexo下的Cactus主题进行的魔改，主要是Cactus本身没有集成各种功能，需要自己DIV">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hexo-cactus魔改笔记+bug修复记录">
+<meta property="og:url" content="http://paopao0226.site/post/94815387.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="针对Hexo下的Cactus主题进行的魔改，主要是Cactus本身没有集成各种功能，需要自己DIV">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/94815387/image-20221015162949197.png">
+<meta property="og:image" content="http://paopao0226.site/post/94815387/image-20221016143600395.png">
+<meta property="og:image" content="http://paopao0226.site/post/94815387/image-20221016143629825.png">
+<meta property="og:image" content="http://paopao0226.site/post/94815387/image-20221016143834201.png">
+<meta property="og:image" content="http://paopao0226.site/post/94815387/image-20221016143934779.png">
+<meta property="og:image" content="http://paopao0226.site/post/94815387/image-20221016144134192.png">
+<meta property="og:image" content="http://paopao0226.site/post/94815387/image-20221029223233645.png">
+<meta property="og:image" content="http://paopao0226.site/post/94815387/image-20221029224006328.png">
+<meta property="og:image" content="http://paopao0226.site/post/94815387/image-20221029225413450.png">
+<meta property="og:image" content="http://paopao0226.site/post/94815387/image-20221029225504580.png">
+<meta property="article:published_time" content="2022-10-16T06:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.262Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="hexo">
+<meta property="article:tag" content="cactus">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/94815387/image-20221015162949197.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>hexo-cactus魔改笔记+bug修复记录 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover11.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="hexo-cactus魔改笔记+bug修复记录"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-10-16 14:00" pubdate>
+          2022年10月16日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          111 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">hexo-cactus魔改笔记+bug修复记录</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="hexo-cactus魔改笔记-bug修复记录（自22-10-15始）"><a href="#hexo-cactus魔改笔记-bug修复记录（自22-10-15始）" class="headerlink" title="hexo+cactus魔改笔记+bug修复记录（自22.10.15始）"></a>hexo+cactus魔改笔记+bug修复记录（自22.10.15始）</h1><h2 id="1、目录跳转功能失效"><a href="#1、目录跳转功能失效" class="headerlink" title="1、目录跳转功能失效"></a>1、目录跳转功能失效</h2><p>mongodb+srv:&#x2F;&#x2F;yaowenjin:<a href="mailto:&#x77;&#x73;&#121;&#119;&#x6a;&#57;&#x39;&#x30;&#50;&#x32;&#54;&#x40;&#98;&#108;&#111;&#103;&#46;&#x69;&#112;&#109;&#103;&#99;&#49;&#57;&#x2e;&#109;&#111;&#x6e;&#103;&#x6f;&#100;&#98;&#x2e;&#110;&#101;&#x74;">&#x77;&#x73;&#121;&#119;&#x6a;&#57;&#x39;&#x30;&#50;&#x32;&#54;&#x40;&#98;&#108;&#111;&#103;&#46;&#x69;&#112;&#109;&#103;&#99;&#49;&#57;&#x2e;&#109;&#111;&#x6e;&#103;&#x6f;&#100;&#98;&#x2e;&#110;&#101;&#x74;</a>&#x2F;?retryWrites&#x3D;true&amp;w&#x3D;majority</p>
+<p>找到【…\blog\node_modules\hexo-toc\lib】中的filter.js，将28-31行修改成以下代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js">$title.<span class="hljs-title function_">attr</span>(<span class="hljs-string">&#x27;id&#x27;</span>, id);<br><span class="hljs-comment">//$title.children(&#x27;a&#x27;).remove();</span><br><span class="hljs-comment">//$title.html( &#x27;&lt;span id=&quot;&#x27; + id + &#x27;&quot;&gt;&#x27; + $title.html() + &#x27;&lt;/span&gt;&#x27; );</span><br><span class="hljs-comment">//$title.removeAttr(&#x27;id&#x27;);</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="2、添加版权提醒"><a href="#2、添加版权提醒" class="headerlink" title="2、添加版权提醒"></a>2、添加版权提醒</h2><p>在post主页的前端渲染代码【…\blog\themes\cactus\layout\post.ejs】中的页面末尾加入一个div，写入以下代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;div&gt;    <br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-copyright&quot;</span>&gt;</span></span><br><span class="language-xml">       <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-copyright-link&quot;</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>本文作者：<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;/&quot;</span>&gt;</span>&lt;%= config.author %&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-copyright-link&quot;</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>本文标题：<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;&#123;&#123; url_for(config.permalink) &#125;&#125;&quot;</span>&gt;</span>&lt;%- partial(&#x27;_partial/post/title&#x27;, &#123; post: page, index: true, class_name: &#x27;&#x27; &#125;) %&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-copyright-link&quot;</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>本文链接：<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;&lt;%- page.title %&gt;&quot;</span>&gt;</span>&lt;%- config.url %&gt;/&lt;%- page.path %&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br><span class="language-xml">      <span class="hljs-tag">&lt;<span class="hljs-name">li</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;post-copyright-license&quot;</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>版权声明： <span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span></span><br><span class="language-xml">        本文由 &lt;%- config.author %&gt; 原创，采用 <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://creativecommons.org/licenses/by-nc-nd/4.0/deed.zh&quot;</span> <span class="hljs-attr">title</span>=<span class="hljs-string">&quot;Attribution-NonCommercial-NoDerivatives 4.0 International&quot;</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;license&quot;</span> <span class="hljs-attr">target</span>=<span class="hljs-string">&quot;_blank&quot;</span>&gt;</span>CC BY-NC-ND 4.0<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>, 转载请保留以上声明信息！</span><br><span class="language-xml">      <span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span></span><br>&lt;/div&gt;<br></code></pre></td></tr></table></figure>
+
+<p>然后在网页的样式文件中加入样式设置，这里我偷了个懒直接加到了总文件</p>
+<p>【…\blog\themes\cactus\source\css\style.styl】中</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-class">.post-copyright</span> &#123;<br>    <span class="hljs-attribute">margin</span>: <span class="hljs-number">2em</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span>;<br>    <span class="hljs-attribute">padding</span>: <span class="hljs-number">0.5em</span> <span class="hljs-number">1em</span>;<br>    <span class="hljs-attribute">border-left</span>: <span class="hljs-number">3px</span> solid <span class="hljs-number">#FF1700</span>;<br>    <span class="hljs-attribute">background-color</span>: <span class="hljs-number">#F9F9F9</span>;<br>    <span class="hljs-attribute">list-style</span>: none;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="3、添加图片放大功能"><a href="#3、添加图片放大功能" class="headerlink" title="3、添加图片放大功能"></a>3、添加图片放大功能</h2><blockquote>
+<p>这里参考了<a target="_blank" rel="noopener" href="https://vccv.cc/article/fancybox-cactus.html">cactus使用上fancybox图片放大</a>的实现步骤。</p>
+</blockquote>
+<p>首先在【…\blog\themes\cactus\layout_partial\head.ejs】中加入css的引入文件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;% <span class="hljs-keyword">if</span> (theme.<span class="hljs-property">fancybox</span>.<span class="hljs-property">enabled</span>) &#123;%&gt;<br>  <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css&quot;</span> /&gt;</span></span><br>&lt;% &#125; %&gt;<br></code></pre></td></tr></table></figure>
+
+<p>并在同级的script.ejs中加入调取代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;!-- <span class="hljs-title class_">FancyBox</span> --&gt;<br>&lt;% <span class="hljs-keyword">if</span> (theme.<span class="hljs-property">fancybox</span>.<span class="hljs-property">enabled</span>) &#123;%&gt;<br><span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br>&lt;% &#125; %&gt;<br></code></pre></td></tr></table></figure>
+
+<p>写到这里，网页可以通过在每个img加上标签属性调用，在这里我们直接在渲染引擎hexo-renderer-marked中对img加入fancybox的渲染引擎。</p>
+<p>找到【..\node_modules\hexo-renderer-marked\lib&#x2F;renderer.js】，搜索”img”并将img相关的代码修改如下：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// 原代码</span><br><span class="hljs-keyword">let</span> out = <span class="hljs-string">`&lt;img src=&quot;<span class="hljs-subst">$&#123;encodeURL(href)&#125;</span>&quot;`</span>;<br><span class="hljs-keyword">if</span> (text) out += <span class="hljs-string">` alt=&quot;<span class="hljs-subst">$&#123;text&#125;</span>&quot;`</span>;<br><span class="hljs-keyword">if</span> (title) out += <span class="hljs-string">` title=&quot;<span class="hljs-subst">$&#123;title&#125;</span>&quot;`</span>;<br><span class="hljs-keyword">if</span> (lazyload) out += <span class="hljs-string">&#x27; loading=&quot;lazy&quot;&#x27;</span>;<br><br>out += <span class="hljs-string">&#x27;&gt;&#x27;</span>;<br><br><span class="hljs-comment">// 修改后</span><br><span class="hljs-keyword">let</span> out = <span class="hljs-string">`&lt;a data-fancybox=&quot;gallery&quot; data-src=&quot;<span class="hljs-subst">$&#123;href&#125;</span>&quot; data-caption=&quot;<span class="hljs-subst">$&#123;text&#125;</span>&quot;&gt;&lt;img src=&quot;<span class="hljs-subst">$&#123;encodeURL(href)&#125;</span>&quot;`</span>;<br><span class="hljs-keyword">if</span> (text) out += <span class="hljs-string">` alt=&quot;<span class="hljs-subst">$&#123;text&#125;</span>&quot;`</span>;<br><span class="hljs-keyword">if</span> (title) out += <span class="hljs-string">` title=&quot;<span class="hljs-subst">$&#123;title&#125;</span>&quot;`</span>;<br><span class="hljs-keyword">if</span> (lazyload) out += <span class="hljs-string">&#x27; loading=&quot;lazy&quot;&#x27;</span>;<br><br>out += <span class="hljs-string">&#x27;&gt;&lt;/a&gt;&#x27;</span>;<br></code></pre></td></tr></table></figure>
+
+<p>最后，在blog的配置文件_config.yaml中打开开关即可</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-comment"># Enable FancyBox</span><br><span class="hljs-attr">fancybox:</span><br>  <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/94815387/image-20221015162949197.png" srcset="/img/loading.gif" lazyload alt="image-20221015162949197"></p>
+<h2 id="4、添加gittalk评论功能"><a href="#4、添加gittalk评论功能" class="headerlink" title="4、添加gittalk评论功能"></a>4、添加gittalk评论功能</h2><p>gittalk是github可提供的一种application，其设置相对比较简单。</p>
+<p>首先确定一个github的仓库用于保存评论，这里可以直接使用博客的库，比如我的库（paopao0226.github.io），然后打开github，按照Setting–&gt;Developing settings–&gt;OAuth application的过程进行</p>
+<p><img src="/post/94815387/image-20221016143600395.png" srcset="/img/loading.gif" lazyload alt="image-20221016143600395"><img src="/post/94815387/image-20221016143629825.png" srcset="/img/loading.gif" lazyload alt="image-20221016143629825"><img src="/post/94815387/image-20221016143834201.png" srcset="/img/loading.gif" lazyload alt="image-20221016143834201"></p>
+<p>如果没有用过OAuth的朋友应该是需要创建一个新的。<br><img src="/post/94815387/image-20221016143934779.png" srcset="/img/loading.gif" lazyload alt="image-20221016143934779"></p>
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs txt">Application name: 应用的名字，可以随便取（其他人想要评论的话，需要登录Github授权，授权的时候显示的就是这里的Application name）<br>Homepage URL: 应用主页的完整URL，如: https://pyihe.github.io/<br>Application description: 应用描述，选填项<br>Authorization callback URL: 登录授权后回调的页面，直接填成与Homepage URL一样<br></code></pre></td></tr></table></figure>
+
+<p>完成OAuth Application的申请，并申请创建密钥之后，就会得到如下界面，其中Client ID和Client Sercets记住，之后要用到。<br><img src="/post/94815387/image-20221016144134192.png" srcset="/img/loading.gif" lazyload alt="image-20221016144134192"></p>
+<p>下面我们继续设置gittalk，在【…\blog\themes\cactus\_config.yml】</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">disqus:</span><br>  	<span class="hljs-attr">enabled:</span> <span class="hljs-literal">false</span> <span class="hljs-comment"># 关闭官方的disqus</span><br> 	<span class="hljs-attr">shortname:</span> <span class="hljs-string">paopao0226</span> <br><br><span class="hljs-attr">gitalk:</span><br>    <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span> <span class="hljs-comment"># 开关开启</span><br>    <span class="hljs-attr">owner:</span> <span class="hljs-string">paopao0226</span> <span class="hljs-comment"># 你的 github 用户名</span><br>    <span class="hljs-attr">repo:</span> <span class="hljs-string">paopao0226.github.io</span> <span class="hljs-comment"># 保存评论的 repo 库，注意不要加https，网站导航会直接到paopao0226/paopao0226.github.io访问仓库</span><br>    <span class="hljs-attr">admin:</span> <span class="hljs-string">paopao0226</span> <span class="hljs-comment"># 管理员，你的 github 用户名</span><br>    <span class="hljs-attr">clientID:</span> <span class="hljs-string">XXX</span> <span class="hljs-comment"># 你的Client ID</span><br>    <span class="hljs-attr">clientSecret:</span> <span class="hljs-string">XXX</span> <span class="hljs-comment"># 你的Client Sercets</span><br></code></pre></td></tr></table></figure>
+
+<p>然后在【…\blog\themes\cactus\layout_partial\comment.ejs】中加入以下代码</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-comment">// disqus 评论系统部分</span><br>&lt;% <span class="hljs-keyword">if</span>(page.<span class="hljs-property">comments</span> &amp;&amp; theme.<span class="hljs-property">disqus</span>.<span class="hljs-property">enabled</span>)&#123; %&gt;<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;blog-post-comments&quot;</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;disqus_thread&quot;</span>&gt;</span></span><br><span class="language-xml">            <span class="hljs-tag">&lt;<span class="hljs-name">noscript</span>&gt;</span>&lt;%= __(&#x27;comments.no_js&#x27;) %&gt;<span class="hljs-tag">&lt;/<span class="hljs-name">noscript</span>&gt;</span></span><br><span class="language-xml">        <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br>&lt;% &#125; %&gt;<br><span class="hljs-comment">// 下面添加 Gitalk 部分</span><br>&lt;% <span class="hljs-keyword">if</span>(page.<span class="hljs-property">comments</span> &amp;&amp; theme.<span class="hljs-property">gitalk</span>.<span class="hljs-property">enabled</span>)&#123; %&gt;<br>    <span class="language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css&quot;</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;https://cdn.bootcss.com/blueimp-md5/2.10.0/js/md5.min.js&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;gitalk-container&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">    <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text/javascript&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="language-javascript"><span class="language-xml">        <span class="hljs-keyword">var</span> gitalk = <span class="hljs-keyword">new</span> <span class="hljs-title class_">Gitalk</span>(&#123;</span></span><br><span class="language-javascript"><span class="language-xml">            <span class="hljs-attr">clientID</span>: <span class="hljs-string">&#x27;&lt;%= theme.gitalk.clientID %&gt;&#x27;</span>,</span></span><br><span class="language-javascript"><span class="language-xml">            <span class="hljs-attr">clientSecret</span>: <span class="hljs-string">&#x27;&lt;%= theme.gitalk.clientSecret %&gt;&#x27;</span>,</span></span><br><span class="language-javascript"><span class="language-xml">            <span class="hljs-attr">id</span>: <span class="hljs-title function_">md5</span>(<span class="hljs-variable language_">window</span>.<span class="hljs-property">location</span>.<span class="hljs-property">pathname</span>),</span></span><br><span class="language-javascript"><span class="language-xml">            <span class="hljs-attr">repo</span>: <span class="hljs-string">&#x27;&lt;%= theme.gitalk.repo %&gt;&#x27;</span>,</span></span><br><span class="language-javascript"><span class="language-xml">            <span class="hljs-attr">owner</span>: <span class="hljs-string">&#x27;&lt;%= theme.gitalk.owner %&gt;&#x27;</span>,</span></span><br><span class="language-javascript"><span class="language-xml">            <span class="hljs-attr">admin</span>: <span class="hljs-string">&#x27;&lt;%= theme.gitalk.admin %&gt;&#x27;</span>,</span></span><br><span class="language-javascript"><span class="language-xml">            <span class="hljs-attr">distractionFreeMode</span>: <span class="hljs-string">&#x27;&lt;%= theme.gitalk.on %&gt;&#x27;</span></span></span><br><span class="language-javascript"><span class="language-xml">        &#125;)</span></span><br><span class="language-javascript"><span class="language-xml">        gitalk.<span class="hljs-title function_">render</span>(<span class="hljs-string">&#x27;gitalk-container&#x27;</span>)</span></span><br><span class="language-javascript"><span class="language-xml">    </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br><span class="language-xml">&lt;% &#125; %&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p>配置gittalk可能出现的两种错误可以参考<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38463737/article/details/120288329">Gridea 配置Gitalk 的异常：Error Bad credentials 和 Error Not Found</a></p>
+<h2 id="5、加入博客加密"><a href="#5、加入博客加密" class="headerlink" title="5、加入博客加密"></a>5、加入博客加密</h2><p>下载encrypt插件</p>
+<blockquote>
+<p>npm install –save hexo-blog-encrypt</p>
+</blockquote>
+<p>在每个需要加密的文件头加入password字段</p>
+<figure class="highlight node-repl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs node-repl">title: Hello World<br><span class="hljs-meta prompt_">...</span><br>password: 123456<br><span class="hljs-meta prompt_">...</span><br></code></pre></td></tr></table></figure>
+
+<p>可以在博客根目录的配置文件_config.yml中加入整体的文本配置</p>
+<figure class="highlight handlebars"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs handlebars"><span class="language-xml"># 安全</span><br><span class="language-xml">encrypt: # hexo-blog-encrypt</span><br><span class="language-xml">  abstract: 这里有东西被加密了，需要输入密码查看哦。</span><br><span class="language-xml">  message: 您好, 这里需要密码.</span><br><span class="language-xml">  tags:</span><br><span class="language-xml">  - &#123;name: tagName, password: 密码A&#125;</span><br><span class="language-xml">  - &#123;name: tagName, password: 密码B&#125;</span><br><span class="language-xml">  template: <span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;hexo-blog-encrypt&quot;</span> <span class="hljs-attr">data-wpm</span>=<span class="hljs-string">&quot;</span></span></span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">hbeWrongPassMessage</span>&#125;&#125;</span><span class="language-xml"><span class="hljs-tag"><span class="hljs-string">&quot;</span> <span class="hljs-attr">data-whm</span>=<span class="hljs-string">&quot;</span></span></span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">hbeWrongHashMessage</span>&#125;&#125;</span><span class="language-xml"><span class="hljs-tag"><span class="hljs-string">&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;hbe-input-container&quot;</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;hbePass&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;</span></span></span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">hbeMessage</span>&#125;&#125;</span><span class="language-xml"><span class="hljs-tag"><span class="hljs-string">&quot;</span> /&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">label</span>&gt;</span></span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">hbeMessage</span>&#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">label</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;bottom-line&quot;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;hbeData&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;hbeData&quot;</span> <span class="hljs-attr">data-hmacdigest</span>=<span class="hljs-string">&quot;</span></span></span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">hbeHmacDigest</span>&#125;&#125;</span><span class="language-xml"><span class="hljs-tag"><span class="hljs-string">&quot;</span>&gt;</span></span><span class="hljs-template-variable">&#123;&#123;<span class="hljs-name">hbeEncryptedData</span>&#125;&#125;</span><span class="language-xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="language-xml">  wrong_pass_message: 抱歉, 这个密码看着不太对, 请再试试.</span><br><span class="language-xml">  wrong_hash_message: 抱歉, 这个文章不能被校验, 不过您还是能看看解密后的内容.</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="6、加入类github活动日历"><a href="#6、加入类github活动日历" class="headerlink" title="6、加入类github活动日历"></a>6、加入类github活动日历</h2><blockquote>
+<p>参考自<a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1597223">Hexo主题美化 | 给你的博客加上GITHUB日历云和分类雷达图 - 腾讯云开发者社区-腾讯云 (tencent.com)</a></p>
+</blockquote>
+<p>首先，将<a href="/download/echarts.min.js">echarts.min.js</a>下载到本地，并放到博客【…\blog\themes\cactus\source\js】位置，</p>
+<p><img src="/post/94815387/image-20221029223233645.png" srcset="/img/loading.gif" lazyload alt="image-20221029223233645"></p>
+<p>然后在【…\blog\themes\cactus\layout_partial】位置中新建一个文件【post-calendar.ejs】，将以下代码放进去。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><code class="hljs ejs">&lt;div class=&quot;container archive-calendar&quot;&gt;<br>    &lt;div class=&quot;card&quot;&gt;<br>        &lt;div id=&quot;post-calendar&quot; class=&quot;card-content&quot;&gt;&lt;/div&gt;<br>    &lt;/div&gt;<br>&lt;/div&gt;<br><br>&lt;script type=&quot;text/javascript&quot; src=&quot;/js/echarts.min.js&quot;&gt;&lt;/script&gt;<br>&lt;script type=&quot;text/javascript&quot;&gt;<br>    let myChart = echarts.init(document.getElementById(&#x27;post-calendar&#x27;));<br><br>    &lt;%<br>    var nameMap = (config.language &amp;&amp; config.language.indexOf(&#x27;zh&#x27;) &gt;= 0) ? &#x27;cn&#x27; : &#x27;en&#x27;;<br>    var titleText = (config.language &amp;&amp; config.language.indexOf(&#x27;zh&#x27;) &gt;= 0) ? &#x27;文章日历&#x27; : &#x27;Post Calendar&#x27;;<br><br>    // calculate range.<br>    var startDate = moment().subtract(1, &#x27;years&#x27;);<br>    var endDate = moment();<br>    var rangeArr = &#x27;[&quot;&#x27; + startDate.format(&#x27;YYYY-MM-DD&#x27;) + &#x27;&quot;, &quot;&#x27; + endDate.format(&#x27;YYYY-MM-DD&#x27;) + &#x27;&quot;]&#x27;;<br><br>    // post and count map.<br>    var dateMap = new Map();<br>    site.posts.forEach(function (post) &#123;<br>        var date = post.date.format(&#x27;YYYY-MM-DD&#x27;);<br>        var count = dateMap.get(date);<br>        dateMap.set(date, count == null || count == undefined ? 1 : count + 1);<br>    &#125;);<br><br>    // loop the data for the current year, generating the number of post per day<br>    var i = 0;<br>    var datePosts = &#x27;[&#x27;;<br>    var dayTime = 3600 * 24 * 1000;<br>    for (var time = startDate; time &lt;= endDate; time += dayTime) &#123;<br>        var date = moment(time).format(&#x27;YYYY-MM-DD&#x27;);<br>        datePosts = (i === 0 ? datePosts + &#x27;[&quot;&#x27; : datePosts + &#x27;, [&quot;&#x27;) + date + &#x27;&quot;, &#x27;<br>                + (dateMap.has(date) ? dateMap.get(date) : 0) + &#x27;]&#x27;;<br>        i++;<br>    &#125;<br>    datePosts += &#x27;]&#x27;;<br>    %&gt;<br>    /*<br>title: &#123;<br>            top: 0,<br>            text: &#x27;&lt;%- titleText %&gt;&#x27;,<br>            left: &#x27;center&#x27;,<br>            textStyle: &#123;<br>                color: &#x27;#3C4858&#x27;<br>            &#125;<br>        &#125;,<br>   */<br>    let option = &#123;<br>        tooltip: &#123;<br>            padding: 10,<br>            backgroundColor: &#x27;#555&#x27;,<br>            borderColor: &#x27;#777&#x27;,<br>            borderWidth: 1,<br>            formatter: function (obj) &#123;<br>                var value = obj.value;<br>                return &#x27;&lt;div style=&quot;font-size: 14px;&quot;&gt;&#x27; + value[0] + &#x27;：&#x27; + value[1] + &#x27;&lt;/div&gt;&#x27;;<br>            &#125;<br>        &#125;,<br>        visualMap: &#123;<br>            show: true,<br>            showLabel: true,<br>            categories: [0, 1, 2, 3, 4],<br>            calculable: true,<br>            inRange: &#123;<br>                symbol: &#x27;rect&#x27;,<br>                color: [&#x27;#ebedf0&#x27;, &#x27;#c6e48b&#x27;, &#x27;#7bc96f&#x27;, &#x27;#239a3b&#x27;, &#x27;#196127&#x27;]<br>            &#125;,<br>            itemWidth: 12,<br>            itemHeight: 12,<br>            orient: &#x27;horizontal&#x27;,<br>            left: &#x27;center&#x27;,<br>            bottom: 0<br>        &#125;,<br>        calendar: [&#123;<br>            left: &#x27;center&#x27;,<br>            range: &lt;%- rangeArr %&gt;,<br>            cellSize: [13, 13],<br>            splitLine: &#123;<br>                show: false<br>            &#125;,<br>            itemStyle: &#123;<br>                color: &#x27;#196127&#x27;,<br>                borderColor: &#x27;#fff&#x27;,<br>                borderWidth: 2<br>            &#125;,<br>            yearLabel: &#123;<br>                show: true<br>            &#125;,<br>            monthLabel: &#123;<br>                nameMap: &#x27;&lt;%- nameMap %&gt;&#x27;,<br>                fontSize: 11<br>            &#125;,<br>            dayLabel: &#123;<br>                formatter: &#x27;&#123;start&#125;  1st&#x27;,<br>                nameMap: &#x27;&lt;%- nameMap %&gt;&#x27;,<br>                fontSize: 11<br>            &#125;<br>        &#125;],<br>        series: [&#123;<br>            type: &#x27;heatmap&#x27;,<br>            coordinateSystem: &#x27;calendar&#x27;,<br>            calendarIndex: 0,<br>            data: &lt;%- datePosts %&gt;<br>        &#125;]<br><br>    &#125;;<br>         <br>    myChart.setOption(option);<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>之后，找到【…\blog\themes\cactus\source\css】中的【style.styl】文件，这个文件是整个博客的总CSS样式。在文件末尾加入：</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-comment">/*日历云*/</span><br><span class="hljs-selector-id">#post-calendar</span> &#123;<br>  <span class="hljs-attribute">width</span>: <span class="hljs-number">90%</span>;<br>  <span class="hljs-attribute">height</span>: <span class="hljs-number">180px</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<p>其中，日历的宽度和高度均可以自行调整。这样就调整好了整体的配置。最后，将配置语句放到博客的任何位置。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs ejs">&lt;span class=&quot;h2&quot;&gt;<br>  &lt;%= __(&#x27;Post Calender&#x27;) %&gt;<br> &lt;%- partial(&#x27;_partial/post-calendar&#x27;) %&gt;<br>&lt;/span&gt;<br></code></pre></td></tr></table></figure>
+
+<p>比如，我是将日历放到了主页，因此在主页的ejs文件【…\blog\themes\cactus\layout\index.ejs】中加入此语句。</p>
+<p><img src="/post/94815387/image-20221029224006328.png" srcset="/img/loading.gif" lazyload alt="image-20221029224006328"></p>
+<p>这样就完成啦。</p>
+<h2 id="7、添加附件下载功能"><a href="#7、添加附件下载功能" class="headerlink" title="7、添加附件下载功能"></a>7、添加附件下载功能</h2><p>hexo默认打开了文件的链接功能，只需找到blog的配置文件，搜索【post_asset_folder】，将开关都打开。</p>
+<p><img src="/post/94815387/image-20221029225413450.png" srcset="/img/loading.gif" lazyload alt="image-20221029225413450"></p>
+<p>然后在【…\blog\source】下新建一个文件夹download，将文件都放进去。</p>
+<p><img src="/post/94815387/image-20221029225504580.png" srcset="/img/loading.gif" lazyload alt="image-20221029225504580"></p>
+<p>在文件中使用</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs markdown">[<span class="hljs-string">点击下载</span>](<span class="hljs-link">/download/文件名称.格式</span>)<br></code></pre></td></tr></table></figure>
+
+<p>hexo会直接引导到download的位置访问文件。</p>
+<h2 id="8、添加文本复制批注"><a href="#8、添加文本复制批注" class="headerlink" title="8、添加文本复制批注"></a>8、添加文本复制批注</h2><blockquote>
+<p>参考自CSDN<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33430083/article/details/105626840">新手如何给Hexo博客在复制时添加版权声明_只是学习学习的博客-CSDN博客</a></p>
+</blockquote>
+<p>直接在post对应的ejs文件中写入js监听，找到【…\blog\themes\cactus\layout\post.ejs】，在其末尾加入以下js语句</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs js">&lt;script&gt;<br>    <span class="hljs-keyword">function</span> <span class="hljs-title function_">setClipboardText</span>(<span class="hljs-params">event</span>)&#123;<br>        <span class="hljs-comment">// clipboardData 对象是为通过编辑菜单、快捷菜单和快捷键执行的编辑操作所保留的，也就是你复制或者剪切内容</span><br>        <span class="hljs-keyword">let</span> clipboardData = event.<span class="hljs-property">clipboardData</span> || <span class="hljs-variable language_">window</span>.<span class="hljs-property">clipboardData</span>;<br>        <span class="hljs-comment">// 如果未复制或者未剪切，则return出去</span><br>        <span class="hljs-keyword">if</span> (!clipboardData) &#123; <span class="hljs-keyword">return</span>; &#125;<br>        event.<span class="hljs-title function_">preventDefault</span>();<br>        <span class="hljs-comment">// Selection 对象，表示用户选择的文本范围或光标的当前位置。</span><br>        <span class="hljs-comment">//     声明一个变量接收 -- 用户输入的剪切或者复制的文本转化为字符串</span><br>        <span class="hljs-keyword">let</span> text = <span class="hljs-variable language_">window</span>.<span class="hljs-title function_">getSelection</span>().<span class="hljs-title function_">toString</span>();<br>    <br>        <span class="hljs-keyword">if</span> (text) &#123;<br>            <span class="hljs-comment">// 如果文本存在则先取消文本默认事件</span><br>            event.<span class="hljs-title function_">preventDefault</span>();<br>            <span class="hljs-comment">// 通过调用常clipboardData对象的 setData(format, data) 方法；来设置相关文本</span><br>            <span class="hljs-comment">// format: 一个DOMString 表示要添加到 drag object的拖动数据的类型。</span><br>            <span class="hljs-comment">// data: 一个 DOMString表示要添加到 drag object的数据。</span><br>            <span class="hljs-keyword">var</span> copyright = <span class="hljs-string">&#x27;\n\n&#x27;</span><br>            + <span class="hljs-string">&#x27;——————————————————————&#x27;</span><br>            + <span class="hljs-string">&#x27;\n版权声明：本文为「Ywj226」的原创文章，遵循CC BY-NC-ND 4.0版权协议，转载请附上原文出处链接及本声明。&#x27;</span><br>            + <span class="hljs-string">&#x27;\n原文链接：&lt;%= page.permalink %&gt;&#x27;</span><br>    <br>            clipboardData.<span class="hljs-title function_">setData</span>(<span class="hljs-string">&#x27;text/plain&#x27;</span>, text + copyright);<br>    <br>        &#125;<br>    &#125;;<br>    <span class="hljs-keyword">var</span> contents = <span class="hljs-variable language_">document</span>.<span class="hljs-title function_">getElementsByClassName</span>(<span class="hljs-string">&quot;content&quot;</span>);<br>    <span class="hljs-comment">// 监听文章内容的copy事件</span><br>    contents[<span class="hljs-number">0</span>].<span class="hljs-title function_">addEventListener</span>(<span class="hljs-string">&#x27;copy&#x27;</span>,<span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>)&#123;<br>        <span class="hljs-title function_">setClipboardText</span>(e);<br>    &#125;);<br>&lt;/script&gt;<br></code></pre></td></tr></table></figure>
+
+<p>重新启动即可。</p>
+<h2 id="9、添加追番页面（√）"><a href="#9、添加追番页面（√）" class="headerlink" title="9、添加追番页面（√）"></a>9、添加追番页面（√）</h2><blockquote>
+<p>参考自<a target="_blank" rel="noopener" href="https://opensourcelibs.com/lib/hexo-bilibili-bangumi">Hexo Bilibili Bangumi - hexo 番剧页面插件，可选数据源：Bilibili, Bangumi - (hexo-bilibili-bangumi) (opensourcelibs.com)</a></p>
+</blockquote>
+<p>首先设置一个界面用来展示追番界面，这里不再赘述</p>
+<p>然后，使用npm指令安装插件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs git">npm install hexo-bilibili-bangumi --save<br></code></pre></td></tr></table></figure>
+
+<p>之后在博客配置文件中加入以下配置文件</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs yaml"><span class="hljs-attr">bangumi:</span> <span class="hljs-comment"># 追番设置</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">path:</span> <span class="hljs-string">/bilibili/</span><br>  <span class="hljs-attr">vmid:</span> <span class="hljs-comment"># bilibili的uid</span><br>  <span class="hljs-attr">title:</span> <span class="hljs-string">&#x27;追番&#x27;</span><br>  <span class="hljs-attr">quote:</span> <span class="hljs-string">&#x27;生命不息，追番不止！&#x27;</span><br>  <span class="hljs-attr">show:</span> <span class="hljs-number">1</span><br>  <span class="hljs-attr">lazyload:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">loading:</span><br>  <span class="hljs-attr">metaColor:</span><br>  <span class="hljs-attr">color:</span><br>  <span class="hljs-attr">webp:</span><br>  <span class="hljs-attr">progress:</span><br>  <span class="hljs-attr">extra_options:</span><br>    <span class="hljs-attr">key:</span> <span class="hljs-string">value</span><br>    <br><span class="hljs-attr">cinema:</span> <span class="hljs-comment"># 追剧设置</span><br>  <span class="hljs-attr">enable:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">path:</span><br>  <span class="hljs-attr">vmid:</span><br>  <span class="hljs-attr">title:</span> <span class="hljs-string">&#x27;追剧列表&#x27;</span><br>  <span class="hljs-attr">quote:</span> <span class="hljs-string">&#x27;生命不息，追剧不止！&#x27;</span><br>  <span class="hljs-attr">show:</span> <span class="hljs-number">1</span><br>  <span class="hljs-attr">lazyload:</span> <span class="hljs-literal">true</span><br>  <span class="hljs-attr">loading:</span><br>  <span class="hljs-attr">metaColor:</span><br>  <span class="hljs-attr">color:</span><br>  <span class="hljs-attr">webp:</span><br>  <span class="hljs-attr">progress:</span><br>  <span class="hljs-attr">extra_options:</span><br>    <span class="hljs-attr">key:</span> <span class="hljs-string">value</span><br></code></pre></td></tr></table></figure>
+
+<p>在每次进行<code>hexo clean</code>与<code>hexo g</code>之后，再运行一步<code>hexo bangumi -u</code>来更新番剧数据即可。</p>
+<p>若需要加入在b站上未上线的番剧，可以自行在【…\blog\source_data】文件夹中新建一个【extra_bangumis.json】文件，然后以json格式将数据自行写入。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;watchedExtra&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;缘之空&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;番剧&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;area&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;日本&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;cover&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;https://cdn.jsdelivr.net/gh/mmdjiji/bangumis@main/Yosuga-no-Sora/cover.jpg&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;totalCount&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;全12话&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">0</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;follow&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;不可用&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;view&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;不可用&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;danmaku&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;不可用&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;coin&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;不可用&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;score&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;不可用&quot;</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;des&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;远离都市的田园小镇，奥木染。春日野悠带着妹妹穹，来到了这座城镇。坐落在这里的是，儿时暑假经常造访的充满回忆的已故祖父的家。双亲因意外事故而丧生，变得无依无靠...&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><br>  <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<p>这样就完成了。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%97%A5%E5%B8%B8tips/" class="category-chain-item">日常tips</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/hexo/">#hexo</a>
+      
+        <a href="/tags/cactus/">#cactus</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>hexo-cactus魔改笔记+bug修复记录</div>
+      <div>http://paopao0226.site/post/94815387.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年10月16日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/eb959071.html" title="神经网络与深度学习实验二——机器学习基础">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">神经网络与深度学习实验二——机器学习基础</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/614876e7.html" title="Python课程学习笔记">
+                        <span class="hidden-mobile">Python课程学习笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

@@ -1,0 +1,895 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="对于2021年冬季学期由Stanford开设的CS224n课程的作业记录，这里是Assignment4：机器翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS224N作业A4：机器翻译">
+<meta property="og:url" content="http://paopao0226.site/post/1ce6e410.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="对于2021年冬季学期由Stanford开设的CS224n课程的作业记录，这里是Assignment4：机器翻译">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/1ce6e410/image-20230401000237712.png">
+<meta property="og:image" content="http://paopao0226.site/post/1ce6e410/image-20230401000612593.png">
+<meta property="article:published_time" content="2023-03-31T15:30:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.738Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="自然语言处理">
+<meta property="article:tag" content="Stanford CS224n">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/1ce6e410/image-20230401000237712.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CS224N作业A4：机器翻译 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover6.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS224N作业A4：机器翻译"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-31 23:30" pubdate>
+          2023年3月31日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          24k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          201 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CS224N作业A4：机器翻译</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                
+
+	<div class="row">
+    <embed src="../download/a4.pdf" width="100%" height="550" type="application/pdf">
+	</div>
+
+
+
+
+<h1 id="1、Neural-Machine-Translation-with-RNNs-45-points"><a href="#1、Neural-Machine-Translation-with-RNNs-45-points" class="headerlink" title="1、Neural Machine Translation with RNNs (45 points)"></a>1、<strong>Neural Machine Translation with RNNs (45 points)</strong></h1><h3 id="（a）"><a href="#（a）" class="headerlink" title="（a）"></a>（a）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">pad_sents</span>(<span class="hljs-params">sents, pad_token</span>):<br>    <span class="hljs-string">&quot;&quot;&quot; Pad list of sentences according to the longest sentence in the batch.</span><br><span class="hljs-string">        The paddings should be at the end of each sentence.</span><br><span class="hljs-string">    @param sents (list[list[str]]): list of sentences, where each sentence</span><br><span class="hljs-string">                                    is represented as a list of words</span><br><span class="hljs-string">    @param pad_token (str): padding token</span><br><span class="hljs-string">    @returns sents_padded (list[list[str]]): list of sentences where sentences shorter</span><br><span class="hljs-string">        than the max length sentence are padded out with the pad_token, such that</span><br><span class="hljs-string">        each sentences in the batch now has equal length.</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    sents_padded = []<br><br>    <span class="hljs-comment">### YOUR CODE HERE (~6 Lines)</span><br>    len_list = [<span class="hljs-built_in">len</span>(l) <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> sents]<br>    max_len = <span class="hljs-built_in">sorted</span>(len_list,reverse=<span class="hljs-literal">True</span>)[<span class="hljs-number">0</span>]<br>    <span class="hljs-keyword">for</span> l <span class="hljs-keyword">in</span> sents:<br>        <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(max_len-<span class="hljs-built_in">len</span>(l)):<br>            l.append(pad_token)<br>        sents_padded.append(l)<br>    <span class="hljs-comment">### END YOUR CODE</span><br>    <span class="hljs-keyword">return</span> sents_padded<br></code></pre></td></tr></table></figure>
+
+<h3 id="（b）"><a href="#（b）" class="headerlink" title="（b）"></a>（b）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ModelEmbeddings</span>(nn.Module): <br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    Class that converts input words to their embeddings.</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, embed_size, vocab</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">        Init the Embedding layers.</span><br><span class="hljs-string"></span><br><span class="hljs-string">        @param embed_size (int): Embedding size (dimensionality)</span><br><span class="hljs-string">        @param vocab (Vocab): Vocabulary object containing src and tgt languages</span><br><span class="hljs-string">                              See vocab.py for documentation.</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-built_in">super</span>(ModelEmbeddings, self).__init__()<br>        self.embed_size = embed_size<br><br>        <span class="hljs-comment"># default values</span><br>        self.source = <span class="hljs-literal">None</span><br>        self.target = <span class="hljs-literal">None</span><br><br>        src_pad_token_idx = vocab.src[<span class="hljs-string">&#x27;&lt;pad&gt;&#x27;</span>]<br>        tgt_pad_token_idx = vocab.tgt[<span class="hljs-string">&#x27;&lt;pad&gt;&#x27;</span>]<br><br>        <span class="hljs-comment">### YOUR CODE HERE (~2 Lines)</span><br>        <span class="hljs-comment">### TODO - Initialize the following variables:</span><br>        <span class="hljs-comment">###     self.source (Embedding Layer for source language)</span><br>        <span class="hljs-comment">###     self.target (Embedding Layer for target langauge)</span><br>        <span class="hljs-comment">###</span><br>        <span class="hljs-comment">### Note:</span><br>        <span class="hljs-comment">###     1. `vocab` object contains two vocabularies:</span><br>        <span class="hljs-comment">###            `vocab.src` for source</span><br>        <span class="hljs-comment">###            `vocab.tgt` for target</span><br>        <span class="hljs-comment">###     2. You can get the length of a specific vocabulary by running:</span><br>        <span class="hljs-comment">###             `len(vocab.&lt;specific_vocabulary&gt;)`</span><br>        <span class="hljs-comment">###     3. Remember to include the padding token for the specific vocabulary</span><br>        <span class="hljs-comment">###        when creating your Embedding.</span><br>        <span class="hljs-comment">###</span><br>        <span class="hljs-comment">### Use the following docs to properly initialize these variables:</span><br>        <span class="hljs-comment">###     Embedding Layer:</span><br>        <span class="hljs-comment">###         https://pytorch.org/docs/stable/nn.html#torch.nn.Embedding</span><br>        self.source = nn.Embedding(<span class="hljs-built_in">len</span>(vocab.src),embed_size,padding_idx=src_pad_token_idx)<br>        self.target = nn.Embedding(<span class="hljs-built_in">len</span>(vocab.tgt),embed_size,padding_idx=tgt_pad_token_idx)<br><br>        <span class="hljs-comment">### END YOUR CODE</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="（c）"><a href="#（c）" class="headerlink" title="（c）"></a>（c）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, embed_size, hidden_size, vocab, dropout_rate=<span class="hljs-number">0.2</span></span>):<br>       <span class="hljs-string">&quot;&quot;&quot; Init NMT Model.</span><br><span class="hljs-string"></span><br><span class="hljs-string">       @param embed_size (int): Embedding size (dimensionality)</span><br><span class="hljs-string">       @param hidden_size (int): Hidden Size, the size of hidden states (dimensionality)</span><br><span class="hljs-string">       @param vocab (Vocab): Vocabulary object containing src and tgt languages</span><br><span class="hljs-string">                             See vocab.py for documentation.</span><br><span class="hljs-string">       @param dropout_rate (float): Dropout probability, for attention</span><br><span class="hljs-string">       &quot;&quot;&quot;</span><br>       <span class="hljs-built_in">super</span>(NMT, self).__init__()<br>       self.model_embeddings = ModelEmbeddings(embed_size, vocab)<br>       self.hidden_size = hidden_size<br>       self.dropout_rate = dropout_rate<br>       self.vocab = vocab<br><br>       <span class="hljs-comment"># default values</span><br>       self.encoder = <span class="hljs-literal">None</span><br>       self.decoder = <span class="hljs-literal">None</span><br>       self.h_projection = <span class="hljs-literal">None</span><br>       self.c_projection = <span class="hljs-literal">None</span><br>       self.att_projection = <span class="hljs-literal">None</span><br>       self.combined_output_projection = <span class="hljs-literal">None</span><br>       self.target_vocab_projection = <span class="hljs-literal">None</span><br>       self.dropout = <span class="hljs-literal">None</span><br>       <span class="hljs-comment"># For sanity check only, not relevant to implementation</span><br>       self.gen_sanity_check = <span class="hljs-literal">False</span><br>       self.counter = <span class="hljs-number">0</span><br><br>       <span class="hljs-comment">### YOUR CODE HERE (~9 Lines)</span><br>       <span class="hljs-comment">### TODO - Initialize the following variables IN THIS ORDER:</span><br>       <span class="hljs-comment">###     self.post_embed_cnn (Conv1d layer with kernel size 2, input and output channels = embed_size,</span><br>       <span class="hljs-comment">###         padding = same to preserve output shape)</span><br>       <span class="hljs-comment">###     self.encoder (Bidirectional LSTM with bias)</span><br>       <span class="hljs-comment">###     self.decoder (LSTM Cell with bias)</span><br>       <span class="hljs-comment">###     self.h_projection (Linear Layer with no bias), called W_&#123;h&#125; in the PDF.</span><br>       <span class="hljs-comment">###     self.c_projection (Linear Layer with no bias), called W_&#123;c&#125; in the PDF.</span><br>       <span class="hljs-comment">###     self.att_projection (Linear Layer with no bias), called W_&#123;attProj&#125; in the PDF.</span><br>       <span class="hljs-comment">###     self.combined_output_projection (Linear Layer with no bias), called W_&#123;u&#125; in the PDF.</span><br>       <span class="hljs-comment">###     self.target_vocab_projection (Linear Layer with no bias), called W_&#123;vocab&#125; in the PDF.</span><br>       <span class="hljs-comment">###     self.dropout (Dropout Layer)</span><br>       <span class="hljs-comment">###</span><br>       <span class="hljs-comment">### Use the following docs to properly initialize these variables:</span><br>       <span class="hljs-comment">###     LSTM:</span><br>       <span class="hljs-comment">###         https://pytorch.org/docs/stable/nn.html#torch.nn.LSTM</span><br>       <span class="hljs-comment">###     LSTM Cell:</span><br>       <span class="hljs-comment">###         https://pytorch.org/docs/stable/nn.html#torch.nn.LSTMCell</span><br>       <span class="hljs-comment">###     Linear Layer:</span><br>       <span class="hljs-comment">###         https://pytorch.org/docs/stable/nn.html#torch.nn.Linear</span><br>       <span class="hljs-comment">###     Dropout Layer:</span><br>       <span class="hljs-comment">###         https://pytorch.org/docs/stable/nn.html#torch.nn.Dropout</span><br>       <span class="hljs-comment">###     Conv1D Layer:</span><br>       <span class="hljs-comment">###         https://pytorch.org/docs/stable/generated/torch.nn.Conv1d.html</span><br>       <span class="hljs-comment">#padding的策略是samee      </span><br>       self.post_embed_cnn = nn.Conv1d(in_channels=embed_size,out_channels=embed_size,kernel_size=<span class="hljs-number">2</span>,padding=<span class="hljs-string">&quot;same&quot;</span>)<br>       self.encoder = nn.LSTM(input_size=embed_size,hidden_size=hidden_size,bidirectional=<span class="hljs-literal">True</span>,bias=<span class="hljs-literal">True</span>)<br>       self.decoder = nn.LSTMCell(input_size=embed_size+hidden_size,hidden_size=hidden_size,bias=<span class="hljs-literal">True</span>)<br>       self.h_projection = nn.Linear(in_features=<span class="hljs-number">2</span>*hidden_size,out_features=hidden_size,bias=<span class="hljs-literal">False</span>)<br>       self.c_projection = nn.Linear(in_features=<span class="hljs-number">2</span>*hidden_size,out_features=hidden_size,bias=<span class="hljs-literal">False</span>)<br>       self.att_projection = nn.Linear(in_features=<span class="hljs-number">2</span>*hidden_size,out_features=hidden_size,bias=<span class="hljs-literal">False</span>)<br>       self.combined_output_projection = nn.Linear(in_features=<span class="hljs-number">3</span>*hidden_size,out_features=hidden_size,bias=<span class="hljs-literal">False</span>)<br>       <span class="hljs-comment">#这里需要注意输出的是vocab.target的size</span><br>       self.target_vocab_projection = nn.Linear(in_features=hidden_size,out_features=<span class="hljs-built_in">len</span>(vocab.tgt),bias=<span class="hljs-literal">False</span>)<br>       self.dropout = nn.Dropout(p=dropout_rate)<br><br>       <span class="hljs-comment">### END YOUR CODE</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="（d）"><a href="#（d）" class="headerlink" title="（d）"></a>（d）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">encode</span>(<span class="hljs-params">self, source_padded: torch.Tensor, source_lengths: <span class="hljs-type">List</span>[<span class="hljs-built_in">int</span>]</span>) -&gt; <span class="hljs-type">Tuple</span>[<br>    torch.Tensor, <span class="hljs-type">Tuple</span>[torch.Tensor, torch.Tensor]]:<br>    <span class="hljs-string">&quot;&quot;&quot; Apply the encoder to source sentences to obtain encoder hidden states.</span><br><span class="hljs-string">        Additionally, take the final states of the encoder and project them to obtain initial states for decoder.</span><br><span class="hljs-string"></span><br><span class="hljs-string">    @param source_padded (Tensor): Tensor of padded source sentences with shape (src_len, b), where</span><br><span class="hljs-string">                                    b = batch_size, src_len = maximum source sentence length. Note that</span><br><span class="hljs-string">                                   these have already been sorted in order of longest to shortest sentence.</span><br><span class="hljs-string">    @param source_lengths (List[int]): List of actual lengths for each of the source sentences in the batch</span><br><span class="hljs-string">    @returns enc_hiddens (Tensor): Tensor of hidden units with shape (b, src_len, h*2), where</span><br><span class="hljs-string">                                    b = batch size, src_len = maximum source sentence length, h = hidden size.</span><br><span class="hljs-string">    @returns dec_init_state (tuple(Tensor, Tensor)): Tuple of tensors representing the decoder&#x27;s initial</span><br><span class="hljs-string">                                            hidden state and cell. Both tensors should have shape (2, b, h).</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    enc_hiddens, dec_init_state = <span class="hljs-literal">None</span>, <span class="hljs-literal">None</span><br><br>    <span class="hljs-comment">### YOUR CODE HERE (~ 11 Lines)</span><br>    <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>    <span class="hljs-comment">###     1. Construct Tensor `X` of source sentences with shape (src_len, b, e) using the source model embeddings.</span><br>    <span class="hljs-comment">###         src_len = maximum source sentence length, b = batch size, e = embedding size. Note</span><br>    <span class="hljs-comment">###         that there is no initial hidden state or cell for the encoder.</span><br>    <span class="hljs-comment">###     2. Apply the post_embed_cnn layer. Before feeding X into the CNN, first use torch.permute to change the</span><br>    <span class="hljs-comment">###         shape of X to (b, e, src_len). After getting the output from the CNN, still stored in the X variable,</span><br>    <span class="hljs-comment">###         remember to use torch.permute again to revert X back to its original shape.</span><br>    <span class="hljs-comment">###     3. Compute `enc_hiddens`, `last_hidden`, `last_cell` by applying the encoder to `X`.</span><br>    <span class="hljs-comment">###         - Before you can apply the encoder, you need to apply the `pack_padded_sequence` function to X.</span><br>    <span class="hljs-comment">###         - After you apply the encoder, you need to apply the `pad_packed_sequence` function to enc_hiddens.</span><br>    <span class="hljs-comment">###         - Note that the shape of the tensor output returned by the encoder RNN is (src_len, b, h*2) and we want to</span><br>    <span class="hljs-comment">###           return a tensor of shape (b, src_len, h*2) as `enc_hiddens`, so you may need to do more permuting.</span><br>    <span class="hljs-comment">###         - Note on using pad_packed_sequence -&gt; For batched inputs, you need to make sure that each of the</span><br>    <span class="hljs-comment">###           individual input examples has the same shape.</span><br>    <span class="hljs-comment">###     4. Compute `dec_init_state` = (init_decoder_hidden, init_decoder_cell):</span><br>    <span class="hljs-comment">###         - `init_decoder_hidden`:</span><br>    <span class="hljs-comment">###             `last_hidden` is a tensor shape (2, b, h). The first dimension corresponds to forwards and backwards.</span><br>    <span class="hljs-comment">###             Concatenate the forwards and backwards tensors to obtain a tensor shape (b, 2*h).</span><br>    <span class="hljs-comment">###             Apply the h_projection layer to this in order to compute init_decoder_hidden.</span><br>    <span class="hljs-comment">###             This is h_0^&#123;dec&#125; in the PDF. Here b = batch size, h = hidden size</span><br>    <span class="hljs-comment">###         - `init_decoder_cell`:</span><br>    <span class="hljs-comment">###             `last_cell` is a tensor shape (2, b, h). The first dimension corresponds to forwards and backwards.</span><br>    <span class="hljs-comment">###             Concatenate the forwards and backwards tensors to obtain a tensor shape (b, 2*h).</span><br>    <span class="hljs-comment">###             Apply the c_projection layer to this in order to compute init_decoder_cell.</span><br>    <span class="hljs-comment">###             This is c_0^&#123;dec&#125; in the PDF. Here b = batch size, h = hidden size</span><br>    <span class="hljs-comment">###</span><br>    <span class="hljs-comment">### See the following docs, as you may need to use some of the following functions in your implementation:</span><br>    <span class="hljs-comment">###     Pack the padded sequence X before passing to the encoder:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/generated/torch.nn.utils.rnn.pack_padded_sequence.html</span><br>    <span class="hljs-comment">###     Pad the packed sequence, enc_hiddens, returned by the encoder:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/generated/torch.nn.utils.rnn.pad_packed_sequence.html</span><br>    <span class="hljs-comment">###     Tensor Concatenation:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/generated/torch.cat.html</span><br>    <span class="hljs-comment">###     Tensor Permute:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/generated/torch.permute.html</span><br>    <span class="hljs-comment">###     Tensor Reshape (a possible alternative to permute):</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/generated/torch.Tensor.reshape.html</span><br>    <span class="hljs-comment"># 注意这里需要理解一下模型的结构，前面定义了Model_embed层，其中source是一个Embedding，可以直接嵌入source语句</span><br>    X = self.model_embeddings.source(source_padded)<br>    X = self.post_embed_cnn(X.permute(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>,<span class="hljs-number">0</span>))<br>    X = X.permute(<span class="hljs-number">2</span>,<span class="hljs-number">0</span>,<span class="hljs-number">1</span>)<br>    enc_hiddens,(last_hidden,last_cell) = self.encoder(pack_padded_sequence(X,source_lengths))<br>    enc_hiddens = pad_packed_sequence(enc_hiddens)[<span class="hljs-number">0</span>].permute(<span class="hljs-number">1</span>,<span class="hljs-number">0</span>,<span class="hljs-number">2</span>)<br>    <span class="hljs-comment">#0，1的顺序（我个人感觉和pdf不一致）</span><br>    last_hidden = torch.cat((last_hidden[<span class="hljs-number">0</span>],last_hidden[<span class="hljs-number">1</span>]),dim=<span class="hljs-number">1</span>)<br>    last_cell = torch.cat((last_cell[<span class="hljs-number">0</span>],last_cell[<span class="hljs-number">1</span>]),dim=<span class="hljs-number">1</span>)<br>    init_decoder_hidden = self.h_projection(last_hidden)<br>    init_decoder_cell = self.c_projection(last_cell)<br>    dec_init_state = (init_decoder_hidden,init_decoder_cell)<br>    <span class="hljs-comment">### END YOUR CODE</span><br>    <span class="hljs-keyword">return</span> enc_hiddens, dec_init_state<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/1ce6e410/image-20230401000237712.png" srcset="/img/loading.gif" lazyload alt="image-20230401000237712"></p>
+<h3 id="（e）"><a href="#（e）" class="headerlink" title="（e）"></a>（e）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">decode</span>(<span class="hljs-params">self, enc_hiddens: torch.Tensor, enc_masks: torch.Tensor,</span><br><span class="hljs-params">           dec_init_state: <span class="hljs-type">Tuple</span>[torch.Tensor, torch.Tensor], target_padded: torch.Tensor</span>) -&gt; torch.Tensor:<br>    <span class="hljs-string">&quot;&quot;&quot;Compute combined output vectors for a batch.</span><br><span class="hljs-string"></span><br><span class="hljs-string">    @param enc_hiddens (Tensor): Hidden states (b, src_len, h*2), where</span><br><span class="hljs-string">                                 b = batch size, src_len = maximum source sentence length, h = hidden size.</span><br><span class="hljs-string">    @param enc_masks (Tensor): Tensor of sentence masks (b, src_len), where</span><br><span class="hljs-string">                                 b = batch size, src_len = maximum source sentence length.</span><br><span class="hljs-string">    @param dec_init_state (tuple(Tensor, Tensor)): Initial state and cell for decoder</span><br><span class="hljs-string">    @param target_padded (Tensor): Gold-standard padded target sentences (tgt_len, b), where</span><br><span class="hljs-string">                                   tgt_len = maximum target sentence length, b = batch size.</span><br><span class="hljs-string"></span><br><span class="hljs-string">    @returns combined_outputs (Tensor): combined output tensor  (tgt_len, b,  h), where</span><br><span class="hljs-string">                                    tgt_len = maximum target sentence length, b = batch_size,  h = hidden size</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-comment"># Chop off the &lt;END&gt; token for max length sentences.</span><br>    target_padded = target_padded[:-<span class="hljs-number">1</span>]<br><br>    <span class="hljs-comment"># Initialize the decoder state (hidden and cell)</span><br>    dec_state = dec_init_state<br><br>    <span class="hljs-comment"># Initialize previous combined output vector o_&#123;t-1&#125; as zero</span><br>    batch_size = enc_hiddens.size(<span class="hljs-number">0</span>)<br>    o_prev = torch.zeros(batch_size, self.hidden_size, device=self.device)<br><br>    <span class="hljs-comment"># Initialize a list we will use to collect the combined output o_t on each step</span><br>    combined_outputs = []<br><br>    <span class="hljs-comment">### YOUR CODE HERE (~9 Lines)</span><br>    <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>    <span class="hljs-comment">###     1. Apply the attention projection layer to `enc_hiddens` to obtain `enc_hiddens_proj`,</span><br>    <span class="hljs-comment">###         which should be shape (b, src_len, h),</span><br>    <span class="hljs-comment">###         where b = batch size, src_len = maximum source length, h = hidden size.</span><br>    <span class="hljs-comment">###         This is applying W_&#123;attProj&#125; to h^enc, as described in the PDF.</span><br>    <span class="hljs-comment">###     2. Construct tensor `Y` of target sentences with shape (tgt_len, b, e) using the target model embeddings.</span><br>    <span class="hljs-comment">###         where tgt_len = maximum target sentence length, b = batch size, e = embedding size.</span><br>    <span class="hljs-comment">###     3. Use the torch.split function to iterate over the time dimension of Y.</span><br>    <span class="hljs-comment">###         Within the loop, this will give you Y_t of shape (1, b, e) where b = batch size, e = embedding size.</span><br>    <span class="hljs-comment">###             - Squeeze Y_t into a tensor of dimension (b, e).</span><br>    <span class="hljs-comment">###             - Construct Ybar_t by concatenating Y_t with o_prev on their last dimension</span><br>    <span class="hljs-comment">###             - Use the step function to compute the the Decoder&#x27;s next (cell, state) values</span><br>    <span class="hljs-comment">###               as well as the new combined output o_t.</span><br>    <span class="hljs-comment">###             - Append o_t to combined_outputs</span><br>    <span class="hljs-comment">###             - Update o_prev to the new o_t.</span><br>    <span class="hljs-comment">###     4. Use torch.stack to convert combined_outputs from a list length tgt_len of</span><br>    <span class="hljs-comment">###         tensors shape (b, h), to a single tensor shape (tgt_len, b, h)</span><br>    <span class="hljs-comment">###         where tgt_len = maximum target sentence length, b = batch size, h = hidden size.</span><br>    <span class="hljs-comment">###</span><br>    <span class="hljs-comment">### Note:</span><br>    <span class="hljs-comment">###    - When using the squeeze() function make sure to specify the dimension you want to squeeze</span><br>    <span class="hljs-comment">###      over. Otherwise, you will remove the batch dimension accidentally, if batch_size = 1.</span><br>    <span class="hljs-comment">###</span><br>    <span class="hljs-comment">### You may find some of these functions useful:</span><br>    <span class="hljs-comment">###     Zeros Tensor:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/torch.html#torch.zeros</span><br>    <span class="hljs-comment">###     Tensor Splitting (iteration):</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/torch.html#torch.split</span><br>    <span class="hljs-comment">###     Tensor Dimension Squeezing:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/torch.html#torch.squeeze</span><br>    <span class="hljs-comment">###     Tensor Concatenation:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/torch.html#torch.cat</span><br>    <span class="hljs-comment">###     Tensor Stacking:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/torch.html#torch.stack</span><br>    <span class="hljs-comment">#enc_hidden:(b, src_len, h*2)</span><br>    enc_hiddens_proj = self.att_projection(enc_hiddens)<br>    <span class="hljs-comment"># self.model_embeddings.target</span><br>    Y = self.model_embeddings.target(target_padded)<br>    Y = torch.split(Y,<span class="hljs-number">1</span>,dim=<span class="hljs-number">0</span>)<br>    <span class="hljs-keyword">for</span> y_t <span class="hljs-keyword">in</span> Y:<br>        y_t = torch.squeeze(y_t)<br>        ybar_t = torch.cat((y_t,o_prev),dim=<span class="hljs-number">1</span>)<br>        dec_state,o_t,e_t = self.step(ybar_t,dec_state,enc_hiddens,enc_hiddens_proj,enc_masks)<br>        combined_outputs.append(o_t)<br>        o_prev = o_t<br>    combined_outputs=torch.stack(combined_outputs,dim=<span class="hljs-number">0</span>)<br>    <span class="hljs-comment">### END YOUR CODE</span><br><br>    <span class="hljs-keyword">return</span> combined_outputs<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/1ce6e410/image-20230401000612593.png" srcset="/img/loading.gif" lazyload alt="image-20230401000612593"></p>
+<h3 id="（f）"><a href="#（f）" class="headerlink" title="（f）"></a>（f）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">step</span>(<span class="hljs-params">self, Ybar_t: torch.Tensor,</span><br><span class="hljs-params">         dec_state: <span class="hljs-type">Tuple</span>[torch.Tensor, torch.Tensor],</span><br><span class="hljs-params">         enc_hiddens: torch.Tensor,</span><br><span class="hljs-params">         enc_hiddens_proj: torch.Tensor,</span><br><span class="hljs-params">         enc_masks: torch.Tensor</span>) -&gt; <span class="hljs-type">Tuple</span>[<span class="hljs-type">Tuple</span>, torch.Tensor, torch.Tensor]:<br>    <span class="hljs-string">&quot;&quot;&quot; Compute one forward step of the LSTM decoder, including the attention computation.</span><br><span class="hljs-string"></span><br><span class="hljs-string">    @param Ybar_t (Tensor): Concatenated Tensor of [Y_t o_prev], with shape (b, e + h). The input for the decoder,</span><br><span class="hljs-string">                            where b = batch size, e = embedding size, h = hidden size.</span><br><span class="hljs-string">    @param dec_state (tuple(Tensor, Tensor)): Tuple of tensors both with shape (b, h), where b = batch size, h = hidden size.</span><br><span class="hljs-string">            First tensor is decoder&#x27;s prev hidden state, second tensor is decoder&#x27;s prev cell.</span><br><span class="hljs-string">    @param enc_hiddens (Tensor): Encoder hidden states Tensor, with shape (b, src_len, h * 2), where b = batch size,</span><br><span class="hljs-string">                                src_len = maximum source length, h = hidden size.</span><br><span class="hljs-string">    @param enc_hiddens_proj (Tensor): Encoder hidden states Tensor, projected from (h * 2) to h. Tensor is with shape (b, src_len, h),</span><br><span class="hljs-string">                                where b = batch size, src_len = maximum source length, h = hidden size.</span><br><span class="hljs-string">    @param enc_masks (Tensor): Tensor of sentence masks shape (b, src_len),</span><br><span class="hljs-string">                                where b = batch size, src_len is maximum source length.</span><br><span class="hljs-string"></span><br><span class="hljs-string">    @returns dec_state (tuple (Tensor, Tensor)): Tuple of tensors both shape (b, h), where b = batch size, h = hidden size.</span><br><span class="hljs-string">            First tensor is decoder&#x27;s new hidden state, second tensor is decoder&#x27;s new cell.</span><br><span class="hljs-string">    @returns combined_output (Tensor): Combined output Tensor at timestep t, shape (b, h), where b = batch size, h = hidden size.</span><br><span class="hljs-string">    @returns e_t (Tensor): Tensor of shape (b, src_len). It is attention scores distribution.</span><br><span class="hljs-string">                            Note: You will not use this outside of this function.</span><br><span class="hljs-string">                                  We are simply returning this value so that we can sanity check</span><br><span class="hljs-string">                                  your implementation.</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br><br>    combined_output = <span class="hljs-literal">None</span><br><br>    <span class="hljs-comment">### YOUR CODE HERE (~3 Lines)</span><br>    <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>    <span class="hljs-comment">###     1. Apply the decoder to `Ybar_t` and `dec_state`to obtain the new dec_state.</span><br>    <span class="hljs-comment">###     2. Split dec_state into its two parts (dec_hidden, dec_cell)</span><br>    <span class="hljs-comment">###     3. Compute the attention scores e_t, a Tensor shape (b, src_len).</span><br>    <span class="hljs-comment">###        Note: b = batch_size, src_len = maximum source length, h = hidden size.</span><br>    <span class="hljs-comment">###</span><br>    <span class="hljs-comment">###       Hints:</span><br>    <span class="hljs-comment">###         - dec_hidden is shape (b, h) and corresponds to h^dec_t in the PDF (batched)</span><br>    <span class="hljs-comment">###         - enc_hiddens_proj is shape (b, src_len, h) and corresponds to W_&#123;attProj&#125; h^enc (batched).</span><br>    <span class="hljs-comment">###         - Use batched matrix multiplication (torch.bmm) to compute e_t (be careful about the input/ output shapes!)</span><br>    <span class="hljs-comment">###         - To get the tensors into the right shapes for bmm, you will need to do some squeezing and unsqueezing.</span><br>    <span class="hljs-comment">###         - When using the squeeze() function make sure to specify the dimension you want to squeeze</span><br>    <span class="hljs-comment">###             over. Otherwise, you will remove the batch dimension accidentally, if batch_size = 1.</span><br>    <span class="hljs-comment">###</span><br>    <span class="hljs-comment">### Use the following docs to implement this functionality:</span><br>    <span class="hljs-comment">###     Batch Multiplication:</span><br>    <span class="hljs-comment">###        https://pytorch.org/docs/stable/torch.html#torch.bmm</span><br>    <span class="hljs-comment">###     Tensor Unsqueeze:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/torch.html#torch.unsqueeze</span><br>    <span class="hljs-comment">###     Tensor Squeeze:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/torch.html#torch.squeeze</span><br>    dec_state = self.decoder(Ybar_t,dec_state)<br>    dec_hidden = dec_state[<span class="hljs-number">0</span>]<br>    dec_cell = dec_state[<span class="hljs-number">1</span>]<br>    <span class="hljs-comment"># enc_hidden_proj:(b,src_len,h), dec_hidden:(b,h),e_t:(b,src_len)</span><br>    <span class="hljs-comment"># torch.squeeze去除size==1的维度，unsqueeze在指定维度补1</span><br>    e_t = torch.bmm(enc_hiddens_proj,dec_hidden.unsqueeze(-<span class="hljs-number">1</span>)).squeeze(-<span class="hljs-number">1</span>)<br>    <span class="hljs-comment">### END YOUR CODE</span><br><br>    <span class="hljs-comment"># Set e_t to -inf where enc_masks has 1</span><br>    <span class="hljs-keyword">if</span> enc_masks <span class="hljs-keyword">is</span> <span class="hljs-keyword">not</span> <span class="hljs-literal">None</span>:<br>        e_t.data.masked_fill_(enc_masks.<span class="hljs-built_in">bool</span>(), -<span class="hljs-built_in">float</span>(<span class="hljs-string">&#x27;inf&#x27;</span>))<br><br>    <span class="hljs-comment">### YOUR CODE HERE (~6 Lines)</span><br>    <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>    <span class="hljs-comment">###     1. Apply softmax to e_t to yield alpha_t</span><br>    <span class="hljs-comment">###     2. Use batched matrix multiplication between alpha_t and enc_hiddens to obtain the</span><br>    <span class="hljs-comment">###         attention output vector, a_t.</span><br>    <span class="hljs-comment"># $$     Hints:</span><br>    <span class="hljs-comment">###           - alpha_t is shape (b, src_len)</span><br>    <span class="hljs-comment">###           - enc_hiddens is shape (b, src_len, 2h)</span><br>    <span class="hljs-comment">###           - a_t should be shape (b, 2h)</span><br>    <span class="hljs-comment">###           - You will need to do some squeezing and unsqueezing.</span><br>    <span class="hljs-comment">###     Note: b = batch size, src_len = maximum source length, h = hidden size.</span><br>    <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>    <span class="hljs-comment">###     3. Concatenate dec_hidden with a_t to compute tensor U_t</span><br>    <span class="hljs-comment">###     4. Apply the combined output projection layer to U_t to compute tensor V_t</span><br>    <span class="hljs-comment">###     5. Compute tensor O_t by first applying the Tanh function and then the dropout layer.</span><br>    <span class="hljs-comment">###</span><br>    <span class="hljs-comment">### Use the following docs to implement this functionality:</span><br>    <span class="hljs-comment">###     Softmax:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/nn.functional.html#torch.nn.functional.softmax</span><br>    <span class="hljs-comment">###     Batch Multiplication:</span><br>    <span class="hljs-comment">###        https://pytorch.org/docs/stable/torch.html#torch.bmm</span><br>    <span class="hljs-comment">###     Tensor View:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/tensors.html#torch.Tensor.view</span><br>    <span class="hljs-comment">###     Tensor Concatenation:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/torch.html#torch.cat</span><br>    <span class="hljs-comment">###     Tanh:</span><br>    <span class="hljs-comment">###         https://pytorch.org/docs/stable/torch.html#torch.tanh</span><br>    alpha_t = F.softmax(e_t)<br>    a_t = torch.bmm(alpha_t.unsqueeze(<span class="hljs-number">1</span>),enc_hiddens).squeeze(dim=<span class="hljs-number">1</span>)<br>    U_t = torch.cat((a_t,dec_hidden),dim=<span class="hljs-number">1</span>)<br>    V_t = self.combined_output_projection(U_t)<br>    O_t = self.dropout(F.tanh(V_t))<br><br>    <span class="hljs-comment">### END YOUR CODE</span><br><br>    combined_output = O_t<br>    <span class="hljs-keyword">return</span> dec_state, combined_output, e_t<br></code></pre></td></tr></table></figure>
+
+<h3 id="（g）"><a href="#（g）" class="headerlink" title="（g）"></a>（g）</h3><p>对encoder的padding数据进行mask，能够标记出数据中padding过程补足的位置，从而在训练过程中用一些方法将其忽略，减少其在注意力计算中产生的影响。使用masks时，对补充的位置masks值设置为1，即bool&#x3D;True，这样在Encoder建模过程中就可以将padding的位置补充为-inf，而注意力计算过程中$exp(-inf) \rightarrow 0$，从而使模型对padding的部分忽略。</p>
+<h3 id="（h）"><a href="#（h）" class="headerlink" title="（h）"></a>（h）</h3><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><code class="hljs txt">epoch 3, iter 18610, avg. loss 58.13, avg. ppl 8.95 cum. examples 320, speed 1491.16 words/sec, time elapsed 3291.41 sec<br>epoch 3, iter 18620, avg. loss 54.11, avg. ppl 8.00 cum. examples 640, speed 5900.33 words/sec, time elapsed 3292.82 sec<br>epoch 3, iter 18630, avg. loss 56.25, avg. ppl 8.79 cum. examples 960, speed 5968.53 words/sec, time elapsed 3294.21 sec<br>epoch 3, iter 18640, avg. loss 58.12, avg. ppl 9.20 cum. examples 1280, speed 5329.38 words/sec, time elapsed 3295.78 sec<br>epoch 3, iter 18650, avg. loss 51.07, avg. ppl 7.36 cum. examples 1600, speed 4701.92 words/sec, time elapsed 3297.52 sec<br>epoch 3, iter 18660, avg. loss 55.50, avg. ppl 8.40 cum. examples 1920, speed 5755.93 words/sec, time elapsed 3298.97 sec<br>epoch 3, iter 18670, avg. loss 53.45, avg. ppl 8.33 cum. examples 2240, speed 5521.04 words/sec, time elapsed 3300.44 sec<br>epoch 3, iter 18680, avg. loss 55.00, avg. ppl 8.06 cum. examples 2560, speed 5861.04 words/sec, time elapsed 3301.88 sec<br>epoch 3, iter 18690, avg. loss 54.89, avg. ppl 8.64 cum. examples 2880, speed 5247.28 words/sec, time elapsed 3303.43 sec<br>epoch 3, iter 18700, avg. loss 57.09, avg. ppl 8.81 cum. examples 3200, speed 5595.19 words/sec, time elapsed 3304.93 sec<br>epoch 3, iter 18710, avg. loss 59.10, avg. ppl 9.15 cum. examples 3520, speed 5764.15 words/sec, time elapsed 3306.41 sec<br>epoch 3, iter 18720, avg. loss 51.66, avg. ppl 7.38 cum. examples 3840, speed 4835.91 words/sec, time elapsed 3308.12 sec<br>epoch 3, iter 18730, avg. loss 58.08, avg. ppl 9.23 cum. examples 4160, speed 5069.38 words/sec, time elapsed 3309.77 sec<br>epoch 3, iter 18740, avg. loss 58.46, avg. ppl 8.77 cum. examples 4480, speed 5673.07 words/sec, time elapsed 3311.29 sec<br>epoch 3, iter 18750, avg. loss 58.70, avg. ppl 9.46 cum. examples 4800, speed 5863.14 words/sec, time elapsed 3312.72 sec<br>epoch 4, iter 18760, avg. loss 51.31, avg. ppl 6.98 cum. examples 5120, speed 5585.10 words/sec, time elapsed 3314.23 sec<br>epoch 4, iter 18770, avg. loss 49.36, avg. ppl 6.88 cum. examples 5440, speed 6081.40 words/sec, time elapsed 3315.58 sec<br>epoch 4, iter 18780, avg. loss 50.36, avg. ppl 7.06 cum. examples 5760, speed 5890.12 words/sec, time elapsed 3316.98 sec<br>epoch 4, iter 18790, avg. loss 48.79, avg. ppl 6.37 cum. examples 6080, speed 5914.69 words/sec, time elapsed 3318.40 sec<br>epoch 4, iter 18800, avg. loss 51.09, avg. ppl 7.16 cum. examples 6400, speed 5709.77 words/sec, time elapsed 3319.86 sec<br>epoch 4, iter 18800, cum. loss 54.53, cum. ppl 8.10 cum. examples 6400<br>begin validation ...<br>validation: iter 18800, dev. ppl 12.352464<br>hit patience 1<br>hit #4 trial<br>load previously best model and decay learning rate to 0.000031<br>restore parameters of the optimizers<br>epoch 4, iter 18810, avg. loss 52.73, avg. ppl 7.19 cum. examples 320, speed 1987.35 words/sec, time elapsed 3324.16 sec<br>epoch 4, iter 18820, avg. loss 50.84, avg. ppl 7.38 cum. examples 640, speed 5747.25 words/sec, time elapsed 3325.58 sec<br>epoch 4, iter 18830, avg. loss 51.07, avg. ppl 7.29 cum. examples 960, speed 5666.00 words/sec, time elapsed 3327.03 sec<br>epoch 4, iter 18840, avg. loss 50.78, avg. ppl 6.95 cum. examples 1280, speed 5808.57 words/sec, time elapsed 3328.47 sec<br>epoch 4, iter 18850, avg. loss 50.70, avg. ppl 6.89 cum. examples 1600, speed 5786.21 words/sec, time elapsed 3329.93 sec<br>epoch 4, iter 18860, avg. loss 52.06, avg. ppl 7.29 cum. examples 1920, speed 5404.75 words/sec, time elapsed 3331.48 sec<br>epoch 4, iter 18870, avg. loss 51.83, avg. ppl 7.13 cum. examples 2240, speed 5924.19 words/sec, time elapsed 3332.90 sec<br>epoch 4, iter 18880, avg. loss 51.02, avg. ppl 7.25 cum. examples 2560, speed 5307.42 words/sec, time elapsed 3334.46 sec<br>epoch 4, iter 18890, avg. loss 49.71, avg. ppl 6.98 cum. examples 2880, speed 5497.55 words/sec, time elapsed 3335.95 sec<br>epoch 4, iter 18900, avg. loss 51.77, avg. ppl 7.19 cum. examples 3200, speed 5847.27 words/sec, time elapsed 3337.38 sec<br>epoch 4, iter 18910, avg. loss 50.58, avg. ppl 6.99 cum. examples 3520, speed 5952.13 words/sec, time elapsed 3338.78 sec<br>epoch 4, iter 18920, avg. loss 53.59, avg. ppl 7.55 cum. examples 3840, speed 5720.31 words/sec, time elapsed 3340.26 sec<br>epoch 4, iter 18930, avg. loss 49.79, avg. ppl 6.85 cum. examples 4160, speed 5844.42 words/sec, time elapsed 3341.68 sec<br>epoch 4, iter 18940, avg. loss 53.56, avg. ppl 7.98 cum. examples 4480, speed 5481.18 words/sec, time elapsed 3343.19 sec<br>epoch 4, iter 18950, avg. loss 48.81, avg. ppl 6.52 cum. examples 4800, speed 5548.51 words/sec, time elapsed 3344.69 sec<br>epoch 4, iter 18960, avg. loss 51.65, avg. ppl 7.16 cum. examples 5120, speed 5802.95 words/sec, time elapsed 3346.14 sec<br>epoch 4, iter 18970, avg. loss 48.99, avg. ppl 6.55 cum. examples 5440, speed 5652.33 words/sec, time elapsed 3347.61 sec<br>epoch 4, iter 18980, avg. loss 52.00, avg. ppl 7.15 cum. examples 5760, speed 5564.60 words/sec, time elapsed 3349.13 sec<br>epoch 4, iter 18990, avg. loss 49.65, avg. ppl 6.67 cum. examples 6080, speed 5997.98 words/sec, time elapsed 3350.53 sec<br>epoch 4, iter 19000, avg. loss 49.06, avg. ppl 6.51 cum. examples 6400, speed 5984.15 words/sec, time elapsed 3351.93 sec<br>epoch 4, iter 19000, cum. loss 51.01, cum. ppl 7.06 cum. examples 6400<br>begin validation ...<br>validation: iter 19000, dev. ppl 12.401339<br>hit patience 1<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs shell">[nltk_data] Downloading package punkt to /root/nltk_data...<br>[nltk_data]   Package punkt is already up-to-date!<br>load test source sentences from [./zh_en_data/test.zh]<br>load test target sentences from [./zh_en_data/test.en]<br>load model from model.bin<br>Decoding:   0% 0/1001 [00:00&lt;?, ?it/s]/usr/local/lib/python3.9/dist-packages/torch/nn/modules/conv.py:309: UserWarning: Using padding=&#x27;same&#x27; with even kernel lengths and odd dilation may require a zero-padded copy of the input be created (Triggered internally at ../aten/src/ATen/native/Convolution.cpp:895.)<br>  return F.conv1d(input, weight, bias, self.stride,<br>/content/drive/MyDrive/a4/nmt_model.py:376: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.<br>  alpha_t = F.softmax(e_t)<br>/usr/local/lib/python3.9/dist-packages/torch/nn/functional.py:1956: UserWarning: nn.functional.tanh is deprecated. Use torch.tanh instead.<br>  warnings.warn(&quot;nn.functional.tanh is deprecated. Use torch.tanh instead.&quot;)<br>Decoding: 100% 1001/1001 [00:43&lt;00:00, 28.36it/s]<br><span class="hljs-meta prompt_">#</span><span class="language-bash"><span class="hljs-comment">## Corpus BLEU: 19.97235090067466</span></span><br></code></pre></td></tr></table></figure>
+
+<h3 id="（i）"><a href="#（i）" class="headerlink" title="（i）"></a>（i）</h3><h4 id="（i）-1"><a href="#（i）-1" class="headerlink" title="（i）"></a>（i）</h4><p>优点：相比于multiplicative attention，其参数量更少，计算量更低</p>
+<p>缺点：限定了查询向量$s$和值向量$h$的维度必须相等</p>
+<h4 id="（ii）"><a href="#（ii）" class="headerlink" title="（ii）"></a>（ii）</h4><p>优点：将注意力变成了神经网络可训练的形式，可以将注意力和网络一起训练，提高效率</p>
+<p>缺点：大规模加法的计算时间要远高于矩阵乘法</p>
+<h1 id="2-Analyzing-NMT-Systems-25-points"><a href="#2-Analyzing-NMT-Systems-25-points" class="headerlink" title="2. Analyzing NMT Systems (25 points)"></a>2. Analyzing NMT Systems (25 points)</h1><h3 id="（a）-1"><a href="#（a）-1" class="headerlink" title="（a）"></a>（a）</h3><p>多个词或语素的组合可能会产生完全不同的意义，因此卷积层通过将相邻的几个词或语素结合起来，从而提高对语料数据集信息的提取程度，进而帮助到NMT系统之后的模型理解过程。</p>
+<h3 id="（b）-1"><a href="#（b）-1" class="headerlink" title="（b）"></a>（b）</h3><h4 id="（i）-2"><a href="#（i）-2" class="headerlink" title="（i）"></a>（i）</h4><p><em>the culprits were</em>和<em>the culprit was</em>的不同之处在单复数的问题，模型没有完全学习出来句子中应该的单复数形式，或许可以通过增大数据量、扩大隐藏层大小等来解决；</p>
+<h4 id="（ii）-1"><a href="#（ii）-1" class="headerlink" title="（ii）"></a>（ii）</h4><p><em>resources have been exhausted</em>重复了两次，或许可以通过引入自注意力机制，在句子生成时考虑到自身句子的合理性；</p>
+<h4 id="（iii）"><a href="#（iii）" class="headerlink" title="（iii）"></a>（iii）</h4><p> <em>a national mourning today</em>在英语训练数据集中只出现了一次，而且“今天是XX日”的语言结构也比较难学习，可以通过针对性提高数据规模等方法提高对这种语言结构的学习能力</p>
+<h4 id="（iv）"><a href="#（iv）" class="headerlink" title="（iv）"></a>（iv）</h4><p>“唔做唔错”是比较方言的语言，而模型的数据为普通话数据，因此训练出来的模型对这种方言比较难测试，可以通过加入方言数据或训练一个方言特化的模型来解决。</p>
+<h3 id="（c）-1"><a href="#（c）-1" class="headerlink" title="（c）"></a>（c）</h3><h4 id="（i）-3"><a href="#（i）-3" class="headerlink" title="（i）"></a>（i）</h4><p>对于$c_1$：$p_1&#x3D;\frac{4}{9}$，$p_2&#x3D;\frac{3}{8}$，$BP\approx 0.8$，$BLEU\approx 0.32$</p>
+<p>对于$c_2$：$p_1&#x3D;1$，$p_2&#x3D;\frac{3}{5}$，$BP&#x3D;1$，$BLEU\approx0.77$</p>
+<p>$∵c_1&lt;c_2$，$∴c_2$的效果更好，我不认可这个结果。</p>
+<h4 id="（ii）-2"><a href="#（ii）-2" class="headerlink" title="（ii）"></a>（ii）</h4><p>对于$c_1$：$p_1&#x3D;\frac{4}{9}$，$p_2&#x3D;\frac{3}{8}$，$BP\approx 1$，$BLEU\approx 0.4$</p>
+<p>对于$c_2$：$p_1&#x3D;\frac{1}{2}$，$p_2&#x3D;\frac{1}{5}$，$BP&#x3D;1$，$BLEU\approx0.32$</p>
+<p>$∵c_1&gt;c_2$，$∴c_1$的效果更好，我认可这个结果。</p>
+<h4 id="（iii）-1"><a href="#（iii）-1" class="headerlink" title="（iii）"></a>（iii）</h4><p>只有单个参考翻译的$BLEU$会有比较高的噪声，即可能会过高或过低，从而对$BLEU$的评分产生一些影响。NMT系统在解释和解码源句子时更灵活，更有可能获得公平的BLEU评分。</p>
+<h4 id="（iv）-1"><a href="#（iv）-1" class="headerlink" title="（iv）"></a>（iv）</h4><p>优点：</p>
+<p>1、$BLEU$评分能够使得模型评价更简单，有一个固定的评价指标</p>
+<p>2、语言独立，利于理解</p>
+<p>缺点：</p>
+<p>1、和人类直观评价相比仍有距离</p>
+<p>2、没有考虑语法和句子结构</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">#自然语言处理</a>
+      
+        <a href="/tags/Stanford-CS224n/">#Stanford CS224n</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS224N作业A4：机器翻译</div>
+      <div>http://paopao0226.site/post/1ce6e410.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月31日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/686c4b32.html" title="CS224N作业A5：Attention和Transformers">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS224N作业A5：Attention和Transformers</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/30fdab5f.html" title="CS224N作业A3：依存分析">
+                        <span class="hidden-mobile">CS224N作业A3：依存分析</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

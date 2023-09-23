@@ -1,0 +1,983 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="针对于《神经网络与深度学习》课程中无监督学习的笔记记录，对于课程内容与思路再次进行总结与梳理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="无监督学习笔记">
+<meta property="og:url" content="http://paopao0226.site/post/888256ea.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="针对于《神经网络与深度学习》课程中无监督学习的笔记记录，对于课程内容与思路再次进行总结与梳理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230127004055039.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230127004437026.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230127004712901.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230127004819452.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230128002254294.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230128001711033.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230128002135502.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230128002851790.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230128010117724.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230128174315722.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230128182647962.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230129181436308.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230129184752526.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230130003738091.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230130010846714.png">
+<meta property="og:image" content="http://paopao0226.site/post/888256ea/image-20230130011242192.png">
+<meta property="article:published_time" content="2023-01-26T16:25:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.510Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="神经网络与深度学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/888256ea/image-20230127004055039.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>无监督学习笔记 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover17.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="无监督学习笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-27 00:25" pubdate>
+          2023年1月27日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          9.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          77 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">无监督学习笔记</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="无监督学习"><a href="#无监督学习" class="headerlink" title="无监督学习"></a>无监督学习</h1><p>监督学习旨在建立从数据到预测的一个映射，而无监督学习是指<strong>从无标签的数据中学习出一些有用的模式</strong>。无监督学习算法一般直接从原始数据中学习，不借助于任何人工给出标签或者反馈等指导信息。</p>
+<p>无监督学习按现有类别可以分为：</p>
+<ul>
+<li>特征学习：从无标签的训练数据中挖掘有效的特征或表示，一般用于降维、数据可视化、数据预处理等；</li>
+<li>聚类：将具有相似性的忘本划归为同一类，旨在建立从无标签数据到聚类预测结果的映射；</li>
+<li>密度估计：是根据一组训练样本来估计样本空间的概率密度，可分为参数密度估计和非参数密度估计，通过数据挖掘底层分布。</li>
+</ul>
+<p><img src="/post/888256ea/image-20230127004055039.png" srcset="/img/loading.gif" lazyload alt="image-20230127004055039"></p>
+<h2 id="聚类"><a href="#聚类" class="headerlink" title="聚类"></a>聚类</h2><p>聚类是指将样本集合中相似的样本分配到相同的类&#x2F;簇(cluster)，不同的样本分配到不同的类&#x2F;簇，使得类内样本间距较小而类间样本间距较大。其中，类间距和相似度等参数都是一种主观定义，有多种表示方式。</p>
+<p><img src="/post/888256ea/image-20230127004437026.png" srcset="/img/loading.gif" lazyload alt="image-20230127004437026"></p>
+<p>聚类常见应用于图像分割、文本聚类、社交网络分析等。</p>
+<h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><h4 id="样本间距离"><a href="#样本间距离" class="headerlink" title="样本间距离"></a>样本间距离</h4><p>样本间的距离用于表示样本间的相似性，样本可以视做一个个点，而距离的表示方法有多样，如$L1&#x2F;L2$距离、余弦距离、相关系数、汉明距离等。</p>
+<p><img src="/post/888256ea/image-20230127004712901.png" srcset="/img/loading.gif" lazyload alt="image-20230127004712901"></p>
+<h4 id="类-x2F-簇"><a href="#类-x2F-簇" class="headerlink" title="类&#x2F;簇"></a>类&#x2F;簇</h4><p>类&#x2F;簇没有一个严格的定义，可以理解为一组相似的样本，用于提取相似度较高样本组的信息。</p>
+<p><img src="/post/888256ea/image-20230127004819452.png" srcset="/img/loading.gif" lazyload alt="image-20230127004819452"></p>
+<h4 id="类内间距"><a href="#类内间距" class="headerlink" title="类内间距"></a>类内间距</h4><p>类内间距可以用样本间平均距离或样本间最大距离表示。</p>
+<ul>
+<li><p>样本间平均距离<br>$$<br>avg(C)&#x3D;{2 \over {|C|(|C|-1)} } \sum_{1\le i \lt j \le |C|} d_{ij}<br>$$</p>
+</li>
+<li><p>样本间最大距离<br>$$<br>dia(C)&#x3D;\max_{1\le i \lt j \le |C|}d_{ij}<br>$$</p>
+</li>
+</ul>
+<h4 id="类间间距（设为-C-p-、-C-q-）"><a href="#类间间距（设为-C-p-、-C-q-）" class="headerlink" title="类间间距（设为$C_p$、$C_q$）"></a>类间间距（设为$C_p$、$C_q$）</h4><p>类间间距可以用样本间的最短距离和均值间距离表示。</p>
+<ul>
+<li><p>样本间最短距离<br>$$<br>D_{pq}&#x3D;\min \lbrace d_{ij}|x^{(i)}\in C_p,x^{(j)}\in C_q \rbrace<br>$$</p>
+</li>
+<li><p>样本均值间距离<br>$$<br>D_{pq}&#x3D;d_{\mu_p\mu_q}<br>$$</p>
+</li>
+</ul>
+<h3 id="聚类指标"><a href="#聚类指标" class="headerlink" title="聚类指标"></a>聚类指标</h3><h4 id="外部指标"><a href="#外部指标" class="headerlink" title="外部指标"></a>外部指标</h4><p>指有外部因素用于参考聚类结果，即已知标签$y$，其作为最后的评价标准。常见的外部指标有$Jaccard$系数、$FM$系数、$Rand$系数等；</p>
+<p><img src="/post/888256ea/image-20230128002254294.png" srcset="/img/loading.gif" lazyload alt="image-20230128002254294"></p>
+<h4 id="内部指标"><a href="#内部指标" class="headerlink" title="内部指标"></a>内部指标</h4><p>指评价体系只基于内部数据，无外部参考聚类结果，如$Dunn$指数、$DB$指数等<br>$$<br>DBI&#x3D;{1\over k}\sum_{i&#x3D;1}^k \max_{j\ne i} { {avg(C_i)+avg(C_j)} \over {d_{\mu_i\mu_j}} }<br>$$<br>在$DB$系数中，如上式所示，类内间距是分子部分，类间间距是分母部分，$DB$系数希望类内越近越好，类间越远越好，整理越小越好；$\max$代表其取的是所有$i \ne j$的最坏情况下的最小，保证其普适性成立。</p>
+<h3 id="聚类方法"><a href="#聚类方法" class="headerlink" title="聚类方法"></a>聚类方法</h3><p>常见聚类方法有K均值聚类、层次聚类、密度聚类、谱聚类等；</p>
+<h4 id="k均值聚类"><a href="#k均值聚类" class="headerlink" title="k均值聚类"></a>k均值聚类</h4><p>K均值的<strong>目标函数</strong>为：<br>$$<br>E&#x3D;\sum_{i&#x3D;1}^k\sum_{x\in C_i}||x-\mu_i||^2_2<br>$$<br>其中$\mu_i$是第$i$个簇$C_i$的均值向量，$E$值刻画了簇内样本围绕簇均值向量的紧密程度。</p>
+<p>K均值聚类的<strong>过程</strong>分为两步</p>
+<p>1）选择K个点作为聚类中心</p>
+<ol>
+<li>根据与聚类中心的距离对每个样本点进行聚类</li>
+<li>求每类样本的平均值作为该类别的新的聚类中心</li>
+</ol>
+<p>2）不断迭代1和2，直至收敛（每个样本类别不再改变或其他更为宽松的条件）</p>
+<p>对于K均值聚类的<strong>收敛性</strong>，由于其需要两个步骤不断迭代优化，其属于NP-Hard问题：</p>
+<ol>
+<li>固定均值向量，优化聚类划分（第1步）</li>
+<li>固定聚类划分，优化均值向量（第2步）</li>
+</ol>
+<p>对于K均值聚类的<strong>超参</strong>，K的选择可以基于经验，类中心的初始化过程可以按照一定策略，如大于最小间距的随机点&#x2F;样本点、K个相互距离最远的样本点、K个等距网格点等。</p>
+<h4 id="层次聚类"><a href="#层次聚类" class="headerlink" title="层次聚类"></a>层次聚类</h4><p>层次聚类通过计算不同类别数据点间的相似度来创建一棵有层次地嵌套聚类树，嵌套策略可以是聚合（自底向上）或者分裂（自顶向下）</p>
+<p><img src="/post/888256ea/image-20230128001711033.png" srcset="/img/loading.gif" lazyload alt="image-20230128001711033"></p>
+<p><strong>聚合过程</strong>先将每个样本分到单独的类，然后不断迭代合并过程直至满足终止条件：</p>
+<ol>
+<li>计算两两类簇之间的距离，找到距离最小的两个类簇$c_1$和$c_2$</li>
+<li>合并类簇$c_1$和$c_2$</li>
+</ol>
+<p><img src="/post/888256ea/image-20230128002135502.png" srcset="/img/loading.gif" lazyload alt="image-20230128002135502"></p>
+<p><strong>分裂过程</strong>和聚合过程相反，先将所有样本划归到同一个类，然后不断分裂直到满足终止条件：</p>
+<ol>
+<li>在同一个类簇（记为$c$）中计算两两样本之间的距离，找出距离最远的两个样本$a$和$b$</li>
+<li>将样本$a$、$b$分配到不同类簇$c_1$和$c_2$中</li>
+<li>计算原类簇$c$中剩余的其他样本点和$a$、$b$的距离，若是$dis(a)&lt;dis(b)$则将样本点归到$c_1$，否则归到$c_2$。</li>
+</ol>
+<p><img src="/post/888256ea/image-20230128002851790.png" srcset="/img/loading.gif" lazyload alt="image-20230128002851790"></p>
+<p>其余两种方法不在这里继续叙述。</p>
+<h2 id="无监督特征学习"><a href="#无监督特征学习" class="headerlink" title="无监督特征学习"></a>无监督特征学习</h2><p>无监督特征学习一般遵循着先编码后解码，其目的在于提取有用特征，以去噪、降维、数据可视化等应用。</p>
+<h3 id="主成分分析（PCA）"><a href="#主成分分析（PCA）" class="headerlink" title="主成分分析（PCA）"></a>主成分分析（PCA）</h3><p>数据的原始特征可能存在维度高、冗余等问题，其会直接导致维度灾难和学习效果降低，因此需要采用特征学习的方式进行降维，一种最常用的数据降维方法就是投影，将数据映射到另一个域，其中以线性投影应用最广。<br>$$<br>\pmb z&#x3D;\pmb W^\top\pmb x<br>$$<br>并满足对称性，以降低冗余<br>$$<br>\pmb W^\top \pmb W&#x3D;I<br>$$<br>主成分分析是特征学习在降维领域的一个经典应用，其优化原则为</p>
+<ul>
+<li><strong>最大投影方差：</strong>使得在转换后的空间中的数据方差最大，尽可能多的保留原数据的信息；</li>
+<li><strong>最小重构误差：</strong>使得样本点到超平面的距离足够近，降低重构难度。</li>
+</ul>
+<p>样本点$\pmb x^{(n)}$投影之后的表示为<br>$$<br>z^{(n)}&#x3D;\pmb w^\top \pmb x^{(n)}<br>$$<br>所有样本点投影之后的方差为<br>$$<br>\begin{align}<br>\sigma(\pmb {X};\pmb w)&amp;&#x3D;{1\over N}\sum_{n&#x3D;1}^N(\pmb w^\top\pmb x^{(n)}-\pmb w^\top \pmb {\overline x})^2 \\<br>&amp;&#x3D;{1\over N}\sum_{n&#x3D;1}^N(\pmb w^\top\pmb X-\pmb w^\top\pmb {\overline X})(\pmb w^\top\pmb X-\pmb w^\top\pmb {\overline X})^\top\\<br>&amp;&#x3D;\pmb w^\top \Sigma \pmb w<br>\end{align}<br>$$<br>其中$\Sigma$是原始空间中$X$的协方差矩阵，对上式方差做拉格朗日乘子法，可得目标函数<br>$$<br>\max_\omega\pmb w^\top \Sigma \pmb w+\lambda(1-\pmb w^\top\pmb w)<br>$$<br>对目标函数求导并令导数等于0，可得：<br>$$<br>\Sigma \pmb w&#x3D;\lambda\pmb w<br>$$<br><img src="/post/888256ea/image-20230128010117724.png" srcset="/img/loading.gif" lazyload alt="image-20230128010117724"></p>
+<p>从这个式子可以看出，PCA的目标函数过程可以视为：给定协方差矩阵$\Sigma$，求特征值$\lambda$及对应的特征向量$\pmb w$，这种求解过程可以推广到多维，如果要通过投影矩阵$\pmb W\in R^{D\times D’}$将样本投到$D’$维空间，投影矩阵满足$\pmb{W^\top W&#x3D;I}$为单位阵，只需要将$\Sigma$的特征值从小到大排列，保留前$D’$个特征向量，其对应的特征向量即是最优的投影矩阵<br>$$<br>\pmb \Sigma\pmb  W&#x3D;\pmb Wdiag(\pmb \lambda)<br>$$<br>提高两类可分性的方法一般为监督学习方法，比如线性判别分析（LDA）。</p>
+<h3 id="稀疏编码"><a href="#稀疏编码" class="headerlink" title="稀疏编码"></a>稀疏编码</h3><h4 id="（线性）编码"><a href="#（线性）编码" class="headerlink" title="（线性）编码"></a>（线性）编码</h4><p>（线性）编码定义为：给定一组基向量$A&#x3D;[\pmb a_1,…,\pmb a_M]$，将输入样本$\pmb x$表示为这些基向量的线性组合。<br>$$<br>\pmb x&#x3D;\sum_{m&#x3D;1}^M z_m \pmb a_m &#x3D; \pmb {Az}<br>$$<br>即，数据可以分为字典$\pmb A$和编码$\pmb z$，通过字典来实现对数据的编码。编码是对$D$维空间中的样本$\pmb x$找到其在$P$​维空间中的表示或投影，其目标通常是编码的各个维度都是统计独立的，并且可以重构出输入样本。编码的优化目标为：<br>$$<br>\sum_{n&#x3D;1}^N||\pmb A\pmb z^{(n)}-\pmb x^{(n)}||<br>$$<br>迭代时，不断重复“固定一个求另外一个”的过程，即交替求解$\pmb A$和$\pmb z$直到收敛。</p>
+<h4 id="完备性"><a href="#完备性" class="headerlink" title="完备性"></a>完备性</h4><p>如果$M$个基向量刚好可以支撑$M$维的欧氏空间，则这$M$个基向量是完备的；如果$M$个基向量可以支撑$D$ 维的欧氏空间，并且$M&gt;D$，则这$M$个基向量是过完备的（overcomplete）、冗余的．<strong>“过完备”</strong>基向量是指基向量个数远远大于其支撑空间维度。因此这些基向量<strong>一般不具备独立、正交等性质</strong>。</p>
+<ul>
+<li>当$M&gt;D$时，能找到多个完备解且其重构方差为0；</li>
+<li>当$M&lt;D$时，不能找到解，欠完备。</li>
+</ul>
+<h4 id="稀疏编码-1"><a href="#稀疏编码-1" class="headerlink" title="稀疏编码"></a>稀疏编码</h4><p>稀疏编码<strong>目标</strong>是找到一组“过完备”的基向量来进行编码，少数基向量就可以表示原问题的所有信息。少数基向量的加权可以构成原始解。</p>
+<p><img src="/post/888256ea/image-20230128174315722.png" srcset="/img/loading.gif" lazyload alt="image-20230128174315722"></p>
+<p>给定一组$N$个输入向量的$\pmb x^{(1)},…,x^{(n)}$，其稀疏编码的目标函数为：<br>$$<br>\mathcal L(\pmb A,\pmb Z)&#x3D;\sum_{n&#x3D;1}^N(||\pmb x^{(n)}-\pmb A\pmb z^{(n)}||^2+\eta\rho(\pmb z^{(n)}))<br>$$<br>其中，$\rho(·)$是一个稀疏性衡量函数，$\eta$是一个超参数，用于控制稀疏性的强度，目标函数的前半部分表示重构误差，后半部分是稀疏性的衡量，整体其实和梯度下降添加正则化的目标函数比较类似，一部分是具体目标，一部分是防止过度。</p>
+<p>$\rho(·)$的定义有很多种。</p>
+<p><img src="/post/888256ea/image-20230128182647962.png" srcset="/img/loading.gif" lazyload alt="image-20230128182647962"></p>
+<p>稀疏编码的<strong>训练过程</strong>分为两步，一般采用交替优化的方法进行。</p>
+<ul>
+<li><p>固定基向量$\pmb A$，对每个输入$\pmb x^{(n)}$，计算其对应的最优编码<br>$$<br>\min_{\pmb z^{(n)}}||\pmb x^{(n)}-\pmb {Az}^{(n)}||^2+\eta\rho(\pmb z^{(n)}), \forall n\in[1,N]<br>$$</p>
+</li>
+<li><p>固定上一步得到的编码$\lbrace \pmb z^{(n)} \rbrace_{n&#x3D;1}^N$，计算其最优基向量<br>$$<br>\min_{\pmb A}\sum_{n&#x3D;1}^N(||\pmb x^{(n)}-\pmb {Az}^{(n)}||^2)+\lambda {1\over 2}||\pmb A||^2<br>$$</p>
+</li>
+</ul>
+<p>稀疏编码的每一维都可以被看作一种特征。稀疏编码的优点有：</p>
+<ol>
+<li>计算量：稀疏性带来的最大好处就是可以极大地降低计算量．</li>
+<li>可解释性：因为稀疏编码只有少数的非零元素，相当于将一个输入样本表示为少数几个相关的特征。这样我们可以更好地描述其特征，并易于理解。</li>
+<li>特征选择 稀疏性带来的另外一个好处是可以<strong>实现特征的自动选择</strong>，只选择和输入样本最相关的少数特征，从而更高效地表示输入样本，降低噪声并减轻过拟合。</li>
+</ol>
+<h3 id="自编码器"><a href="#自编码器" class="headerlink" title="自编码器"></a>自编码器</h3><p>自编码器（Auto-Encoder，AE）是通过无监督的方式来学习一组数据的有效编码（或表示），自编码器的组成部分包括编码器（$\mathbb R^D \rightarrow \mathbb R^M$）和解码器（$\mathbb R^M \rightarrow \mathbb R^D$）。自编码器希望实现编码-解码后恢复的结果与原数据一致，因此其目标函数是最小化重构误差<br>$$<br>\mathcal L&#x3D;\sum_{n&#x3D;1}^N||\pmb x^{(n)}-g(f(\pmb x^{(n)}))||^2 &#x3D; \mathcal L&#x3D;\sum_{n&#x3D;1}^N||\pmb x^{(n)}-f\circ g(\pmb x^{(n)})||^2<br>$$<br>比较简单的是二层网络结构的自编码器，更复杂的可以设定编码的稀疏性、$g \circ f$的形式等。</p>
+<p><img src="/post/888256ea/image-20230129181436308.png" srcset="/img/loading.gif" lazyload alt="image-20230129181436308"></p>
+<h4 id="稀疏自编码器"><a href="#稀疏自编码器" class="headerlink" title="稀疏自编码器"></a>稀疏自编码器</h4><p>自编码器除了可以学习低维编码之外，也能够学习高维的稀疏编码，假设中间隐藏层$\pmb z$的维度大于输入样本$\pmb x$的维度$D$，并让$\pmb z$尽量稀疏，这就是稀疏自编码器。和稀疏编码一样，稀疏自编码器的优点是有很高的可解释性，并同时进行了隐式的特征选择。稀疏自编码器可以学习到数据中的一些有用的结构。</p>
+<p>稀疏自编码器的目标函数为<br>$$<br>\mathcal L&#x3D;\sum_{n&#x3D;1}^N||\pmb x^{(n)}-\pmb x’^{(n)}||^2+\eta\rho(\pmb Z)+\lambda||\pmb W||^2<br>$$<br>其中$\pmb W$表示自编码器中的参数。</p>
+<h4 id="堆叠自编码器"><a href="#堆叠自编码器" class="headerlink" title="堆叠自编码器"></a>堆叠自编码器</h4><p>对于很多数据来说，仅使用两层神经网络的自编码器还不足以获取一种好的数据表示。为了获取更好的数据表示，我们可以使用更深层的神经网络作为自编码器以提取更为抽象的底层特征，叫做堆叠自编码器。</p>
+<h4 id="降噪自编码器"><a href="#降噪自编码器" class="headerlink" title="降噪自编码器"></a>降噪自编码器</h4><p>通过在自编码器中引入噪声，可以增加编码的鲁棒性。对于一个向量$\pmb x$，首先根据一个比例$\mu$随机将$\pmb x$的一些维度的值设置为0，得到一个被损坏的向量$\widetilde{ \pmb x}$，然后将被损坏的向量$\widetilde{ \pmb x}$输入给自编码器得到编码$\pmb z$，并重构出原始的无损输入$\pmb x$。</p>
+<p><img src="/post/888256ea/image-20230129184752526.png" srcset="/img/loading.gif" lazyload alt="image-20230129184752526"></p>
+<h2 id="概率密度估计"><a href="#概率密度估计" class="headerlink" title="概率密度估计"></a>概率密度估计</h2><p>概率密度估计可以分为参数密度估计和非参数密度估计两种</p>
+<p>非参数密度估计不假设数据服从某种分布，而是通过将样本空间划分为不同的区域，并估计每个区域的概率来近似数据的概率密度函数。</p>
+<h3 id="参数密度估计"><a href="#参数密度估计" class="headerlink" title="参数密度估计"></a>参数密度估计</h3><p>参数密度估计旨在先根据先验知识<strong>假设随机变量服从某种分布</strong>，然后通过训练样本来估计分布。估计方法有最大似然估计，假设这些样本服从一个概率分布函数$p(\pmb x;\theta)$，并寻找参数最优。<br>$$<br>\log p(\mathcal D;\theta)&#x3D;\sum_{n&#x3D;1}^N\log p(\pmb x^{(n)};\theta)<br>$$<br>参数密度估计常用的先验分布有正态分布、多项分布等；</p>
+<h4 id="正态分布"><a href="#正态分布" class="headerlink" title="正态分布"></a>正态分布</h4><p>假设样本$\pmb x\in \mathbb R^D$服从正态分布<br>$$<br>\mathcal N(\pmb x|\pmb \mu,\pmb \Sigma)&#x3D;{ 1 \over {(2\pi)^{D&#x2F;2} |\pmb \Sigma|^{1&#x2F;2} } }\exp(-{1\over 2} (\pmb x-\pmb \mu)^\top \pmb \Sigma^{-1} (\pmb x-\pmb \mu) )<br>$$<br>其中$\pmb \mu$和$\pmb \Sigma$分别为正态分布的均值和方差。数据集$\mathcal D&#x3D;\lbrace \pmb x^{(n)} \rbrace_{n&#x3D;1}^N$的对数似然函数为<br>$$<br>\log p(\mathcal D|\pmb \mu,\pmb \Sigma)&#x3D;-{N\over 2}\log((2\pi)^{D} |\pmb \Sigma|)-{1\over 2} \sum_{n&#x3D;1}^N (\pmb x^{(n)}-\pmb \mu)^\top \pmb \Sigma^{-1} (\pmb x^{(n)}-\pmb \mu)<br>$$<br>分别求上式关于$\pmb{\mu,\Sigma}$的偏导数并令其等于0，可得：<br>$$<br>\begin{align}<br>\pmb \mu^{ML} &amp; &#x3D;{1\over N}\sum_{n&#x3D;1}^N \pmb x^{(n)}, \\<br>\pmb \Sigma^{ML} &amp;&#x3D;{1\over N}\sum_{n&#x3D;1}^N (\pmb x^{(n)}-\pmb \mu^{ML})(\pmb x^{(n)}-\pmb \mu^{ML})^\top.<br>\end{align}<br>$$</p>
+<h4 id="多项分布"><a href="#多项分布" class="headerlink" title="多项分布"></a>多项分布</h4><p>假设样本服从$K$个状态的多项分布，令one-hot向量$\pmb x\in \lbrace 0,1 \rbrace ^K$来表示第$k$个状态，即$x_k&#x3D;1$，其余$x_{i,i\ne k}&#x3D;0$，样本$\pmb x$的概率密度函数为<br>$$<br>p(\pmb x|\pmb \mu)&#x3D;\sum_{k&#x3D;1}^K \mu_k^{x_k}<br>$$<br>其中$u_k$为第$k$个状态的概率，并满足$\sum_{k&#x3D;1}^K \mu_k&#x3D;1$。数据集$D&#x3D;{\pmb x^{(n)}}_{n&#x3D;1}^N$的对数似然函数为</p>
+<p>$$<br>\log p(\mathcal D|\pmb \mu)&#x3D;\sum_{n&#x3D;1}^N \sum_{k&#x3D;1}^K x_k^{(n)}\log(\mu_k)<br>$$<br>多项分布的参数估计为约束优化问题，引入拉格朗日乘子$\lambda$，将原问题转换为无约束优化问题。<br>$$<br>max_{\pmb \mu,\lambda} \sum_{n&#x3D;1}^N\sum_{k&#x3D;1}^K x_k^{(n)} \log(\mu_k)+\lambda(\sum_{k&#x3D;1}^K \mu_k-1)<br>$$<br>分别求上式关于$\mu_k,\lambda$的偏导数，并令其等于0可得<br>$$<br>\mu_k^{ML}&#x3D;{ {m_k} \over N}<br>$$<br>其中$m_k&#x3D;\sum_{n&#x3D;1}^N x_k^{(n)}$是数据集中取值为第$k$个状态的样本数量。</p>
+<h4 id="参数估计的短板"><a href="#参数估计的短板" class="headerlink" title="参数估计的短板"></a>参数估计的短板</h4><p>在实际应用中，参数密度估计一般存在以下问题：</p>
+<ol>
+<li>模型选择问题：即<strong>如何选择数据分布的密度函数</strong>。实际数据的分布往往是非常复杂的，而不是简单的正态分布或多项分布。</li>
+<li>不可观测变量问题：即我们用来训练的样本只包含部分的<strong>可观测变量，还有一些非常关键的变量是无法观测</strong>的，这导致我们很难准确估计数据的真实分布。</li>
+<li>维度灾难问题：即<strong>高维数据</strong>的参数估计十分困难。随着维度的增加，估计参数所需要的样本数量指数增加．在样本不足时会出现过拟合。</li>
+</ol>
+<h3 id="非参数密度估计"><a href="#非参数密度估计" class="headerlink" title="非参数密度估计"></a>非参数密度估计</h3><p>非参数密度估计是不假设数据服从某种分布，通过将样本空间划分为不同的区域并估计每个区域的概率来近似数据的概率密度函数。</p>
+<p>对于高维空间中的一个随机向量$\pmb x$，假设其服从一个未知分布$p(\pmb x)$，则$\pmb x$落入空间中的小区域$\mathcal R$的概率为<br>$$<br>P&#x3D;\int_{\mathcal R}p(\pmb x)d\pmb x<br>$$<br>给定$N$个训练样本$\mathcal D&#x3D;\lbrace \pmb x^{(n)}\rbrace _{n&#x3D;1}^N$，落入区域$\mathcal R$的样本数量$K$服从二项分布：<br>$$<br>P_K&#x3D;\begin{pmatrix}N\\K\end{pmatrix}P^K(1-p)^{1-K}<br>$$<br>其中$K&#x2F;N$的期望为$\mathbb E[K&#x2F;N]&#x3D;P$，方差为$var(K&#x2F;N)&#x3D;P(1-P)N$。当$N$非常大时，我们可以近似认为$P\approx {K\over N}$。假设区域$\mathcal R$足够小，<strong>其内部的概率密度是相同的</strong>，则有<br>$$<br>P&#x3D;p(\pmb x)V<br>$$<br>其中$V$​为区域$\mathcal R$​的体积，结合上面的两个公式可得<br>$$<br>p(\pmb x)&#x3D;{K \over {NV} }<br>$$<br>这个公式就是非参估计中的核心。实践中非参数密度估计通常使用两种方式，一是固定区域大小$V$，统计落入不同区域的数量，如直方图法和核方法；二是改变区域大小使得落入每个区域的样本数量为$K$，如$K$近邻。</p>
+<p>非参数密度估计的弱点在于，其大部分方法需要保留整个数据集（直方图方法除外），而参数估计不需要，因此在存储和计算上相对弱；但是非参数估计可以在不设置参数的情况下直接进行密度估计，其操作性会比参数估计高。</p>
+<h4 id="直方图方法"><a href="#直方图方法" class="headerlink" title="直方图方法"></a>直方图方法</h4><p>直方图方法是一种非常直观的估计连续变量密度函数的方法，可以表示为一种柱状图。</p>
+<p>以一维随机变量为例，首先将其取值范围分成$M$个连续的、不重叠的区间（bin），每个区间的宽度为$\triangle_m$。给定$N$个训练样本$D&#x3D;\lbrace x^{(n)}\rbrace_{n&#x3D;1}^N$我们统计这些样本落入每个区间的数量$K_m$，然后将它们归一化为密度函数。<br>$$<br>p_m&#x3D;{K_m \over {N\triangle_m} }, \ \ \ \ 1\le m\le M<br>$$<br>区间宽度$\triangle_m$的取值偏向于先验，过大会导致估计精度降低，过小会导致部分桶中没有数据，估计不精确。</p>
+<p><img src="/post/888256ea/image-20230130003738091.png" srcset="/img/loading.gif" lazyload alt="image-20230130003738091"></p>
+<p>直方图方法需要的样本数量会随着维度$D$的增加而指数增长，从而导致维度灾难。</p>
+<h4 id="核密度估计（核方法）"><a href="#核密度估计（核方法）" class="headerlink" title="核密度估计（核方法）"></a>核密度估计（核方法）</h4><p>核密度估计是对直方图方法的一种改进，假设$\mathcal R$是$D$维空间中的一个以点$\pmb x$为中心的“超立方体”，边长为$H$，并定义核函数来表示一个样本$\pmb z$是否落入该超立方体中。<br>$$<br>\phi({ {\pmb z-\pmb x}\over H} )&#x3D;<br>\begin{cases}<br>1\ \ \ \ if|z_i-x_i|&lt; {H\over 2},1\le i\le D \\<br>0\ \ \ \ else<br>\end{cases}<br>$$<br>点$\pmb x$的密度估计则为<br>$$<br>p(\pmb x)&#x3D;{K \over {NH^D} } &#x3D; {1 \over {NH^D} } \sum_{n&#x3D;1}^N \phi( { {\pmb x^{(n)} -\pmb x} \over H } )<br>$$<br>其中$\sum_{n&#x3D;1}^N \phi( { {\pmb x^{(n)} -\pmb x} \over H } )$表示落入到$\mathcal R$的样本数量。</p>
+<h4 id="K近邻方法"><a href="#K近邻方法" class="headerlink" title="K近邻方法"></a>K近邻方法</h4><p>核密度估计方法中的核宽度是固定的，因此同一个宽度可能对高密度的区域过大，而对低密度的区域过小．一种更灵活的方式是设置一种<strong>可变宽度的区域</strong>，并使得落入每个区域中样本数量为固定的$K$。</p>
+<p>要估计点$\pmb x$的密度，首先找到一个以$\pmb x$为中心的球体，使得落入球体的样本数量为$K$，然后根据非参估计公式得出点$\pmb x$的密度，因为落入球体的样本也是离$\pmb x$最近的$K$个样本，因此这种方法也称为$K$近邻方法。</p>
+<p><img src="/post/888256ea/image-20230130010846714.png" srcset="/img/loading.gif" lazyload alt="image-20230130010846714"></p>
+<h3 id="半监督的应用"><a href="#半监督的应用" class="headerlink" title="半监督的应用"></a>半监督的应用</h3><p>半监督学习中，自训练和协同训练十分的典型，也在各个领域中有所应用，如图像任务中的旋转角度预测，文本任务中的掩码语言模型等。</p>
+<p><img src="/post/888256ea/image-20230130011242192.png" srcset="/img/loading.gif" lazyload alt="image-20230130011242192"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">#神经网络与深度学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>无监督学习笔记</div>
+      <div>http://paopao0226.site/post/888256ea.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月27日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/59d56acd.html" title="nndl编程练习1：Numpy练习题解">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">nndl编程练习1：Numpy练习题解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/27dfad29.html" title="注意力机制与外部记忆笔记">
+                        <span class="hidden-mobile">注意力机制与外部记忆笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

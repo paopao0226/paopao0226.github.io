@@ -1,0 +1,1088 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="配套于云计算课程，安装Hadoop工具以备于之后的实验内容。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hadoop安装指南">
+<meta property="og:url" content="http://paopao0226.site/post/383a95d9.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="配套于云计算课程，安装Hadoop工具以备于之后的实验内容。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109125241400.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109125316431.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109125410623.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109125433164.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109125532816.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109125600940.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109125656849.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109125810622.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109125925832.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109130110416.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109130134791.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109130211492.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109130708748.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109130743254.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109130840614.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109131307436.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109131354974.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109131415451.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109132519558.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109134137887.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109134346446.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109173253406.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109173318270.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109134453256.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109134812016.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109135849928.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109135902333.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109140207521.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109140636069.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109140938883.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109141259437.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109141157065.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109141225064.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109141621838.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109155443676.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109155533585.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109155613472.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109155655906.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109155919795.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109160145263.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109161459940.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109161201657.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109161354682.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109161744733.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109161949003.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109162339041.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109163300911.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109162829388.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109162752736.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109163720042.png">
+<meta property="og:image" content="http://paopao0226.site/post/383a95d9/image-20221109165428445.png">
+<meta property="article:published_time" content="2022-11-09T08:10:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.350Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="Hadoop">
+<meta property="article:tag" content="云计算">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/383a95d9/image-20221109125241400.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Hadoop安装指南 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover7.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Hadoop安装指南"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-09 16:10" pubdate>
+          2022年11月9日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.2k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Hadoop安装指南</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="Hadoop一步完成安装指南"><a href="#Hadoop一步完成安装指南" class="headerlink" title="Hadoop一步完成安装指南"></a>Hadoop一步完成安装指南</h1><blockquote>
+<p>本博客部分参考于<a target="_blank" rel="noopener" href="https://blog.csdn.net/tang5615/article/details/120382513"> Hadoop集群安装和搭建（全面超详细的过程）_小汤TYT的博客-CSDN博客_hadoop环境搭建与安装</a>并稍有修改。</p>
+</blockquote>
+<p>Hadoop是一个开源的、可运行与Linux集群上的<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%88%86%E5%B8%83%E5%BC%8F&spm=1001.2101.3001.7020">分布式</a>计算平台，用户可借助Hadoop存有基础环境的配置（虚拟机安装、Linux安装等），Hadoop集群搭建，配置和测试。可以借用Hadoop实现高效化的集群环境的搭建与分布式计算。</p>
+<p>以下是hadoop的安装步骤：</p>
+<h2 id="VMware的安装"><a href="#VMware的安装" class="headerlink" title="VMware的安装"></a>VMware的安装</h2><p>这个不再本博客再赘述了，大家可以参考此博客：</p>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_45912291/article/details/108894737">虚拟机VMware下载与安装教程（详细）</a></p>
+<h2 id="虚拟机安装"><a href="#虚拟机安装" class="headerlink" title="虚拟机安装"></a>虚拟机安装</h2><p>首先到镜像网站将Linux系统的镜像包下载下来，这里使用的是CentOS7（mini）的安装包</p>
+<p><a target="_blank" rel="noopener" href="http://mirrors.aliyun.com/centos/7/isos/x86_64/">centos-7-isos-x86_64安装包下载_开源镜像站-阿里云 (aliyun.com)</a></p>
+<h3 id="安装虚拟机"><a href="#安装虚拟机" class="headerlink" title="安装虚拟机"></a>安装虚拟机</h3><p>点击【Vmware-&gt;文件-&gt;新建虚拟机】</p>
+<p><img src="/post/383a95d9/image-20221109125241400.png" srcset="/img/loading.gif" lazyload alt="image-20221109125241400"></p>
+<h3 id="安装程序光盘映像文件。"><a href="#安装程序光盘映像文件。" class="headerlink" title="安装程序光盘映像文件。"></a>安装程序光盘映像文件。</h3><p>这里需要定向到刚刚下载的iso文件。</p>
+<p><img src="/post/383a95d9/image-20221109125316431.png" srcset="/img/loading.gif" lazyload alt="image-20221109125316431"></p>
+<p>修改名称与安装位置</p>
+<p><img src="/post/383a95d9/image-20221109125410623.png" srcset="/img/loading.gif" lazyload alt="image-20221109125410623"></p>
+<h3 id="分配内存。"><a href="#分配内存。" class="headerlink" title="分配内存。"></a>分配内存。</h3><p>一般是默认系统的安装内存(20G)，我的电脑内存剩余太小了，怕炸掉所以用了10G，注意选择<font color="red">将虚拟磁盘拆分成多个文件</font>。</p>
+<p><img src="/post/383a95d9/image-20221109125433164.png" srcset="/img/loading.gif" lazyload alt="image-20221109125433164"></p>
+<p>完成之后点击配置，即可以看到现有的系统配置，可以选择默认配置，下一步。</p>
+<p><img src="/post/383a95d9/image-20221109125532816.png" srcset="/img/loading.gif" lazyload alt="image-20221109125532816"></p>
+<p>点击完成就结束了单个虚拟机的硬件安装过程。</p>
+<p><img src="/post/383a95d9/image-20221109125600940.png" srcset="/img/loading.gif" lazyload alt="image-20221109125600940"></p>
+<h3 id="运行CentOS系统，开始安装系统软件"><a href="#运行CentOS系统，开始安装系统软件" class="headerlink" title="运行CentOS系统，开始安装系统软件"></a>运行CentOS系统，开始安装系统软件</h3><p><img src="/post/383a95d9/image-20221109125656849.png" srcset="/img/loading.gif" lazyload alt="image-20221109125656849"></p>
+<p>选择时区为上海，语言为中文</p>
+<p><img src="/post/383a95d9/image-20221109125810622.png" srcset="/img/loading.gif" lazyload alt="image-20221109125810622"></p>
+<h3 id="配置系统网络并连接"><a href="#配置系统网络并连接" class="headerlink" title="配置系统网络并连接"></a>配置系统网络并连接</h3><p>注意设置主机名</p>
+<p><img src="/post/383a95d9/image-20221109125925832.png" srcset="/img/loading.gif" lazyload alt="image-20221109125925832"></p>
+<p><img src="/post/383a95d9/image-20221109130110416.png" srcset="/img/loading.gif" lazyload alt="image-20221109130110416"></p>
+<p>点击开始安装，设置用户名和密码，不创建用户（默认为root）。</p>
+<p><img src="/post/383a95d9/image-20221109130134791.png" srcset="/img/loading.gif" lazyload alt="image-20221109130134791"></p>
+<p><img src="/post/383a95d9/image-20221109130211492.png" srcset="/img/loading.gif" lazyload alt="image-20221109130211492"></p>
+<p>完成安装，重启。</p>
+<h3 id="使用root账户【用户名：root；密码为自设密码】登录系统"><a href="#使用root账户【用户名：root；密码为自设密码】登录系统" class="headerlink" title="使用root账户【用户名：root；密码为自设密码】登录系统"></a>使用root账户【用户名：root；密码为自设密码】登录系统</h3><p><img src="/post/383a95d9/image-20221109130708748.png" srcset="/img/loading.gif" lazyload alt="image-20221109130708748"></p>
+<p><img src="/post/383a95d9/image-20221109130743254.png" srcset="/img/loading.gif" lazyload alt="image-20221109130743254"></p>
+<p>使用ping指令测试一下网络是否联通</p>
+<p><img src="/post/383a95d9/image-20221109130840614.png" srcset="/img/loading.gif" lazyload alt="image-20221109130840614"></p>
+<h2 id="地址配置"><a href="#地址配置" class="headerlink" title="地址配置"></a>地址配置</h2><h3 id="安装net-tools工具"><a href="#安装net-tools工具" class="headerlink" title="安装net-tools工具"></a>安装net-tools工具</h3><p>net-tools工具可以便于之后操作网络地址信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">yum upgrade<br>yum install net-tools<br></code></pre></td></tr></table></figure>
+
+<h3 id="查看MAC物理地址和ip地址范围"><a href="#查看MAC物理地址和ip地址范围" class="headerlink" title="查看MAC物理地址和ip地址范围"></a>查看MAC物理地址和ip地址范围</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ifconfig<br></code></pre></td></tr></table></figure>
+
+<p>将【enter】后面的mac地址记录下来，之后用到。</p>
+<p><img src="/post/383a95d9/image-20221109131307436.png" srcset="/img/loading.gif" lazyload alt="image-20221109131307436"></p>
+<p>然后点击当前虚拟机下的网络编辑器，【编辑-&gt;虚拟网络编辑器】，选择NAT模式下的VMnet8网络，点击【DHCP配置】</p>
+<p><img src="/post/383a95d9/image-20221109131354974.png" srcset="/img/loading.gif" lazyload alt="image-20221109131354974"></p>
+<p>这里的起始和结束地址就是虚拟机的公用地址范围，可以默认将【192.168.XX.131】记下来作为hadoop1的ip地址，如我这里就是【192.168.47.131】。</p>
+<p><img src="/post/383a95d9/image-20221109131415451.png" srcset="/img/loading.gif" lazyload alt="image-20221109131415451"></p>
+<h3 id="修改网络配置文件"><a href="#修改网络配置文件" class="headerlink" title="修改网络配置文件"></a>修改网络配置文件</h3><p>进入网络配置文件，修改之</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi /etc/sysconfig/network-scripts/ifcfg-ens33<br></code></pre></td></tr></table></figure>
+
+<p>修改BOOTPROTO的镜像模式为”static”，若ONBOOT为&#x3D;”no”则修改为”yes”，然后在配置文件后加入下面的配置信息</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">IPV6_PRIVACY=&quot;yes&quot;<br>WADDR=&quot;00:0c:29:XX:XX:XX&quot; #mac地址<br>IPADDR=&quot;192.168.XX.131&quot; #IP地址<br>GATEWAY=&quot;192.168.XX.2&quot; #网关地址，默认为ip最后一段改为2<br>NETMASK=&quot;255.255.255.0&quot; #子网掩码，照抄<br>DNS1=&quot;8.8.8.8&quot; #DNS定位，用谷歌的免费DNS1<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109132519558.png" srcset="/img/loading.gif" lazyload alt="image-20221109132519558"></p>
+<p>重启网络和系统，然后查看是否配置成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl restart network<br>reboot<br>ifconfig<br>ping www.baidu.com<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109134137887.png" srcset="/img/loading.gif" lazyload alt="image-20221109134137887"></p>
+<h2 id="虚拟机克隆"><a href="#虚拟机克隆" class="headerlink" title="虚拟机克隆"></a>虚拟机克隆</h2><p>完成单个虚拟机的配置之后，将虚拟机克隆两次，并另外命名为hadoop2和hadoop3，作为数据节点。</p>
+<h3 id="克隆"><a href="#克隆" class="headerlink" title="克隆"></a>克隆</h3><p>右键hadoop1虚拟机，【管理-&gt;克隆】，注意<font color="red">创建完整克隆</font></p>
+<p><img src="/post/383a95d9/image-20221109134346446.png" srcset="/img/loading.gif" lazyload alt="image-20221109134346446"></p>
+<p><img src="/post/383a95d9/image-20221109173253406.png" srcset="/img/loading.gif" lazyload alt="image-20221109173253406"></p>
+<p><img src="/post/383a95d9/image-20221109173318270.png" srcset="/img/loading.gif" lazyload alt="image-20221109173318270"></p>
+<p><img src="/post/383a95d9/image-20221109134453256.png" srcset="/img/loading.gif" lazyload alt="image-20221109134453256"></p>
+<h3 id="二次地址配置"><a href="#二次地址配置" class="headerlink" title="二次地址配置"></a>二次地址配置</h3><p>完成克隆之后，需要按照第一个虚拟机的方法再次进行两次地址配置，这里不再赘述过程，放出来图片供大家参考</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">ifconfig<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109134812016.png" srcset="/img/loading.gif" lazyload alt="image-20221109134812016"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi /etc/sysconfig/network-scripts/ifcfg-ens33<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109135849928.png" srcset="/img/loading.gif" lazyload alt="image-20221109135849928"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">ping www.baidu.com<br>systemctl restart network<br>ifconfig<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109135902333.png" srcset="/img/loading.gif" lazyload alt="image-20221109135902333"></p>
+<p><img src="/post/383a95d9/image-20221109140207521.png" srcset="/img/loading.gif" lazyload alt="image-20221109140207521"></p>
+<h2 id="免密登录"><a href="#免密登录" class="headerlink" title="免密登录"></a>免密登录</h2><p>为了以免之后主机链接客机的时候每次都得填密码（那会累死的），设置一下ssh的免密登录。</p>
+<h3 id="修改hosts文件"><a href="#修改hosts文件" class="headerlink" title="修改hosts文件"></a>修改hosts文件</h3><p>首先修改hosts文件的配置，将主机和客机都加进去</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi /etc/hosts<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109140636069.png" srcset="/img/loading.gif" lazyload alt="image-20221109140636069"></p>
+<h3 id="生成密钥文件"><a href="#生成密钥文件" class="headerlink" title="生成密钥文件"></a>生成密钥文件</h3><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">ssh-keygen -t rsa</span><br></code></pre></td></tr></table></figure>
+
+<p>回车三次即可，如果是已有密钥文件，回车四次。</p>
+<p><img src="/post/383a95d9/image-20221109140938883.png" srcset="/img/loading.gif" lazyload alt="image-20221109140938883"></p>
+<h3 id="复制密钥"><a href="#复制密钥" class="headerlink" title="复制密钥"></a>复制密钥</h3><p>将本机公钥文件复制到其它虚拟机上（接收方需先开机），在三个主机上都需要分别输入下列复制文件，保证三台主机都能够免密登录。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">ssh-copy-id hadoop01<br>ssh-copy-id hadoop02<br>ssh-copy-id hadoop03<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109141259437.png" srcset="/img/loading.gif" lazyload alt="image-20221109141259437"></p>
+<p><img src="/post/383a95d9/image-20221109141157065.png" srcset="/img/loading.gif" lazyload alt="image-20221109141157065"></p>
+<p><img src="/post/383a95d9/image-20221109141225064.png" srcset="/img/loading.gif" lazyload alt="image-20221109141225064"></p>
+<p>使用ssh指令测试一下是否成功</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">比如在hadoop1主机下输入</span><br>ssh hadoop2<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109141621838.png" srcset="/img/loading.gif" lazyload alt="image-20221109141621838"></p>
+<h2 id="安装Hadoop和JDK"><a href="#安装Hadoop和JDK" class="headerlink" title="安装Hadoop和JDK"></a>安装Hadoop和JDK</h2><p>首先在每个主机下创建三个文件夹，data用于存数据、servers用于存储服务器配置、software用于存储软件包等。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">mkdir -p /export/data<br>mkdir -p /export/servers<br>mkdir -p /export/software<br></code></pre></td></tr></table></figure>
+
+<h3 id="下载安装包"><a href="#下载安装包" class="headerlink" title="下载安装包"></a>下载安装包</h3><p>推荐使用更为稳定的hadoop-2.7.4版本和jdk8。</p>
+<p>hadoop-2.7.4.tar.gz ：<a target="_blank" rel="noopener" href="https://hadoop.apache.org/release/2.7.4.html">Apache Hadoop</a></p>
+<p>jdk-8u161-linux-x64.tar.gz ：<a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/javase/javase8-archive-downloads.html">Java Archive Downloads - Java SE 8 (oracle.com)</a></p>
+<h3 id="安装Xshell"><a href="#安装Xshell" class="headerlink" title="安装Xshell"></a>安装Xshell</h3><p>安装Xshell软件，这个软件能够方便的进行多主机协同，相对于虚拟机在UI和功能上更为友好。</p>
+<p><a target="_blank" rel="noopener" href="https://www.xshell.com/zh/free-for-home-school/">家庭&#x2F;学校免费 - NetSarang Website (xshell.com)</a>，直接用免费的就好，然后和普通软件一样下一步*n。</p>
+<h3 id="配置Xshell中的节点环境"><a href="#配置Xshell中的节点环境" class="headerlink" title="配置Xshell中的节点环境"></a>配置Xshell中的节点环境</h3><p>打开Xshell后点击文件并选择新建，名称填hadoop1，主机填写hadoop1的IP地址。</p>
+<p><img src="/post/383a95d9/image-20221109155443676.png" srcset="/img/loading.gif" lazyload alt="image-20221109155443676"></p>
+<p><img src="/post/383a95d9/image-20221109155533585.png" srcset="/img/loading.gif" lazyload alt="image-20221109155533585"></p>
+<p>再点击用户身份验证，把hadoop1的账号，密码输入，就可以通过Xshell控制虚拟机，方便后续软件的传输。</p>
+<p><img src="/post/383a95d9/image-20221109155613472.png" srcset="/img/loading.gif" lazyload alt="image-20221109155613472"></p>
+<p>重复步骤新建会话控制hadoop2，hadoop3。</p>
+<p><img src="/post/383a95d9/image-20221109155655906.png" srcset="/img/loading.gif" lazyload alt="image-20221109155655906"></p>
+<h3 id="上传文件（以hadoop1为例）"><a href="#上传文件（以hadoop1为例）" class="headerlink" title="上传文件（以hadoop1为例）"></a>上传文件（以hadoop1为例）</h3><p>安装一个插件方便上传文件，提供资源管理器的UI</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /export/software<br>yum   -y  install  lrzsz<br>rz<br></code></pre></td></tr></table></figure>
+
+<p>rz指令之后会进入资源管理器，将hadoop文件和jdk文件上传到系统中</p>
+<p><img src="/post/383a95d9/image-20221109155919795.png" srcset="/img/loading.gif" lazyload alt="image-20221109155919795"></p>
+<p><img src="/post/383a95d9/image-20221109160145263.png" srcset="/img/loading.gif" lazyload alt="image-20221109160145263"></p>
+<p>之后解压hadoop和jdk的压缩包到software文件夹下。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /export/software<br>tar -zxvf jdk-8u161-linux-x64.tar.gz -C /export/servers/<br>tar -zxvf hadoop-2.7.4.tar.gz -C /export/servers/<br><span class="hljs-meta prompt_">#</span><span class="language-bash">重命名jdk文件夹</span><br>cd /export/servers<br>mv jdk1.8.0_161 jdk<br></code></pre></td></tr></table></figure>
+
+<h3 id="软件配置（以hadoop1为例）"><a href="#软件配置（以hadoop1为例）" class="headerlink" title="软件配置（以hadoop1为例）"></a>软件配置（以hadoop1为例）</h3><p>将hadoop和jdk的配置信息加到全局配置中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi /etc/profile #进入全局配置文件<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">tip:在配置文件末尾追加</span><br>export JAVA_HOME=/export/servers/jdk<br>export PATH=$PATH:$JAVA_HOME/bin<br>export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar<br><span class="hljs-meta prompt_">#</span><span class="language-bash">tip:在文件末尾追加</span><br>export HADOOP_HOME=/export/servers/hadoop-2.7.4<br>export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109161459940.png" srcset="/img/loading.gif" lazyload alt="image-20221109161459940"></p>
+<p>更新配置文件使之生效</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">source /etc/profile<br></code></pre></td></tr></table></figure>
+
+<p>这样就完成了两个软件的配置，可以分别使用<code>java -version</code>和<code>hadoop version</code>查看是否成功安装。</p>
+<p><img src="/post/383a95d9/image-20221109161201657.png" srcset="/img/loading.gif" lazyload alt="image-20221109161201657"></p>
+<p><img src="/post/383a95d9/image-20221109161354682.png" srcset="/img/loading.gif" lazyload alt="image-20221109161354682"></p>
+<p>上述两个小步骤需要在hadoop2和hadoop3分别完成。</p>
+<h2 id="Hadoop集群配置"><a href="#Hadoop集群配置" class="headerlink" title="Hadoop集群配置"></a>Hadoop集群配置</h2><blockquote>
+<p>（vi编辑器：i为编辑模式，esc为退出编辑模式，:wq为保存并退出）</p>
+</blockquote>
+<p>首先进入主节点hadoop1的配置目录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /export/servers/hadoop-2.7.4/etc/hadoop/<br></code></pre></td></tr></table></figure>
+
+<h3 id="java地址配置"><a href="#java地址配置" class="headerlink" title="java地址配置"></a>java地址配置</h3><p>修改hadoop中对于java环境地址的配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi hadoop-env.sh<br><span class="hljs-meta prompt_">#</span><span class="language-bash">tip:找到相应位置，添加这段话</span><br>export JAVA_HOME=/export/servers/jdk<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109161744733.png" srcset="/img/loading.gif" lazyload alt="image-20221109161744733"></p>
+<h3 id="核心配置文件"><a href="#核心配置文件" class="headerlink" title="核心配置文件"></a>核心配置文件</h3><p>修改<strong>core-site.xml</strong>文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi core-site.xml<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs xml">#tip:下图中乱码部分为注释代码，可以删掉，不影响<br><span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--配置Hadoop的文件系统，由URI指定--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>fs.defaultFS<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>        <span class="hljs-comment">&lt;!--配置namenode的地址到hadoop1--&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>hdfs://hadoop1:9000<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--配置Hadoop的临时目录，默认/tem/hadoop-$&#123;user.name&#125;--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>hadoop.tmp.dir<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>/export/servers/hadoop-2.7.4/tmp<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109161949003.png" srcset="/img/loading.gif" lazyload alt="image-20221109161949003"></p>
+<p>修改<strong>hdfs-site.xml</strong>文件，其中hdfs的每个部分的含义可以参见以下链接。</p>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/jpcflyer/p/9005222.html">hadoop配置文件详解系列（二）-hdfs-site.xml篇 - 程序员姜小白 - 博客园 (cnblogs.com)</a></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi hdfs-site.xml<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--指定HDFS的数量，默认不变就可以--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dfs.replication<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>3<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--secondarynamenode 所在主机的IP和端口--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>dfs.namenode.secondary.http-address<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>hadoop2:50090<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109162339041.png" srcset="/img/loading.gif" lazyload alt="image-20221109162339041"></p>
+<h3 id="附属配置文件"><a href="#附属配置文件" class="headerlink" title="附属配置文件"></a>附属配置文件</h3><p>修改<strong>mapred-site.xml</strong>文件。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cp mapred-site.xml.template mapred-site.xml<br>vi mapred-site.xml<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--指定MapReduce运行时的框架，这里指定在YARN上，默认在local--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>mapreduce.framework.name<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>yarn<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109163300911.png" srcset="/img/loading.gif" lazyload alt="image-20221109163300911"></p>
+<p>修改<strong>yarn-site.xml</strong>文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">vi yarn-site.xml<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-tag">&lt;<span class="hljs-name">configuration</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--指定YARN集群的管理者（ResourceManager）的地址--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>yarn.resourcemanager.hostname<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>hadoop1<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br>    <span class="hljs-comment">&lt;!--指定yarn节点的管理逻辑--&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">property</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">name</span>&gt;</span>yarn.nodemanager.aux-services<span class="hljs-tag">&lt;/<span class="hljs-name">name</span>&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">value</span>&gt;</span>mapreduce_shuffle<span class="hljs-tag">&lt;/<span class="hljs-name">value</span>&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">property</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">configuration</span>&gt;</span><br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109162829388.png" srcset="/img/loading.gif" lazyload alt="image-20221109162829388"></p>
+<h3 id="节点配置"><a href="#节点配置" class="headerlink" title="节点配置"></a>节点配置</h3><p>修改<strong>slaves</strong>文件</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">tip:将文件中的localhost删除，添加主节点和子节点的主机名称</span><br><span class="hljs-meta prompt_">#</span><span class="language-bash">tip:如主节点hadoop1，子节点hadoop2和hadoop3</span><br>vi slaves<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109162752736.png" srcset="/img/loading.gif" lazyload alt="image-20221109162752736"></p>
+<h3 id="复制配置到子结点"><a href="#复制配置到子结点" class="headerlink" title="复制配置到子结点"></a>复制配置到子结点</h3><p>将主节点中配置好的文件和hadoop目录copy给子节点，其中主节点为hadoop1，子结点为hadoop2和hadoop3。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">scp /etc/profile hadoop02:/etc/profile<br>scp /etc/profile hadoop03:/etc/profile<br>scp -r /export/ hadoop02:/<br>scp -r /export/ hadoop03:/<br></code></pre></td></tr></table></figure>
+
+<p>去到hadoop2和hadoop3主机中，使新传过来的配置信息生效</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">tip:返回hadoop2和hadoop3节点执行下面命令</span><br>source /etc/profile<br></code></pre></td></tr></table></figure>
+
+<h3 id="格式化文件系统"><a href="#格式化文件系统" class="headerlink" title="格式化文件系统"></a>格式化文件系统</h3><p>在主节点格式化文件系统，初始化hadoop的文件系统配置。如图片中的红框，给出【successfully formatted】即代表已经成功格式化文件系统。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">hdfs namenode -format<br></code></pre></td></tr></table></figure>
+
+<p><img src="/post/383a95d9/image-20221109163720042.png" srcset="/img/loading.gif" lazyload alt="image-20221109163720042"></p>
+<h2 id="集群启动"><a href="#集群启动" class="headerlink" title="集群启动"></a>集群启动</h2><h3 id="启动进程"><a href="#启动进程" class="headerlink" title="启动进程"></a>启动进程</h3><p>在主节点启动dfs和yarn服务进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs shell">start-dfs.sh<br>start-yarn.sh<br>jps<br></code></pre></td></tr></table></figure>
+
+<p>在主节点会显示ResourceManager（Yarn）、Namenode（主节点）、NodeManager（Hadoop）、在次主节点会显示SecondaryNamenode。</p>
+<p><img src="/post/383a95d9/image-20221109165428445.png" srcset="/img/loading.gif" lazyload alt="image-20221109165428445"></p>
+<p>关闭进程可以使用stop进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">stop-dfs.sh<br>stop-yarn.sh<br></code></pre></td></tr></table></figure>
+
+<h3 id="关闭防火墙（所有虚拟机都要操作）"><a href="#关闭防火墙（所有虚拟机都要操作）" class="headerlink" title="关闭防火墙（所有虚拟机都要操作）"></a>关闭防火墙（所有虚拟机都要操作）</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">systemctl stop firewalld    #关闭防火墙<br>systemctl disable firlewalld  #关闭防火墙开机启动<br></code></pre></td></tr></table></figure>
+
+<h3 id="本次配置"><a href="#本次配置" class="headerlink" title="本次配置"></a>本次配置</h3><p>打开window下的【C:\Windows\System32\drivers\etc】，以管理员权限打开hosts文件，在文件末添加三行代码：</p>
+<figure class="highlight accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs accesslog"><span class="hljs-number">192.168.121.134</span> hadoop01<br><span class="hljs-number">192.68.121.135</span> hadoop02<br><span class="hljs-number">192.168.121.136</span> hadoop03<br></code></pre></td></tr></table></figure>
+
+<p>在windows系统下访问<a href="http://hadoop1:50070，即可查看hdfs集群状态；访问http://hadoop1:8088，查看Yarn集群状态。">http://hadoop1:50070，即可查看hdfs集群状态；访问http://hadoop1:8088，查看Yarn集群状态。</a></p>
+<p>这样就完成了整个hadoop文件系统的配置，个人觉得比较麻烦，需要一步步很细节的去完成。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%97%A5%E5%B8%B8tips/" class="category-chain-item">日常tips</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Hadoop/">#Hadoop</a>
+      
+        <a href="/tags/%E4%BA%91%E8%AE%A1%E7%AE%97/">#云计算</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Hadoop安装指南</div>
+      <div>http://paopao0226.site/post/383a95d9.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月9日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/475f1eb0.html" title="云计算课计算重点笔记">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">云计算课计算重点笔记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/502e77b9.html" title="循环神经网络笔记">
+                        <span class="hidden-mobile">循环神经网络笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

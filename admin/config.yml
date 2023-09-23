@@ -1,0 +1,156 @@
+backend:
+  name: git-gateway
+  branch: master
+media_folder: source/images
+public_folder: /images
+collections:
+  - name: all_posts
+    fields: &ref_0
+      - label: Title
+        name: title
+        widget: string
+      - label: Publish Date
+        name: date
+        widget: datetime
+        dateFormat: YYYY-MM-DD
+        timeFormat: HH:mm:ss
+        format: YYYY-MM-DD HH:mm:ss
+        required: false
+      - label: Tags
+        name: tags
+        widget: list
+        required: false
+      - label: Categories
+        name: categories
+        widget: list
+        required: false
+      - label: Body
+        name: body
+        widget: markdown
+        required: false
+      - label: Permalink
+        name: permalink
+        widget: string
+        required: false
+      - label: Comments
+        name: comments
+        widget: boolean
+        default: true
+        required: false
+    label: Post
+    folder: source/_posts
+    create: true
+    editor:
+      preview: true
+  - label: Page
+    name: pages
+    delete: false
+    files:
+      - name: bilibili-index.md
+        label: ''
+        file: source/bilibili/index.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: manifest.json
+        label: ''
+        file: source/manifest.json
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: about-index.md
+        label: 更多信息
+        file: source/about/index.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: categories-index.md
+        label: 文章分类
+        file: source/categories/index.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: develop-index.md
+        label: 更多信息
+        file: source/develop/index.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: download-index.md
+        label: 文件列表
+        file: source/download/index.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: download-积极分子综合评议-材料报送.md
+        label: ''
+        file: source/download/积极分子综合评议-材料报送.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: link-index.md
+        label: Links
+        file: source/link/index.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: message-index.md
+        label: 留言板
+        file: source/message/index.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: search-index.md
+        label: WHAT2U Searching for?:)
+        file: source/search/index.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: tags-index.md
+        label: 本文标签
+        file: source/tags/index.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: temp-(a).md
+        label: ''
+        file: source/temp/(a).md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: temp-2023-02-13-hexo博客实现搜索引擎优化SEO.md
+        label: hexo博客实现搜索引擎优化SEO
+        file: source/temp/2023-02-13-hexo博客实现搜索引擎优化SEO.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: temp-2023-02-20-推荐系统课程笔记chap1.md
+        label: 推荐系统笔记chap1-简介
+        file: source/temp/2023-02-20-推荐系统课程笔记chap1.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: temp-Large Language Model.md
+        label: ''
+        file: source/temp/Large Language Model.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: temp-候选列表.md
+        label: ''
+        file: source/temp/候选列表.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: zone-index.md
+        label: zone
+        file: source/zone/index.md
+        editor:
+          preview: true
+        fields: *ref_0
+      - name: download-echarts.min.js
+        label: ''
+        file: source/download/echarts.min.js
+        editor:
+          preview: true
+        fields: *ref_0

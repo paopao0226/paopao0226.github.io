@@ -1,0 +1,512 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="对于2023年软微开设的推荐系统课程做的笔记，本博客为chap1：推荐算法简介的基本内容。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="推荐系统笔记chap1-简介">
+<meta property="og:url" content="http://paopao0226.site/temp/2023-02-20-%E6%8E%A8%E8%8D%90%E7%B3%BB%E7%BB%9F%E8%AF%BE%E7%A8%8B%E7%AC%94%E8%AE%B0chap1.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="对于2023年软微开设的推荐系统课程做的笔记，本博客为chap1：推荐算法简介的基本内容。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/image-20230220203013432.png">
+<meta property="og:image" content="http://paopao0226.site/v2-a1cca66b853e873b775b5c3d1f765546_1440w.webp">
+<meta property="og:image" content="http://paopao0226.site/image-20230220193957780.png">
+<meta property="og:image" content="http://paopao0226.site/image-20230220194542637.png">
+<meta property="og:image" content="http://paopao0226.site/image-20230220195101949.png">
+<meta property="og:image" content="http://paopao0226.site/image-20230220195800445.png">
+<meta property="og:image" content="http://paopao0226.site/image-20230220201531326.png">
+<meta property="og:image" content="http://paopao0226.site/image-20230220202541706.png">
+<meta property="og:image" content="http://paopao0226.site/image-20230220202702494.png">
+<meta property="article:published_time" content="2023-02-20T09:58:30.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:36.042Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="推荐系统">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/image-20230220203013432.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>推荐系统笔记chap1-简介 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 60vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover16.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="推荐系统笔记chap1-简介"></span>
+          
+        </div>
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      <div class="container nopadding-x-md">
+        <div id="board"
+          >
+          
+          <div class="container">
+            <div class="row">
+              <div class="col-12 col-md-10 m-auto">
+                
+
+<article class="page-content">
+  <p>本课程来源于北京大学软微学院<a href="mailto:liuhz@ss.pku.edu.cn">刘宏志老师</a>开设的推荐系统及应用课程。</p>
+<h1 id="课程须知"><a href="#课程须知" class="headerlink" title="课程须知"></a>课程须知</h1><p>课件不上传，有慕课；了解思想，积极提问。</p>
+<p><img src="/image-20230220203013432.png" srcset="/img/loading.gif" lazyload alt="image-20230220203013432"></p>
+<h1 id="推荐系统的背景"><a href="#推荐系统的背景" class="headerlink" title="推荐系统的背景"></a>推荐系统的背景</h1><h2 id="背景1：信息超载现象"><a href="#背景1：信息超载现象" class="headerlink" title="背景1：信息超载现象"></a>背景1：信息超载现象</h2><ul>
+<li>信息快速增长</li>
+<li>信息爆炸：信息倍增周期加速缩短<br>互联网技术的兴起加快了数据和知识的倍增周期</li>
+<li>信息超载问题<br>信息输入过多，若无措施解决则会出现信息过载问题（难以消化&#x2F;难以整合&#x2F;难以存储）；信息的好坏有所掺杂<br>选择悖论：选择较少时希望有更多的选择，选择过多时反而降低了选择能力</li>
+<li>推荐系统为解决信息超载问题产生：<strong>筛选</strong>有效信息</li>
+</ul>
+<h3 id="解决信息超载的前身：搜索引擎"><a href="#解决信息超载的前身：搜索引擎" class="headerlink" title="解决信息超载的前身：搜索引擎"></a>解决信息超载的前身：搜索引擎</h3><p>搜索隐含的要求：用户的<strong>主动</strong>需求</p>
+<ul>
+<li>用户<strong>知道</strong>自己要什么</li>
+<li>用户知道该如何描述</li>
+</ul>
+<p>用户的已知区域和感兴趣的区域只是有交叉，需要多次迭代来扩大已知领域，找到感兴趣的区域，这个过程是繁琐的。</p>
+<h3 id="解决信息超载：推荐系统"><a href="#解决信息超载：推荐系统" class="headerlink" title="解决信息超载：推荐系统"></a>解决信息超载：推荐系统</h3><p>推荐希望实现的：挖掘并满足用户的潜在需求</p>
+<ul>
+<li>用户<strong>未知</strong>的信息</li>
+<li>系统主动展示或推送</li>
+</ul>
+<p><strong>推荐系统：</strong>是一种主动的信息过滤系统，将信息过滤过程由”用户主动搜索“转变为”系统主动推送“。</p>
+<h2 id="背景2：长尾现象"><a href="#背景2：长尾现象" class="headerlink" title="背景2：长尾现象"></a>背景2：长尾现象</h2><p>长尾问题是实际生产数据中的一种数据分布。其中关键的特点在于占据影响比例相对较小的部分分布着较多的实例，对于在长尾中的信息很难获取到，这样热门的越来越热门，冷门的越来越冷门。</p>
+<p><img src="/v2-a1cca66b853e873b775b5c3d1f765546_1440w.webp" srcset="/img/loading.gif" lazyload alt="img"></p>
+<p>长尾现象中，用户和生产商很难达成有效联系，用户找不到有效信息，生产商找不到合适客户展示信息。但销量小但种类多的产品的累积总收益会大于前面的商品，从而可能产生坏的影响。</p>
+<p><strong>推荐系统：</strong>一种个性化的双边匹配系统，把恰当的商品（信息）推送给恰当的人，帮助用户和生产商达到有效沟通。</p>
+<h1 id="推荐系统的价值"><a href="#推荐系统的价值" class="headerlink" title="推荐系统的价值"></a>推荐系统的价值</h1><ul>
+<li>用户角度：解决信息超载问题，提高幸福感；</li>
+<li>平台角度：提高用户满意度和忠诚度，提高收益；</li>
+<li>供应商角度：实现精准推销，提高效益，解决长尾问题；</li>
+<li>行业角度：多元化，健康发展。</li>
+</ul>
+<h1 id="推荐系统的实现思路"><a href="#推荐系统的实现思路" class="headerlink" title="推荐系统的实现思路"></a>推荐系统的实现思路</h1><p>借鉴经典角色：营销人员、领域专家、社交推荐…</p>
+<p>人工智能的目标：像人一样思考和行动（不会超过人类）；<strong>合理</strong>的思考和行动（可以超过人类）（感觉我咋在听三体）</p>
+<h1 id="推荐系统的历史"><a href="#推荐系统的历史" class="headerlink" title="推荐系统的历史"></a>推荐系统的历史</h1><p><strong>企业数字化转型</strong>面临的困境：内部信息超载</p>
+<ul>
+<li>1992：基于协同过滤的内部新闻组文档推荐系统Tapestry</li>
+<li>1994：基于协同过滤的跨网络新闻推荐GroupLens</li>
+<li>1998：Amazon基于项目的协同过滤，大规模个性化线上商品推荐<ul>
+<li>千人千面：个性化推荐</li>
+</ul>
+</li>
+<li>2003：AdWords盈利模式，根据搜索关键词推荐广告</li>
+<li>2007：AdWords盈利模式加入个性化元素</li>
+<li>2006~2009：Netflix举办百万美元大奖赛，将其电影推荐准确率提高10%</li>
+<li>现如今：成为一种标配。</li>
+</ul>
+<h1 id="推荐系统的框架"><a href="#推荐系统的框架" class="headerlink" title="推荐系统的框架"></a>推荐系统的框架</h1><p><img src="/image-20230220193957780.png" srcset="/img/loading.gif" lazyload alt="image-20230220193957780"></p>
+<ol>
+<li>获取信息（已完成）</li>
+<li>建模&#x2F;画像，形成有效信息源</li>
+<li>构建推荐系统</li>
+<li>用户提供信息</li>
+<li>特定用户画像</li>
+<li>形成个人推荐</li>
+<li>给出推荐结果</li>
+</ol>
+<h2 id="个性化推荐"><a href="#个性化推荐" class="headerlink" title="个性化推荐"></a>个性化推荐</h2><p>$u_1,…,u_m \in U$，$i_{1,1},…,i_{1,n},…,i_{m,1},…,i_{m,n}\in I$，$r_{u,i}\in R$</p>
+<p><img src="/image-20230220194542637.png" srcset="/img/loading.gif" lazyload alt="image-20230220194542637"></p>
+<p>每个用户$u_k$都有一个产品排序$i_{k,1},…,i_{k,n}$，根据每个用户及对应画像产生结果$R$。</p>
+<h2 id="用户画像"><a href="#用户画像" class="headerlink" title="用户画像"></a>用户画像</h2><p><img src="/image-20230220195101949.png" srcset="/img/loading.gif" lazyload alt="image-20230220195101949"></p>
+<p>用户画像需要有可解释性，能够解释画像的形成，细节上的内容最能够体现差异，故需要关注与挖掘细节数据。</p>
+<p>用户画像的目标是将真实的人（实体）存储为系统中的数字形式（数字人）$\rightarrow$<strong>打标签</strong></p>
+<p><img src="/image-20230220195800445.png" srcset="/img/loading.gif" lazyload alt="image-20230220195800445"></p>
+<p>用户画像是一个<strong>动态的、不断更新的过程</strong>，持续的循环用户产生行为与系统分析行为的过程。</p>
+<h2 id="项目画像"><a href="#项目画像" class="headerlink" title="项目画像"></a>项目画像</h2><p>项目：理解为候选的选项或者条目。</p>
+<p><img src="/image-20230220201531326.png" srcset="/img/loading.gif" lazyload alt="image-20230220201531326"></p>
+<p>当项目中需要更多的专业知识时，项目画像的难度将大大增加，超过用户画像。项目画像也是一种动态的过程。</p>
+<blockquote>
+<p>推荐系统的目标是用户和项目进行匹配，用户画像和项目画像相互影响。</p>
+</blockquote>
+<h2 id="案例分析：视频推荐"><a href="#案例分析：视频推荐" class="headerlink" title="案例分析：视频推荐"></a>案例分析：视频推荐</h2><p><img src="/image-20230220202541706.png" srcset="/img/loading.gif" lazyload alt="image-20230220202541706"></p>
+<p><img src="/image-20230220202702494.png" srcset="/img/loading.gif" lazyload alt="image-20230220202702494"></p>
+<p>相互关联：两边标签有所关联，<strong>标签相似或直接相同，</strong>可以直接做比对或匹配。</p>
+<h1 id="推荐系统的应用实例"><a href="#推荐系统的应用实例" class="headerlink" title="推荐系统的应用实例"></a>推荐系统的应用实例</h1><p>淘宝：属性+关系+行为，实现用户和项目的画像，一张图囊括所有。</p>
+<p>头条：系统组成架构和设计</p>
+<p>腾讯、搜狐、Netflix等（没图）</p>
+<h1 id="推荐系统的应用：不限于现有热门领域"><a href="#推荐系统的应用：不限于现有热门领域" class="headerlink" title="推荐系统的应用：不限于现有热门领域"></a>推荐系统的应用：不限于现有热门领域</h1><p>除互联网、电商等外，推荐系统在教育、医疗、金融、管理等领域中也有应用前景或潜在应用，关键在于定义用户和项目是什么，从而可以推进数据获取、建模画像等工作。</p>
+<p>编译序列推荐：程序-&gt;用户；编译选项（或序列）-&gt;选项，结合领域知识进行画像。</p>
+
+
+  
+
+</article>
+
+
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

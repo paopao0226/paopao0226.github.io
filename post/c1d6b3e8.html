@@ -1,0 +1,902 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="基于Acwing的算法提高课的课程的算法题练习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Acwing 动态规划题解笔记">
+<meta property="og:url" content="http://paopao0226.site/post/c1d6b3e8.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="基于Acwing的算法提高课的课程的算法题练习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/c1d6b3e8/image-20220912160548858.png">
+<meta property="og:image" content="http://paopao0226.site/post/c1d6b3e8/image-20220925233911877.png">
+<meta property="article:published_time" content="2022-09-12T07:41:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.970Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="机试">
+<meta property="article:tag" content="动态规划">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/c1d6b3e8/image-20220912160548858.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>Acwing 动态规划题解笔记 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover4.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Acwing 动态规划题解笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-09-12 15:41" pubdate>
+          2022年9月12日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          52 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">Acwing 动态规划题解笔记</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h1><h2 id="数字三角形模型"><a href="#数字三角形模型" class="headerlink" title="数字三角形模型"></a>数字三角形模型</h2><h3 id="方格取数"><a href="#方格取数" class="headerlink" title="方格取数"></a><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/1029/">方格取数</a></h3><p>与<a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/1017/">摘花生</a>不同，本题要求的是路径走两次，且在走的过程中，若之前方格的数字中有被使用，则第二次不可使用。因此这道题的两个路径之间本身就有一定的关联性。</p>
+<p>从摘花生的集合状态与属性出发，<b>f(i,j)</b>代表从开头(1,1)到(i,j)的最佳路径，因为此题走了两次，因此可以稍加推广，以<b>f(i1,j1,i2,j2)</b>表示第一次走到(i1,j1)，第二次走到(i2,j2)的数值最大值，<font color="red">这里的思路和平时不一样，同时处理两条路径的走向。</font></p>
+<p>又根据题目要求，两个路径存在的主要矛盾是当路径重合使用时的数值使用问题，又因若使两个路径可能有重合，则两个路径的步数一定是一致的，因此设置一个同步变量<b>k &#x3D; i1+j1 &#x3D; i2+j2</b>，将集合状态换成<b>f(k,i1,i2)</b>，j1和j2均可通过此状态推导出来。<font color="red">这里可以形象的理解为状态从左上角到右下角成弧形扩散</font></p>
+<p>∴以f(k,i1,i2)表示所有从(1,1)分别走到(i1,j1)和(i2,j2)的最大值。</p>
+<p>转移时，因为上一个状态转到下一个状态的动作是”行走”动作，故可以将状态转移抽象成两个路径分别向<strong>（下,下）、（下,右）、（右,下）、（右,右）</strong>的转移。即</p>
+<p><img src="/post/c1d6b3e8/image-20220912160548858.png" srcset="/img/loading.gif" lazyload alt="image-20220912160548858"></p>
+<p>对每一种情况的状态转移，首先需要判断是否走到一起。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-comment">//如果走到一起，则只记录一次(i1,j1)点的值，(i2,j2)点和(i1,j1)点重合</span><br><span class="hljs-keyword">if</span>(i1==i2) t = w[i1][j1];<br><span class="hljs-keyword">else</span> t = w[i1][j1]+w[i2][j2];<br></code></pre></td></tr></table></figure>
+
+<p>以两个路径都向下为例：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++">f[k][i1][j1]=<span class="hljs-built_in">max</span>(f[k][i1][i2],f[k<span class="hljs-number">-1</span>][i1<span class="hljs-number">-1</span>][i2<span class="hljs-number">-1</span>]+t);<br></code></pre></td></tr></table></figure>
+
+<p>代码如下，注意注释内容</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N= <span class="hljs-number">25</span>;<br><span class="hljs-type">int</span> n,w[N][N],f[N*<span class="hljs-number">2</span>][N][N];<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    cin &gt;&gt; n;<span class="hljs-type">int</span> r,c,p;<br>    <span class="hljs-keyword">while</span>(cin&gt;&gt;r&gt;&gt;c&gt;&gt;p &amp;&amp; r||c||p)&#123;<br>        w[r][c] = p;<br>    &#125;<br>    <span class="hljs-comment">//状态迭代，k从2开始，即(1,1)点开始</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> k = <span class="hljs-number">2</span>;k &lt;= n*<span class="hljs-number">2</span>;k++)&#123;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i1 = <span class="hljs-number">1</span>;i1 &lt;= n;i1++)&#123;<br>            <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i2 = <span class="hljs-number">1</span>;i2 &lt;= n;i2++)&#123;<br>                <span class="hljs-type">int</span> j1 = k-i1,j2 = k-i2;<br>                <span class="hljs-comment">//判断是否重合</span><br>                <span class="hljs-type">int</span> t = w[i1][j1];<br>                <span class="hljs-keyword">if</span>(i1!=i2) t+=w[i2][j2];<br>                <span class="hljs-type">int</span> &amp;x=f[k][i1][i2];<br>                <span class="hljs-comment">//状态转移</span><br>                x = <span class="hljs-built_in">max</span>(x,f[k<span class="hljs-number">-1</span>][i1<span class="hljs-number">-1</span>][i2<span class="hljs-number">-1</span>]+t);<br>                x = <span class="hljs-built_in">max</span>(x,f[k<span class="hljs-number">-1</span>][i1<span class="hljs-number">-1</span>][i2]+t);<br>                x = <span class="hljs-built_in">max</span>(x,f[k<span class="hljs-number">-1</span>][i1][i2<span class="hljs-number">-1</span>]+t);<br>                x = <span class="hljs-built_in">max</span>(x,f[k<span class="hljs-number">-1</span>][i1][i2]+t);<br>            &#125;<br>        &#125;<br>    &#125;<br>    cout &lt;&lt; f[<span class="hljs-number">2</span>*n][n][n];<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="传纸条"><a href="#传纸条" class="headerlink" title="传纸条"></a><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/1029/">传纸条</a></h3><p>和方格取数一模一样，<a target="_blank" rel="noopener" href="https://www.acwing.com/solution/content/51293/">证明如下：</a></p>
+<h2 id="最长上升子序列模型（LIS）"><a href="#最长上升子序列模型（LIS）" class="headerlink" title="最长上升子序列模型（LIS）"></a>最长上升子序列模型（LIS）</h2><h3 id="怪盗基德的滑翔翼"><a href="#怪盗基德的滑翔翼" class="headerlink" title="怪盗基德的滑翔翼"></a><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/1019/">怪盗基德的滑翔翼</a></h3><p>此题可以抽象为正序、倒序各做一次最长上升子序列问题（LIS），这里主要给出两种可行的最长上升子序列求解办法。</p>
+<h4 id="DP（O-n2-）"><a href="#DP（O-n2-）" class="headerlink" title="DP（O(n2)）"></a>DP（O(n2)）</h4><p>用一个数组F[i]代表以A[i]结尾的LIS的长度，状态转移时两层循环，最外层i循环每个数，内层循环j循环i前面的每个数，F[i] &#x3D; max{F[j]+1,F[i]}</p>
+<p>代码如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= m;i++)&#123;<br>       <span class="hljs-comment">//g数组为dp数组，f数组为存值数组</span><br>           g[i]=<span class="hljs-number">1</span>;<br>           <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt; i;j++)&#123;<br>               <span class="hljs-keyword">if</span>(f[j]&lt;f[i]) g[i]=<span class="hljs-built_in">max</span>(g[i],g[j]+<span class="hljs-number">1</span>);<br>           &#125;<br>           res = <span class="hljs-built_in">max</span>(res,g[i]);<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="二分-贪心（O-nlogn-）"><a href="#二分-贪心（O-nlogn-）" class="headerlink" title="二分+贪心（O(nlogn)）"></a>二分+贪心（O(nlogn)）</h4><p>原理：</p>
+<p>题解中最难理解的地方在于栈中序列虽然递增，但是每个元素在原串中对应的位置其实可能是乱的，那为什么这个栈还能用于计算最长子序列长度？<br>实际上这个栈【不用于记录最终的最长子序列】，<strong>而是【以stk[i]结尾的子串长度最长为i】</strong>或者说<strong>【长度为i的递增子串中，末尾元素最小的是stk[i]】</strong>。理解了这个问题以后就知道为什么新进来的元素要不就在末尾增加，要不就替代第一个大于等于它元素的位置。<br>这里的【替换】就蕴含了一个贪心的思想，对于同样长度的子串，我当然希望它的末端越小越好，这样以后我也有更多机会拓展。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">100010</span>;<br><span class="hljs-type">int</span> f[N],n;<br><span class="hljs-type">int</span> g[N];<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    cin &gt;&gt; n;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++)cin &gt;&gt; f[i];<br>    <span class="hljs-comment">//替换思想体现了贪心，我们希望序列每个位置的数都更小</span><br>    g[<span class="hljs-number">1</span>] = f[<span class="hljs-number">1</span>];<br>    <span class="hljs-type">int</span> t = <span class="hljs-number">1</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">2</span>;i &lt;= n;i++)&#123;<br>        <span class="hljs-comment">//如果当前序列的最大值小于f[n]，则加入数组</span><br>        <span class="hljs-keyword">if</span>(g[t] &lt; f[i])&#123;<br>            g[t+<span class="hljs-number">1</span>] = f[i];<br>            t++;<br>        &#125;<br>        <span class="hljs-keyword">else</span> &#123;<br>            <span class="hljs-comment">//找到第一个大于等于f[n]的值</span><br>            <span class="hljs-type">int</span> l = <span class="hljs-number">1</span>,r = t;<br>            <span class="hljs-keyword">while</span>(l &lt; r)&#123;<br>                <span class="hljs-type">int</span> m = (l+r)/<span class="hljs-number">2</span>;<br>                <span class="hljs-keyword">if</span>(g[m] &gt;= f[i]) r = m;<br>                <span class="hljs-keyword">else</span> l = m+<span class="hljs-number">1</span>;<br>            &#125;<br>            g[l] = f[i];<br>        &#125;<br>    &#125;<br>    cout &lt;&lt; t &lt;&lt; endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="登山-amp-合唱队形"><a href="#登山-amp-合唱队形" class="headerlink" title="登山 &amp; 合唱队形"></a><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/1016/">登山 </a>&amp; <a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/484/">合唱队形</a></h3><p>此题是LIS问题的一个变型，需要求的是以中间为最大值，两端降低的子序列，我们直接从前到后和从后到前，一共两次求解最长上升和最长下降子序列，然后迭代每个位置求和即可。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">1010</span>;<br><span class="hljs-type">int</span> n,f[N],g[N],k[N];<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    cin &gt;&gt; n;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)cin &gt;&gt; f[i];<br>    <span class="hljs-comment">//最长上升子序列</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)&#123;<br>        g[i]=<span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>;j &lt; i;j++)&#123;<br>            <span class="hljs-keyword">if</span>(f[j]&lt;f[i]) g[i]=<span class="hljs-built_in">max</span>(g[i],g[j]+<span class="hljs-number">1</span>);<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">//最长下降子序列</span><br>    <span class="hljs-comment">//注意最外层的循环也要从n-1开始，因为需要有初值</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = n<span class="hljs-number">-1</span>;i &gt;= <span class="hljs-number">0</span>;i--)&#123;<br>        k[i]=<span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = n<span class="hljs-number">-1</span>;j&gt;i;j--)&#123;<br>            <span class="hljs-keyword">if</span>(f[j]&lt;f[i]) k[i]=<span class="hljs-built_in">max</span>(k[i],k[j]+<span class="hljs-number">1</span>);<br>        &#125;<br>    &#125;<br>    <span class="hljs-comment">//计算终值</span><br>    <span class="hljs-type">int</span> res=<span class="hljs-number">0</span>;<br>    <span class="hljs-comment">//将计算过两次的中间点去除</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)&#123;<br>        res=<span class="hljs-built_in">max</span>(res,g[i]+k[i]<span class="hljs-number">-1</span>);<br>    &#125;<br>    cout &lt;&lt; res;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="友好城市"><a href="#友好城市" class="headerlink" title="友好城市"></a><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/1014/">友好城市</a></h3><p>此题可以理解为对Pair求解LIS问题，首先对first部分进行排序，使其有一定的次序，然后对Pair的每一维都进行LIS问题的求解。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">5010</span>;<br><span class="hljs-keyword">typedef</span> pair&lt;<span class="hljs-type">int</span>,<span class="hljs-type">int</span>&gt; PII;<br>vector&lt;PII&gt; v;<br><span class="hljs-type">int</span> res,g[N];<br><span class="hljs-function"><span class="hljs-type">bool</span> <span class="hljs-title">cmp</span><span class="hljs-params">(<span class="hljs-type">const</span> PII a,<span class="hljs-type">const</span> PII b)</span></span>&#123;<br>    <span class="hljs-keyword">return</span> a.first&lt;b.first;<br>&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-type">int</span> n;cin &gt;&gt; n;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)&#123;<br>        <span class="hljs-type">int</span> l,r;cin &gt;&gt; l &gt;&gt; r;<br>        v.<span class="hljs-built_in">push_back</span>(&#123;l,r&#125;);<br>    &#125;<br>    <span class="hljs-built_in">sort</span>(v.<span class="hljs-built_in">begin</span>(),v.<span class="hljs-built_in">end</span>(),cmp);<br>    <span class="hljs-comment">//对两维都进行LIS问题求解</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)&#123;<br>        g[i]=<span class="hljs-number">1</span>;<br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>;j &lt; i;j++)&#123;<br>            <span class="hljs-keyword">if</span>(v[j].first &lt; v[i].first &amp;&amp; v[j].second &lt; v[i].second) g[i]=<span class="hljs-built_in">max</span>(g[i],g[j]+<span class="hljs-number">1</span>);<br>        &#125;<br>        res=<span class="hljs-built_in">max</span>(res,g[i]);<br>    &#125;<br>    cout &lt;&lt; res &lt;&lt; endl;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="最大上升子序列和"><a href="#最大上升子序列和" class="headerlink" title="最大上升子序列和"></a><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/1018/">最大上升子序列和</a></h3><p>令LIS问题DP解法中的g[i]表示以f[i]为结尾的最长上升子序列和，这样LIS的转移方法仍然适用于这道题。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">1010</span>;<br><span class="hljs-type">int</span> f[N],g[N],res;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    <span class="hljs-type">int</span> n;<br>    cin &gt;&gt; n;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i =<span class="hljs-number">0</span>;i &lt; n;i++)cin &gt;&gt; f[i];<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i =<span class="hljs-number">0</span>;i &lt; n;i++)&#123;<br>        <span class="hljs-comment">//从这里进行求和，g[i]代表f[i]结尾的最长上升子序列和，默认为f[i]本身</span><br>        g[i]=f[i];<br>        <span class="hljs-comment">//DP求解</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">0</span>;j &lt; i;j++)&#123;<br>            <span class="hljs-keyword">if</span>(f[j]&lt;f[i]) g[i]=<span class="hljs-built_in">max</span>(g[i],g[j]+f[i]);<br>        &#125;<br>        res=<span class="hljs-built_in">max</span>(res,g[i]);<br>    &#125;<br>    cout &lt;&lt; res;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h3 id="拦截导弹"><a href="#拦截导弹" class="headerlink" title="拦截导弹"></a><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/1012/">拦截导弹</a></h3><p>这里我们按照以下几个部分来讲：</p>
+<p><b>问题的第一部分是最长下降子序列，直接代板子，不再赘述</b></p>
+<p><b>问题的第二部分是找到最少个数的下降子序列将序列覆盖</b></p>
+<p>第二问可以采用贪心的做法，这里可以复习最长上升子序列的<a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/898/">贪心解法</a>。考虑一种贪心方案：<br>对于第i个数来说，把它加入前 i - 1 个数构成的下降子序列组中，所有结尾元素大于第i个数的数中最小的那个数，下给出对其的证明：</p>
+<p>假设有一种最优策略不是按照贪心策略进行求解的，则可以通过有限步的调整将最优解调整成贪心解，且不改变原有条件要求。</p>
+<p><img src="/post/c1d6b3e8/image-20220925233911877.png" srcset="/img/loading.gif" lazyload alt="image-20220925233911877"></p>
+<p>因此可以每次找到序列尾部一个大于等于当前值的最小值并加入，如果所有的序列最后一个都小于当前值，则另开一个新的序列，这保证了记录序列尾部的数组一定是单调递增的，因为每次加入的都是大于所有值的新数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs c++">   <span class="hljs-comment">//计数器</span><br><span class="hljs-type">int</span> cnt=<span class="hljs-number">0</span>;<br><span class="hljs-comment">//对所有的值进行迭代，根据序列的要求，其数组一定是单调递增的。</span><br>   <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; n;i++)&#123;<br>       <span class="hljs-comment">//找到大于等于当前值的最小值</span><br>       <span class="hljs-type">int</span> t=<span class="hljs-number">0</span>;<br>       <span class="hljs-keyword">while</span>(t &lt;cnt &amp;&amp; g[t]&lt;f[i]) t++;<br>       <span class="hljs-comment">//赋值</span><br>       g[t]=f[i];<br>       <span class="hljs-comment">//如果加到了最后，则cnt加一，新加一个序列</span><br>       <span class="hljs-keyword">if</span>(t&gt;=cnt) cnt++;<br>   &#125;<br></code></pre></td></tr></table></figure>
+
+<p>注：此道题由于满足<b>Dilworth定理</b>：偏序集的最少反链划分数等于最长链的长度，因此求最少的下降子序列划分数，等同于求上升子序列的最长长度，因此这里可以直接求一个最长上升子序列并给出解。</p>
+<h3 id="最长公共上升子序列"><a href="#最长公共上升子序列" class="headerlink" title="最长公共上升子序列"></a><a target="_blank" rel="noopener" href="https://www.acwing.com/problem/content/274/">最长公共上升子序列</a></h3><p>这是两个经典DP问题$（LIS和LCS）$的结合版，按照集合的概念理解DP</p>
+<p>状态表示$f[i][j]$—集合：考虑 a 中前 i 个数字，b 中前 j 个数字 ，且当前以 b[j] 结尾的子序列的方案</p>
+<p>状态表示$f[i][j]$—属性：该方案的子序列长度最大$max$</p>
+<p>状态转移 ：</p>
+<ul>
+<li><p>a数组中前 i-1个数字，b数组中前 j 个数字 ，且当前以 b[j] 结尾的子序列的方案转移过来：$f_{i,j}&#x3D;max(f_{i,j},f_{i−1,j})$，此时$a[i]\ne b[j]$</p>
+</li>
+<li><p>a数组中前 i 个数字，b数组中前 k 个数字 ，且当前以 b[k] 结尾的子序列的方案转移过来：$f_{i,j}&#x3D;max(f_{i,j},f_{i−1,k+1})，k∈[0,j−1],a[i]&#x3D;&#x3D;b[j],bj&gt;bk$</p>
+</li>
+</ul>
+<p>其中，对于第二种情况需要从j-1种可能的情况转移过来，难度较大。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;iostream&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;algorithm&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;vector&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;cstring&gt;</span></span><br><span class="hljs-keyword">using</span> <span class="hljs-keyword">namespace</span> std;<br><span class="hljs-type">const</span> <span class="hljs-type">int</span> N = <span class="hljs-number">3010</span>;<br><span class="hljs-type">int</span> n,d[N][N];<br><span class="hljs-type">int</span> a[N],b[N];<br>vector&lt;<span class="hljs-type">int</span>&gt; s;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span>&#123;<br>    cin &gt;&gt; n;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++)cin &gt;&gt; a[i];<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++)cin &gt;&gt; b[i];<br>    <span class="hljs-comment">//对a进行迭代</span><br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>;i &lt;= n;i++)&#123;<br>        <span class="hljs-type">int</span> maxv=<span class="hljs-number">1</span>;<br>        <span class="hljs-comment">//对b进行迭代</span><br>        <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> j = <span class="hljs-number">1</span>;j &lt;= n;j++)&#123;<br>            <span class="hljs-comment">//第一种情况：不取a[i]，</span><br>            d[i][j] = d[i<span class="hljs-number">-1</span>][j];<br>            <span class="hljs-comment">//第二种情况：取a[i]</span><br>            <span class="hljs-comment">//如果a[i]==b[j]了，结果应该是取和不取a[i]的情况的最大值</span><br>            <span class="hljs-keyword">if</span>(a[i]==b[j]) d[i][j] = <span class="hljs-built_in">max</span>(d[i][j],maxv);<br>            <span class="hljs-comment">//这个部分用来循环找到d[i-1][j]+1最大的</span><br>            <span class="hljs-keyword">if</span>(b[j]&lt;a[i]) maxv=<span class="hljs-built_in">max</span>(maxv,d[i<span class="hljs-number">-1</span>][j]+<span class="hljs-number">1</span>);<br>        &#125;<br>    &#125;<br>    <span class="hljs-type">int</span> res=<span class="hljs-number">0</span>;<br>    <span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">1</span>; i&lt;=n;i++) res = <span class="hljs-built_in">max</span>(res,d[n][i]);<br>    cout &lt;&lt; res;<br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E6%9C%BA%E8%AF%95/">#机试</a>
+      
+        <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/">#动态规划</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>Acwing 动态规划题解笔记</div>
+      <div>http://paopao0226.site/post/c1d6b3e8.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年9月12日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/348fca29.html" title="云计算虚拟机安装tips">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">云计算虚拟机安装tips</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/bf1e6b0b.html" title="开学机试速通">
+                        <span class="hidden-mobile">开学机试速通</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Allow: /posts/
+Disallow: /archives/
+Disallow: /images/
+Disallow: /categories/
+Disallow: /tags/ 
+Disallow: /about/
+Disallow: /links/
+Disallow: /message/
+Disallow: /download/
+
+Sitemap: https://paopao0226.site/sitemap.xml
+Sitemap: https://paopao0226.site/baidusitemap.xml

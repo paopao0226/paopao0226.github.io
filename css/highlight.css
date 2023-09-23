@@ -1,0 +1,82 @@
+pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}/*!
+  Theme: GitHub
+  Description: Light theme as seen on github.com
+  Author: github.com
+  Maintainer: @Hirse
+  Updated: 2021-05-15
+
+  Outdated base version: https://github.com/primer/github-syntax-light
+  Current colors taken from GitHub's CSS
+*/.hljs{color:#24292e;background:#fff}.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-template-tag,.hljs-template-variable,.hljs-type,.hljs-variable.language_{color:#d73a49}.hljs-title,.hljs-title.class_,.hljs-title.class_.inherited__,.hljs-title.function_{color:#6f42c1}.hljs-attr,.hljs-attribute,.hljs-literal,.hljs-meta,.hljs-number,.hljs-operator,.hljs-selector-attr,.hljs-selector-class,.hljs-selector-id,.hljs-variable{color:#005cc5}.hljs-meta .hljs-string,.hljs-regexp,.hljs-string{color:#032f62}.hljs-built_in,.hljs-symbol{color:#e36209}.hljs-code,.hljs-comment,.hljs-formula{color:#6a737d}.hljs-name,.hljs-quote,.hljs-selector-pseudo,.hljs-selector-tag{color:#22863a}.hljs-subst{color:#24292e}.hljs-section{color:#005cc5;font-weight:700}.hljs-bullet{color:#735c0f}.hljs-emphasis{color:#24292e;font-style:italic}.hljs-strong{color:#24292e;font-weight:700}.hljs-addition{color:#22863a;background-color:#f0fff4}.hljs-deletion{color:#b31d28;background-color:#ffeef0}
+.highlight-container {
+  position: relative;
+  background-color: highlight-background;
+}
+.highlight-container.on .highlight-footer {
+  display: none;
+}
+.highlight-container.on .hide-btn {
+  display: flex;
+}
+.highlight-container.on .highlight-wrap {
+  max-height: none;
+}
+.highlight-container .highlight-wrap {
+  overflow: hidden;
+  max-height: 200px;
+}
+.highlight-container .highlight-footer {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  height: 60px;
+  background-image: linear-gradient(-180deg, rgba(255,255,255,0) 0%, highlight-background 65%);
+  text-align: center;
+}
+.highlight-container .show-btn {
+  color: #fff;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  line-height: 2.6em;
+  text-decoration: none;
+  padding: 0 0.8em;
+}
+.highlight-container .show-btn:hover {
+  text-decoration: none;
+}
+.highlight-container .hide-btn {
+  color: #fff;
+  font-size: 12px;
+  width: 22px;
+  position: absolute;
+  left: -21px;
+  top: 0;
+  line-height: 1em;
+  text-decoration: none;
+  text-align: center;
+  display: none;
+  flex-direction: column;
+  background-color: highlight-background;
+  border-radius: 4px 0 0 4px;
+  padding: 0.1em 0 0.6em;
+  transition: top ease 0.35s;
+}
+.highlight-container .hide-btn:hover {
+  text-decoration: none;
+}
+.highlight-container .fa-angle-up,
+.highlight-container .fa-angle-down {
+  font-family: font-icon;
+  font-style: normal;
+  color: #ca0c16;
+}
+.highlight-container .fa-angle-up:before {
+  content: "\f106";
+}
+.highlight-container .fa-angle-down:before {
+  content: "\f107";
+  margin-left: 0.5em;
+}

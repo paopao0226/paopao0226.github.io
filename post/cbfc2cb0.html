@@ -1,0 +1,988 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="针对于《神经网络与深度学习》课程中有关网络优化和正则化的的笔记记录，对于课程内容与思路再次进行总结与梳理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网络优化与正则化笔记">
+<meta property="og:url" content="http://paopao0226.site/post/cbfc2cb0.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="针对于《神经网络与深度学习》课程中有关网络优化和正则化的的笔记记录，对于课程内容与思路再次进行总结与梳理。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221115180044115.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221115180106978.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221115181154238.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221115232605096.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221115232849962.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221116001027995.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221116001332954.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221118163828905.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221118164634719.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221116003230617.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221120005619057.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/1199293-20220321215442891-1712051133.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221120154335050.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221120160927380.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221120162957808.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221122153002506.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221122160614242.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221122162638043.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221123133816828.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221123134031472.png">
+<meta property="og:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221123143310503.png">
+<meta property="article:published_time" content="2022-11-15T14:00:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.366Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="神经网络与深度学习">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/cbfc2cb0/image-20221115180044115.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>网络优化与正则化笔记 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover9.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="网络优化与正则化笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-11-15 22:00" pubdate>
+          2022年11月15日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          13k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          106 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">网络优化与正则化笔记</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="网络优化"><a href="#网络优化" class="headerlink" title="网络优化"></a>网络优化</h1><h2 id="网络优化的难点"><a href="#网络优化的难点" class="headerlink" title="网络优化的难点"></a>网络优化的难点</h2><h3 id="结构差异大"><a href="#结构差异大" class="headerlink" title="结构差异大"></a>结构差异大</h3><ul>
+<li>没有通用的优化算法</li>
+<li>超参数多</li>
+</ul>
+<h3 id="非凸优化问题"><a href="#非凸优化问题" class="headerlink" title="非凸优化问题"></a>非凸优化问题</h3><ul>
+<li><p>鞍点：梯度为0的点，在不同维度的性质不同，如下图，在不同的维度里分别是局部最高点和局部最低点</p>
+<p><img src="/post/cbfc2cb0/image-20221115180044115.png" srcset="/img/loading.gif" lazyload alt="image-20221115180044115"></p>
+</li>
+<li><p>平坦最小值：邻域内的值都接近于局部最小值，所有点对应的训练损失都比较接近。大部分的局部最小解都是平坦最小值，而局部最小解对应的训练损失都可能非常接近于全局最小解对应的训练损失。</p>
+<p><img src="/post/cbfc2cb0/image-20221115180106978.png" srcset="/img/loading.gif" lazyload alt="image-20221115180106978"></p>
+</li>
+</ul>
+<h2 id="网络优化的改善方法"><a href="#网络优化的改善方法" class="headerlink" title="网络优化的改善方法"></a>网络优化的改善方法</h2><ul>
+<li><p>更有效的优化算法来提高优化方法的效率和稳定性</p>
+<ul>
+<li>动态学习率调整</li>
+<li>梯度估计修正</li>
+</ul>
+</li>
+<li><p>更好的参数初始化方法、数据预处理方法来提高优化效率</p>
+</li>
+<li><p>修改网络结构来得到更好的优化地形</p>
+<p>​	<img src="/post/cbfc2cb0/image-20221115181154238.png" srcset="/img/loading.gif" lazyload alt="image-20221115181154238"></p>
+<ul>
+<li>ReLU激活函数</li>
+<li>残差连接</li>
+<li>逐层归一化</li>
+</ul>
+</li>
+<li><p>使用更好的超参数优化方法</p>
+</li>
+</ul>
+<h1 id="优化算法本身的改进"><a href="#优化算法本身的改进" class="headerlink" title="优化算法本身的改进"></a>优化算法本身的改进</h1><h2 id="小批量随机梯度下降（MiniBatch）"><a href="#小批量随机梯度下降（MiniBatch）" class="headerlink" title="小批量随机梯度下降（MiniBatch）"></a>小批量随机梯度下降（MiniBatch）</h2><p>选取$K$个训练样本$\lbrace x^ { (k)},y^ { (k) } \rbrace_{ k&#x3D;1} ^ K$，计算偏导数<br>$$<br>g_t(\theta) &#x3D; {1 \over K} \sum_{(\pmb x,\pmb y) \in \mathcal S_t} { {\partial \mathcal L(\pmb y,f(\pmb x;\theta))} \over \partial \theta}<br>$$<br>定义梯度为前一个阶段参数$\theta_{t-1}$的函数<br>$$<br>g_t &#x3D; g_t(\theta_{t-1})<br>$$<br>更新参数为梯度的反方向，其中$\alpha&gt;0$为网络的学习率<br>$$<br>\theta_t &#x3D; \theta_{t-1}-\alpha g_t<br>$$<br>影响Minibatch的因素有很多，但关键在于批量大小、梯度和学习率三个参数因素。</p>
+<h2 id="批量大小"><a href="#批量大小" class="headerlink" title="批量大小"></a>批量大小</h2><p>批量大小不影响随机梯度的期望，但会影响随机梯度的<strong>方向</strong>。批量越大，随机梯度的方差越小，引入的噪声相对越少，训练也会越稳定，就可以采用更高的学习率来提高学习效率；反之若批量越小，则需要设置小学习率防止不收敛。</p>
+<p>按batch更新一次为单位，批量越大，学习率越高，其效果和效率也越好；按整个训练集迭代一遍为单位，批量越小，学习率越低，走的步次越多，其学习的准确度越高。<br>$$<br>1回合(Epoch) &#x3D; ({训练样本的数量N\over 批量大小K}) \times 迭代(Iteration)<br>$$<br><img src="/post/cbfc2cb0/image-20221115232605096.png" srcset="/img/loading.gif" lazyload alt="image-20221115232605096"></p>
+<h2 id="学习率"><a href="#学习率" class="headerlink" title="学习率"></a>学习率</h2><p><img src="/post/cbfc2cb0/image-20221115232849962.png" srcset="/img/loading.gif" lazyload alt="image-20221115232849962"></p>
+<h3 id="学习率衰减"><a href="#学习率衰减" class="headerlink" title="学习率衰减"></a>学习率衰减</h3><p>越到学习的中后期，其学习的步长理应越小，以接近最优点，防止过拟合情况出现，因此学习率衰减技巧十分重要。</p>
+<p><b>逆时衰减：</b>按照迭代次数衰减<br>$$<br>\alpha_t &#x3D; \alpha_0 {1 \over {1+\beta \times t}}<br>$$<br><b>指数衰减：</b>按照衰减系数对于迭代次数的指数衰减<br>$$<br>\alpha_t &#x3D; \alpha_0 \beta^t ,\ \ \beta&lt;1<br>$$<br><b>自然指数衰减：</b>$\alpha_t &#x3D; \alpha_0·exp(-\beta \times t)$</p>
+<p><b>余弦衰减：</b>采用余弦函数中(0,1)段的递减性衰减<br>$$<br>\alpha_t &#x3D; {1\over 2}\alpha_0(1+cos({t\pi \over T}))<br>$$<br>几个方法的比较：</p>
+<p><img src="/post/cbfc2cb0/image-20221116001027995.png" srcset="/img/loading.gif" lazyload alt="image-20221116001027995"></p>
+<h3 id="周期学习率"><a href="#周期学习率" class="headerlink" title="周期学习率"></a>周期学习率</h3><p>周期学习率旨在体现整体衰减但部分跳跃的学习率，可以<strong>帮助跳出局部最优，收敛于更为平坦的局部解。</strong></p>
+<p><b>三角循环学习率：</b>假设每个循环周期的长度相等都为$2\triangle𝑇$，其中前$\triangle T$步为学习率线性增大阶段，后$\triangle T$步为学习率线性缩小阶段。其中在第t次迭代时有<br>$$<br>\begin{align}<br>m &amp; &#x3D; \lfloor 1+{t \over 2\triangle T} \rfloor \\<br>b &amp; &#x3D; |{t \over \triangle T} - 2m+1| \\<br>\alpha_t &amp; &#x3D; \alpha_{min}^m +(\alpha_{max}^m - \alpha_{min}^m)(max(0,1-b))<br>\end{align}<br>$$<br><b>带热重启的随机梯度下降：</b>假设在梯度下降过程中重启$M$次，第$𝑚$次重启在上次重启开始第个回合后进行，称为$T_m$重启周期．在第$m$次重启之前，采用余弦衰减来降低学习率<br>$$<br>\alpha_t &#x3D; \alpha_{min}^m + {1 \over 2}(\alpha_{max}^m - \alpha_{min}^m)(1+cos({T_{cur} \over T_m} \pi))<br>$$<br>两种周期学习率调整方法的示意图如图</p>
+<p><img src="/post/cbfc2cb0/image-20221116001332954.png" srcset="/img/loading.gif" lazyload alt="image-20221116001332954"></p>
+<h3 id="自适应学习率"><a href="#自适应学习率" class="headerlink" title="自适应学习率"></a>自适应学习率</h3><h4 id="Adagrad"><a href="#Adagrad" class="headerlink" title="Adagrad"></a>Adagrad</h4><p>借鉴了$l_2$正则化的思想，在更新梯度时结合之前梯度平方和的影响<br>$$<br>\triangle \theta_t &#x3D; - {\alpha \over {\sqrt{G_t+\epsilon}}} \odot \pmb g_t，其中G_t &#x3D; \sum_{\tau&#x3D;1} ^t{\pmb g_t \odot \pmb g_t}<br>$$</p>
+<h4 id="RMSprop"><a href="#RMSprop" class="headerlink" title="RMSprop"></a>RMSprop</h4><p>RMSprop可以在有些情况下避免AdaGrad算法中学习率不断单调下降以至于过早衰减的缺点。<br>$$<br>\triangle \theta_t &#x3D; - {\alpha \over {\sqrt{G_t+\epsilon}}} \odot \pmb g_t，其中G_t &#x3D; \beta G_{t-1}+(1-\beta){\pmb g_t \odot \pmb g_t}&#x3D; (1-\beta) \sum_{\tau&#x3D;1}^t \beta^{t-\tau}\pmb g_\tau \odot g_\tau<br>$$<br>从上式可以看出，$RMSProp$算法和$AdaGrad$算法的区别在于$G_t$的计算由累积方式变成了指数衰减移动平均．在迭代过程中，每个参数的学习率并不是呈衰减趋势，既可以变小也可以变大。</p>
+<h4 id="Adadelta"><a href="#Adadelta" class="headerlink" title="Adadelta"></a>Adadelta</h4><p>加入方向梯度参数进行考量，当某个方向的梯度一直很大时，代表这个方向还没有训练完全，应该多学一下。<br>$$<br>\triangle \theta_t &#x3D; - { {\sqrt{\triangle X_{t-1} ^2 + \epsilon} } \over {\sqrt{G_t+\epsilon} } } \odot \pmb g_t，其中G_t &#x3D; \sum_{\tau&#x3D;1} ^t{\pmb g_t \odot \pmb g_t},\triangle X_{t-1}^2 &#x3D; \beta_1\triangle X_{t-2}^2+(1-\beta_1)\triangle \theta_{t-1} \odot \triangle \theta_{t-1}<br>$$<br>$AdaDelta$算法还引入了每次参数更新差值$\triangle \theta$的平方的指数衰减权移动平均，一定程度上减小了学习率$\alpha$的波动。</p>
+<h2 id="梯度"><a href="#梯度" class="headerlink" title="梯度"></a>梯度</h2><h3 id="梯度方向优化"><a href="#梯度方向优化" class="headerlink" title="梯度方向优化"></a>梯度方向优化</h3><h4 id="Momentum（动量法）"><a href="#Momentum（动量法）" class="headerlink" title="Momentum（动量法）"></a>Momentum（动量法）</h4><p>用之前累计动量来替代真正的梯度进行更新，每次迭代的梯度可以看作是加速度。在第$t$次迭代，计算负梯度的”加权移动平均“作为参数更新的方向。<br>$$<br>\triangle \theta_t &#x3D; \rho \triangle \theta_{t-1} -\alpha \pmb g_t &#x3D; -\alpha\sum_{\tau&#x3D;1}^t \rho^{t-\tau}\pmb g_\tau<br>$$<br>其中$\rho$是动量因子，整体是动量因子和梯度的乘积的加权移动平均，每个$\rho^{t-i}\pmb g_t$是单位的动量。这样每个参数的实际更新差值取决于最近一段时间内梯度的加权平均值。当某个参数在最近一段时间内的梯度方向不一致时，其真实的参数更新幅度变小；相反，当在最近一段时间内的梯度方向都一致时，其真实的参数更新幅度变大，起到加速作用。从而起到抵消相反方向，加速相同方向的效果。</p>
+<p><img src="/post/cbfc2cb0/image-20221118163828905.png" srcset="/img/loading.gif" lazyload alt="image-20221118163828905"></p>
+<p>当前梯度与之前梯度的加权移动平均可以近似看作二阶梯度，体现梯度的变化方向。</p>
+<h4 id="Nesterov加速梯度"><a href="#Nesterov加速梯度" class="headerlink" title="Nesterov加速梯度"></a>Nesterov加速梯度</h4><p>对于动量法的公式，可以将其看作两步，第一步是加上之前$\triangle \theta_{t-1}$的参数，得到中间参数$\triangle \hat \theta$；第二步是加上梯度反方向，得到新的参数$\triangle \theta_t$。其中，第二步的更新本应从中间参数的位置进行更新，这样才能用到第一步的中间更新结果，因此就可以得到$Nesterov$方法的更新公式：<br>$$<br>\triangle \theta_t &#x3D; \rho \triangle \theta_{t-1} -\alpha \pmb g_t(\theta_{t-1}+\rho \triangle \theta_{t-1})<br>$$<br>其中括号中的参数加和就体现了参数本身的中间值更新。</p>
+<p><img src="/post/cbfc2cb0/image-20221118164634719.png" srcset="/img/loading.gif" lazyload alt="image-20221118164634719"></p>
+<h4 id="Adam算法：梯度方向优化-自适应学习率"><a href="#Adam算法：梯度方向优化-自适应学习率" class="headerlink" title="Adam算法：梯度方向优化+自适应学习率"></a>Adam算法：梯度方向优化+自适应学习率</h4><p>计算梯度平方$g_t^2$的指数加权平均（RMSprop）和梯度$g_t$的指数加权平均（动量法）<br>$$<br>\begin{align}<br>M_t &amp; &#x3D; \beta_1M_{t-1}+(1-\beta_1)\pmb g_t \\<br>G_t &amp; &#x3D; \beta_2G_{t-1}+(1-\beta_2)\pmb g_t \odot \pmb g_t<br>\end{align}<br>$$<br>取其中一个加权移动平均，并看平均式子的第一项：$M_1 &#x3D; \beta_1M_0+(1-\beta_1)g_1$，若前面的$\beta_1M_0&#x3D;0$，则有$M_1&#x3D;(1-\beta_1)g_1$，而梯度更新的单位不能变，即本身应该$M_1&#x3D;g_1$，因此需要修正掉这个系数的偏差，扩展到$M_t$和$G_t$则有<br>$$<br>\hat M_t &#x3D; {M_t \over {1-\beta_1^t}},\hat G_t &#x3D; {G_t \over {1-\beta_2^t}}<br>$$<br>最后，按照自适应学习率的方法更新参数即可<br>$$<br>\triangle \theta_t &#x3D; - {\alpha \over \sqrt{\hat G_t+\epsilon}}\hat M_t<br>$$</p>
+<h3 id="梯度截断"><a href="#梯度截断" class="headerlink" title="梯度截断"></a>梯度截断</h3><p>梯度截断通过将梯度的模限制在一个区间，从而解决了<strong>梯度爆炸</strong>的问题，防止梯度过大。梯度截断的的方法相对会比较暴力，有按值截断和按模截断两种方法。</p>
+<p><strong>按值截断：</strong>$\pmb g_t &#x3D; max(min(\pmb g_t,b),a)$ ——&gt;限制在$[a,b]$之间</p>
+<p><strong>按模截断：</strong>$\pmb g_t &#x3D; { b \over ||\pmb g_t||}\pmb g_t$</p>
+<h2 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h2><p><b>增大批量大小：</b>批量越大，相对需要的学习率就越大，而单纯增大批量，效果可以视为变相降低学习率</p>
+<p><font color="red"><b>学习率预热：</b></font>在一开始梯度较乱的时候使用小学习率提高稳定性，到一定epoch后开始正式学习，学习率预热目前已成为业界公认常规使用的一种方法。</p>
+<p><img src="/post/cbfc2cb0/image-20221116003230617.png" srcset="/img/loading.gif" lazyload alt="image-20221116003230617"></p>
+<h2 id="优化算法小结"><a href="#优化算法小结" class="headerlink" title="优化算法小结"></a>优化算法小结</h2><h3 id="统一公式"><a href="#统一公式" class="headerlink" title="统一公式"></a>统一公式</h3><p>$$<br>\triangle \theta_t &#x3D; - {\alpha_t \over {\sqrt{G_t+\epsilon} } }M_t,\ 其中G_t &#x3D; \phi(\pmb g_1.\pmb g_2,…,\pmb g_n)，\ M_t &#x3D; \psi(\pmb g_1.\pmb g_2,…,\pmb g_n)<br>$$</p>
+<p><img src="/post/cbfc2cb0/image-20221120005619057.png" srcset="/img/loading.gif" lazyload alt="image-20221120005619057"></p>
+<h1 id="参数和数据"><a href="#参数和数据" class="headerlink" title="参数和数据"></a>参数和数据</h1><h2 id="参数初始化"><a href="#参数初始化" class="headerlink" title="参数初始化"></a>参数初始化</h2><p>神经网络的参数初始化不可以像一般规模的参数一样全部初始化为0，这样会出现所有神经元的输出结果一样，即进入了<strong>对称态</strong>，这样我们的网络就不能学到更多的特征了，因此需要规避这种可能性。</p>
+<p><img src="/post/cbfc2cb0/1199293-20220321215442891-1712051133.png" srcset="/img/loading.gif" lazyload alt="一个简单的神经网络"></p>
+<p>初始化的方法有预训练初始化（Backbone）、随机初始化和固定值初始化等方法。</p>
+<h3 id="预训练初始化"><a href="#预训练初始化" class="headerlink" title="预训练初始化"></a>预训练初始化</h3><p>在训练模型时，我们常常需要利用预训练的baseline模型对所设计网络的backbone或部分layer进行初始化，给网络训练提供一个较好的起点，同时减少训练的时间成本。</p>
+<h3 id="随机初始化"><a href="#随机初始化" class="headerlink" title="随机初始化"></a>随机初始化</h3><p>随机初始化是通过采用一定的随机化方法，将参数进行随机赋值来完成初始化。</p>
+<p><strong>高斯分布初始化：</strong>参数从一个固定均值和固定方差的高斯分布进行随机初始化（如$X \sim \mathcal N(0,0.01^2)$</p>
+<p><strong>均匀分布初始化：</strong>参数可以在区间$[-r,r]$内采用均匀分布进行初始化。</p>
+<h3 id="基于方差缩放的参数初始化"><a href="#基于方差缩放的参数初始化" class="headerlink" title="基于方差缩放的参数初始化"></a>基于方差缩放的参数初始化</h3><p>在一个神经网络中，第$l$层的神经元要接收第$l-1$层的输入，即有<br>$$<br>a^{(l)} &#x3D; f(\sum_{i&#x3D;1}^{M_{l-1}} w_i^{(l)}a_i^{(l-1)})<br>$$<br>其中$f(·)$是激活函数，不妨在这里设为简单的恒等函数$f(x)&#x3D;x$。假设$w_i^{(l)}$和$a_i^{(l-1)}$的均值均为0且<strong>相互独立</strong>，则有<br>$$<br>\mathbb E[a^{(l)}]&#x3D;\mathbb E[\sum_{i&#x3D;1}^{M_{l-1}} w_i^{(l)}a_i^{(l-1)}]&#x3D;\sum_{i&#x3D;1}^{M_{l-1}}\mathbb E[w_i^{(l)}]\mathbb E[a_i^{(l-1)}] &#x3D; 0<br>$$<br>而$a^{(l)}$的方差为：<br>$$<br>\begin{align}<br>var(a^{(l)})&amp;&#x3D;var(\sum_{i&#x3D;1}^{M_{l-1}} w_i^{(l)}a_i^{(l-1)})\\<br>&amp;&#x3D;\sum_{i&#x3D;1}^{M_{l-1}}\ var(w_i^{(l)})var(a_i^{(l-1)}) \\<br>&amp;&#x3D;M_{l-1}\ var(w_i^{(l)})var(a_i^{(l-1)})<br>\end{align}<br>$$<br>也就是说通过一次神经元计算，方差从$l-1$层到$l$层变化了$M_{l-1}\ var(w_i^{(l)})$倍，为了使得在经过多层网络后，信号不被过分放大或过分减弱，我们尽可能保持每个神经元的输入和输出的方差一致，则有<br>$$<br>M_{l-1}\ var(w_i^{(l)})&#x3D;1,\ \ \<br>var(w_i^{(l)})&#x3D;{1\over M_{l-1}}<br>$$<br>同理，对于反向传播的结果也需要保证方差一致，需要将$w_i^{(l)}$保持方差为$var(w_i^{(l)})&#x3D;{1\over M_{l}}$</p>
+<p>因为，取两个式子的折中结果为<br>$$<br>var(w_i^{(l)})&#x3D;{2\over {M_{l-1} + M_l} }<br>$$<br>这个就是方差缩放初始化的基本思想，通过将参数的方差限制到前后一致的程度，从而减少因参数变化导致的模型动荡的问题。</p>
+<p>假设初始化方法服从均匀分布，根据方差计算公式，可得服从$[a,b]$的均匀分布的期望为$\mathbb E[X]&#x3D;{1\over 2}(a+b)$，所以有<br>$$<br>\begin{align}<br>D[X]&#x3D;E[X^2]-[E[X]]^2 &amp; &#x3D; \int_a^b x^2f(x)dx - ({a+b\over2})^2 \\<br>&amp; &#x3D; \int_a^b x^2{1\over {b-a} } dx- ({a+b\over2})^2 \\<br>&amp; &#x3D; {1\over {b-a} }·{1\over 3}x^3 \vert <em>a^b  - ({a+b\over2})^2 \\<br>&amp; &#x3D; {(b-a)^2 \over 12}<br>\end{align}<br>$$<br>当服从$[-r,r]$的均匀分布时，代入到方差式子中，令$var(x)&#x3D;\sigma^2$，可得$r&#x3D;\sqrt{3\sigma^2}$，代入上面的方差结果可以得到<br>$$<br>r &#x3D; \sqrt{6\over{M</em>{l-1}+M_l}}<br>$$<br>这个就是$Xavier$初始化的基本思想，将这个思想扩展可以得到其他变种的初始化方法。</p>
+<p><img src="/post/cbfc2cb0/image-20221120154335050.png" srcset="/img/loading.gif" lazyload alt="image-20221120154335050"></p>
+<h3 id="正交初始化"><a href="#正交初始化" class="headerlink" title="正交初始化"></a>正交初始化</h3><p>一个$M$层的等宽线性网络定义如下：<br>$$<br>\pmb y &#x3D; \pmb W^{(L)}\pmb W^{(L-1)}…\pmb W^{(1)}\pmb x<br>$$<br>网络的反向传播公式为$\delta^{(l)}&#x3D;\pmb (W^{(l)})^\top \delta^{(l-1)}$为了避免梯度消失或梯度爆炸问题，希望误差项应该是相等的，即：<br>$$<br>||\delta^{(l-1)}||^2 &#x3D; ||\delta^{(l)}||^2 &#x3D; ||(\pmb W^{(l)})^\top\delta^{(l-1)}||^2<br>$$<br>因此，我们希望反向传播的参数相乘结果保持为单位阵，即$\pmb W^{(l)} ·(\pmb W^{(l)})^\top &#x3D; \mathbb I$，这种性质我们称之为<strong>范数保持性</strong></p>
+<p>为了能够保持这一性质，可以直接采用正交初始化的方法，将参数矩阵设置为正交矩阵，正交矩阵可以满足相乘为单位阵的特点。正交初始化的方法可以按照下面步骤来</p>
+<ol>
+<li>用均值为0，方差为1的高斯分布初始化得到一个矩阵</li>
+<li>将这个矩阵通过奇异值分解得到两个正交矩阵，并使用其中一个作为权重矩阵。</li>
+</ol>
+<h2 id="数据归一化"><a href="#数据归一化" class="headerlink" title="数据归一化"></a>数据归一化</h2><p>不同机器学习模型对数据特征尺度的敏感程度不一样。如果一个机器学习算法在缩放全部或部分特征后不影响它的学习和预测，我们就称该算法具有<strong>尺度不变性（Scale Invariance）</strong>。对于尺度敏感的模型，必须先对样本进行预处理，将各个维度的特征转换到相同的取值区间，并且消除不同特征之间的相关性，才能获得比较理想的结果．</p>
+<p>数据归一化操作通过使数据特征范围限制到特定范围内，从而对训练起到积极作用，具体来说，数据归一化可以使梯度更新方向与最优的指向方向一致，加速模型的训练速度。</p>
+<p><img src="/post/cbfc2cb0/image-20221120160927380.png" srcset="/img/loading.gif" lazyload alt="image-20221120160927380"></p>
+<h3 id="简单归一化"><a href="#简单归一化" class="headerlink" title="简单归一化"></a>简单归一化</h3><p>简单归一化直接对数据本身做归一化处理，其包括以下方法：</p>
+<p><strong>最小最大值归一化：</strong>通过缩放将每一个特征的取值范围归一到$[0, 1]$或$[−1, 1]$之间，即：<br>$$<br>\hat x^{(n)} &#x3D; { {x^{(n)}-min_nx^{(n)} } \over {max_nx^{(n)}-min_nx^{(n)} } }<br>$$<br><strong>Z值标准化：</strong>对每一维的特征进行调整，使之均值为0，方差为1，首先计算特征的均值和方差：<br>$$<br>\begin{align}<br>\mu&#x3D;{1\over N}\sum_{n&#x3D;1}^Nx^{(n)},\ \ \sigma^2{1\over N}\sum_{n&#x3D;1}^N(x^{(n)}-\mu)^2<br>\end{align}<br>$$<br>然后将特征减去均值，除以标准差，得到均值为0，方差为1的分布。<br>$$<br>\hat x^{(n)} &#x3D; { {x^{(n)}-\mu} \over \sigma }<br>$$<br><strong>白化（PCA降维）：</strong>输入数据经过白化处理后，特征之间相关性较低，并且所有特征具有相同的方差，从而降低输入数据的冗余性，白化的一个重要实现方式是主成分分析（PCA）</p>
+<p>几种方法的比较如下：</p>
+<p><img src="/post/cbfc2cb0/image-20221120162957808.png" srcset="/img/loading.gif" lazyload alt="image-20221120162957808"></p>
+<h2 id="逐层归一化"><a href="#逐层归一化" class="headerlink" title="逐层归一化"></a>逐层归一化</h2><p>每层或每隔几层做一次层归一化，以达到层与层之间<strong>更好的尺度不变性</strong>，减少内部协变量偏移（内部协变量偏移：每层活性值的分布都有所变化，随着层的增多其变化导致的偏移会越来越明显）；可以达到<strong>平滑地形</strong>的效果，优化地形使梯度更容易收敛。</p>
+<p>逐层归一化的方法有批量归一化、层归一化、权重归一化、局部响应归一化等</p>
+<h3 id="批量归一化（Batch-Normalization-BN）"><a href="#批量归一化（Batch-Normalization-BN）" class="headerlink" title="批量归一化（Batch Normalization,BN）"></a>批量归一化（Batch Normalization,BN）</h3><p>对于一个深层神经网络，有<br>$$<br>\pmb a^{(l)}&#x3D;f(\pmb z^{(l)}) &#x3D; f(W\pmb a^{(l-1)}+\pmb b)<br>$$<br>其中$f(·)$使激活函数，W和b是可学习参数，批量归一化对深层网络的净输入$\pmb z^{(l)}$进行归一化，应用于仿射变换之后，激活函数之前，具体的，对于净输入应用z值标准化：<br>$$<br>\hat z^{(l)} &#x3D; { {\pmb z^{(l)} - \mathbb E[\pmb z^{(l)}]} \over {\sqrt{var(\pmb z^{(l)})+\epsilon}} }<br>$$<br>其中期望和方差都针对于$\pmb z^{(l)}$在整个训练集上的结果，而由于训练时更多的是应用批量化的随机梯度下降，因此在整个数据集上算是不现实的，因此使用单个批量上的均值和方差来拟合整体的期望和方差，有<br>$$<br>\mu_\mathcal B &#x3D; {1\over K}\sum_{k&#x3D;1}^K\pmb z^{(k,l)},\ \ \sigma_\mathcal B^2&#x3D;{1\over K}\sum_{k&#x3D;1}^K(\pmb z^{(k,l)}-\mu_\mathcal B)\odot (\pmb z^{(k,l)}-\mu_\mathcal B)<br>$$<br>最后采用批量上的均值和方差代替整体的期望和方差。<br>$$<br>\hat {\pmb z}^{(l)} &#x3D; { {\pmb z^{(l)} - \mu_\mathcal B} \over \sqrt{\sigma_\mathcal B^2+\epsilon} } \odot \gamma + \beta \Leftrightarrow BN_{\gamma,\beta}(\pmb z^{(l)})<br>$$<br>其中$\gamma$表示缩放因子，$\beta$表示平移因子，当$\gamma&#x3D;\sigma_\mathcal B,\beta&#x3D;\mu_\mathcal B$时，调整后的$\pmb z$可以学习回到原有的$\pmb z$，这样也提高了本身的灵活性。但由于在RNN中，同一个神经元在不同时刻的值有所不同，无法确定在同一个神经元中的固定结果，维度不同从而导致$BN$很难应用进去。</p>
+<h3 id="层归一化（Layer-Normalization-LN）"><a href="#层归一化（Layer-Normalization-LN）" class="headerlink" title="层归一化（Layer Normalization,LN）"></a>层归一化（Layer Normalization,LN）</h3><p>与批量归一化不同，层归一化针对的是每一层的所有样本，而不是基于一个batch。设第$l$层的神经元净输入为$z^{(l)}$，则有期望和方差为<br>$$<br>\mu^{(l)} &#x3D; {1\over n^l}\sum_{i&#x3D;1}^{n^l} z_i^{(l)}, \ {\sigma^{(l)} }^2 &#x3D; {1 \over n^l}\sum_{i&#x3D;1}^{n^l} (z_i^{(l)} - \mu^{(l)})^2, \ \ 其中n^{l}为l层的神经元数量<br>$$<br>求出层上的均值和方差之后，归一化的方法和批量归一化一样都是移动中心点。<br>$$<br>\hat {\pmb z}^{(l)} &#x3D;{ {\pmb z^{(l)} - \mu^{(l)}} \over \sqrt{ {\sigma^{(l)} } ^2+\epsilon} } \odot \gamma + \beta \Leftrightarrow LN_{\gamma,\beta}(\pmb z^{(l)})<br>$$<br>批量归一化和层归一化的对比可以看下图：</p>
+<p><img src="/post/cbfc2cb0/image-20221122153002506.png" srcset="/img/loading.gif" lazyload alt="image-20221122153002506"></p>
+<p>可以看到，第一张图中，蓝色的区域表示在第$i$个深度中的所有样本$N$，第二个部分是第$i$个样本在所有神经元中训练，第三个和第四个也是逐层归一化的一种方法，分别对应一个实体的归一化和一个组的归一化。</p>
+<p>层归一化和批量归一化整体上是十分类似的，差别在于归一化的方法不同。对于$K$个样本的一个小批量集合$Z^{(l)} &#x3D; [Z_1^{(l)},Z_2^{(l)},…,Z_m^{(l)}]$，层归一化是对矩阵$Z^{(l)}$的每一列进行归一化，而批量归一化是对每一行进行归一化。一般而言，批量归一化是一种更好的选择。当小批量样本数量比较小时，可以选择层归一化。此外，归一化方法中还有基于权重的归一化（$WN$）和局部区域的响应归一化（$LRN$），这里不再详述。</p>
+<h2 id="超参数优化"><a href="#超参数优化" class="headerlink" title="超参数优化"></a>超参数优化</h2><p>超参数的类型众多，且范围不尽相同，因此针对于超参数的搜索和优化难度相对较高，需要找到一种相对合理的赋值或搜索的方法。</p>
+<h3 id="超参数的种类"><a href="#超参数的种类" class="headerlink" title="超参数的种类"></a>超参数的种类</h3><p>常见的超参数包含以下三种：</p>
+<ol>
+<li>网络结构，包括神经元之间的连接关系、层数、每层的神经元数量、激活函数的类型等．</li>
+<li>优化参数，包括优化方法、学习率、小批量的样本数量等．</li>
+<li>正则化系数．</li>
+</ol>
+<p>超参数优化（Hyperparameter Optimization）是一个组合优化问题，无法像一般参数那样通过梯度下降方法来优化，也没有一种通用有效的优化方法；同时，评估一组超参数配置（Configuration）一般需要完整运行整套机制，因此时间成本很高，需要从参数的选择本身进行优化。</p>
+<h3 id="网格搜索"><a href="#网格搜索" class="headerlink" title="网格搜索"></a>网格搜索</h3><p>是一种通过尝试所有超参数的组合来寻找合适一组超参数配置的方法。假设共有$K$个超参数，其中第$k$个超参数可以取到$m_k$个值；如果参数是连续的，可以选择几个“经验”值作为整体，一般这个经验值非等距；进一步的，为了能够使每一维上的值尽可能多的覆盖，可以采用随机搜索的方法，用不同取值的组合来模拟随机性。</p>
+<p><img src="/post/cbfc2cb0/image-20221122160614242.png" srcset="/img/loading.gif" lazyload alt="image-20221122160614242"></p>
+<h3 id="贝叶斯优化"><a href="#贝叶斯优化" class="headerlink" title="贝叶斯优化"></a>贝叶斯优化</h3><p>通过当前已经尝试过的超参数组合来预测下一步的最优组合，每个组合的优良与否采用概率的方式给出，即对当前的$K$种已尝试的方案建模。</p>
+<p>具体的，比较常用的贝叶斯优化方法是时序模型优化：假设超参数优化的函数$f(x)$服从高斯分布，贝叶斯过程通过根据$N$组已经产生结果的数据$\mathcal H&#x3D;{\pmb x^{(n)},y^{(n)} } <em>{i&#x3D;1} ^N$建模后验分布$\mathcal p</em>{\mathcal {GP} }(f(x)|x)$。而要使后验分布尽可能去接近真实分布，其需要对样本空间进行足够多的采样，为了使尽可能少的样本产生尽可能好的效果，需要对样本设置一个收益函数，比较常用的是期望改善。具体的设置方法不再详述。</p>
+<p><img src="/post/cbfc2cb0/image-20221122162638043.png" srcset="/img/loading.gif" lazyload alt="image-20221122162638043"></p>
+<h3 id="动态资源分配"><a href="#动态资源分配" class="headerlink" title="动态资源分配"></a>动态资源分配</h3><p>动态资源分配的关键是将有限的资源分配给更有可能带来收益的超参数组合．一种有效方法是逐次减半（Successive Halving）方法，将超参数优化看作一种非随机的最优臂问题，即在给定有限的机会次数下，如何玩这些赌博机并找到收益最大的臂。和多臂赌博机问题类似，最优臂问题也是在利用和探索之间找到最佳的平衡。</p>
+<h3 id="神经架构搜索"><a href="#神经架构搜索" class="headerlink" title="神经架构搜索"></a>神经架构搜索</h3><p>神经架构搜索的基本思想是通过神经网络来实现网络架构的设计，利用元学习的思想，神经架构搜索利用一个控制器来生成另一个子网络的架构描述。控制器可以由一个循环神经网络来实现。控制器的训练可以通过强化学习来完成，其奖励信号为生成的子网络在开发集上的准确率。</p>
+<h2 id="网络正则化"><a href="#网络正则化" class="headerlink" title="网络正则化"></a>网络正则化</h2><p>神经网络会优先记住具有一般性的规律，之后才会考虑到噪声，且由于通用近似定理的存在，神经网络的拟合能力也十分突出。但神经网络所用到的参数规模十分庞大，一般会超过样本的规模，因此很容易出现过拟合的问题，故需要对网络采用正则化的技术，限制其拟合能力到正常范围。正则化的方法原理是损害优化，其可以通过增加优化约束（L1&#x2F;L2约束、数据增强）、干扰优化过程（权重衰减、随机梯度下降、早停法）等方法实现。</p>
+<h3 id="l-1-和-l-2-正则化（Normalization）"><a href="#l-1-和-l-2-正则化（Normalization）" class="headerlink" title="$l_1$和$l_2$正则化（Normalization）"></a>$l_1$和$l_2$正则化（Normalization）</h3><p>$$<br>\theta^* &#x3D; \mathop{argmin}_\theta {1 \over N}\mathcal L(y^{(n)},f(\pmb x^{(n)},\theta)) + \lambda \mathscr l_p(\theta)<br>$$</p>
+<p>其中，$\mathscr l_p$是范数函数，$p$的取值一般取${1,2}$，$\mathscr l_1&#x3D;\mathop {\sum_i} |\theta_i| \le 1$，$\mathscr l_2&#x3D;\sum_i(\theta_i)^2 \le 1$；$\lambda$为正则化系数。</p>
+<p><img src="/post/cbfc2cb0/image-20221123133816828.png" srcset="/img/loading.gif" lazyload alt="image-20221123133816828"></p>
+<h3 id="早停法"><a href="#早停法" class="headerlink" title="早停法"></a>早停法</h3><p>使用验证集来测试每一次迭代的参数在验证集上是否是最优，如果在验证集上的错误率不再下降就停止迭代，防止过拟合。</p>
+<h3 id="权重衰减"><a href="#权重衰减" class="headerlink" title="权重衰减"></a>权重衰减</h3><p>在每次参数更新时引入一个衰减系数$w$：<br>$$<br>\theta_t \leftarrow (1-w)\theta_{t-1}-\alpha\pmb g_t<br>$$<br>对于$l_2$正则化，其公式可以表达为：<br>$$<br>\theta_t &#x3D; \theta_{t-1}-\alpha(\pmb g_t+\lambda\theta_{t-1}) &#x3D; (1-\alpha\lambda)\theta_{t-1}-\alpha\pmb g_t<br>$$<br>当$w&#x3D;\alpha\lambda$时，可以看出在随机梯度下降的背景下，权重衰减的效果与$l_2$正则化是完全一致的。	</p>
+<h3 id="暂退法（Dropout）"><a href="#暂退法（Dropout）" class="headerlink" title="暂退法（Dropout）"></a>暂退法（Dropout）</h3><p>在神经网络中，多个神经元的行为一致，可能会出现协同效应，这会降低模型的鲁棒性和表达能力，而当所有神经元的行为一致，就会退化为对称效应。为了避免协同效应，可以采用暂退法，对于一个神经层$y&#x3D;f(Wx+b)$，引入一个丢弃函数$d(·)$使得$y&#x3D;f(Wd(x)+b)$。</p>
+<p>在训练时，$d(\pmb x) &#x3D; \pmb m \odot \pmb x$，其中$\pmb m \in {0,1}^d$是丢弃掩码，可以通过依概率为$p$的伯努利分布生成，在训练时，$1-p$部分的神经元会被丢弃掉，这个过程是随机的，因此具有很强的多样性，其表达能力也会因为随机性而破坏程度降低。</p>
+<p><img src="/post/cbfc2cb0/image-20221123134031472.png" srcset="/img/loading.gif" lazyload alt="image-20221123134031472"></p>
+<p>在测试时，由于训练时神经元是依概率为$p$的伯努利分布随机$dropout$的，因此仅会有$p·n^l$​的数量的神经元保留，而在测试时，所有的神经元都是可以激活的，这会造成训练和测试时网络的输出不一致，因此需要对输入限制，即$d(\pmb x) &#x3D; p\pmb x$，相当于对不同的神经元做平均。</p>
+<p>对于暂退法，可以有以下两种形式的理解：</p>
+<p><strong>集成学习的解释：</strong>每做一次$Dropout$是对原有的完整网络做了一次子网络提取，若一个神经网络有$n$个神经元，则可以提取出$2^n$个子网络，这些子网络共享模型参数，相当于每次采用的是不同的网络训练，这会有效提高模型的鲁棒性。</p>
+<p><strong>贝叶斯学习的解释：</strong></p>
+<p>假设参数服从先验分布$q(\theta)$，则有贝叶斯加和为<br>$$<br>E_{q(\theta)}[y] &#x3D; \int_qf(\pmb x,\theta)q(\theta)d\theta \approx {1\over M}\sum_{m&#x3D;1}^Mf(\pmb x,\theta_m)<br>$$<br>其中$f(\pmb x,\theta_m)$是第$m$次$dropout$后的网络，多个子网络分布的综合可以看作对先验分布的期望。</p>
+<p>在循环神经网络中，每次采样的参数需要在每个时刻保持不变，因此在对循环神经网络上使用$dropout$时需要对参数矩阵的每个元素随机丢弃，并在所有时刻都使用相同的丢弃掩码。这种丢弃方式称之为变分丢弃法。</p>
+<p><img src="/post/cbfc2cb0/image-20221123143310503.png" srcset="/img/loading.gif" lazyload alt="image-20221123143310503"></p>
+<h2 id="输入和输出"><a href="#输入和输出" class="headerlink" title="输入和输出"></a>输入和输出</h2><h3 id="数据增强"><a href="#数据增强" class="headerlink" title="数据增强"></a>数据增强</h3><p>在数据中引入噪声或加入变换来增加数据的多样性和数量。</p>
+<p><strong>图像增强：</strong>旋转、平移、翻转、缩放、加噪声等</p>
+<p><strong>文本增强：</strong>词汇替换、回译、随机编辑噪声（增删改查、句子乱序）</p>
+<h3 id="标签平滑"><a href="#标签平滑" class="headerlink" title="标签平滑"></a>标签平滑</h3><p>在样本的输出标签中加入噪声来避免模型过拟合。若一个样本$x$的标签用独热编码表示：$\pmb y&#x3D;[0,…,0,1,0,…,0]\top$，则加入一个很小的噪声$\epsilon$，即<br>$$<br>\hat {\pmb y} &#x3D; [{\epsilon \over {K-1} } ,,,,,{\epsilon \over {K-1} },1-\epsilon,{\epsilon \over {K-1} } ,…,{\epsilon \over {K-1} }  ]\top<br>$$<br>若要在标签中继续加入语义相关性，可以采用知识蒸馏的方法，比如先训练另外一个更复杂（一般为多个网络的集成）的教师网络（Teacher</p>
+<p>Network），并使用大网络的输出作为软目标来训练学生网络（Student Network）。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">#神经网络与深度学习</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>网络优化与正则化笔记</div>
+      <div>http://paopao0226.site/post/cbfc2cb0.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年11月15日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/77bfcf4c.html" title="英语口语考试备稿">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">英语口语考试备稿</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/475f1eb0.html" title="云计算课计算重点笔记">
+                        <span class="hidden-mobile">云计算课计算重点笔记</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

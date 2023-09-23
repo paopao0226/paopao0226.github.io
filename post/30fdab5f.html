@@ -1,0 +1,997 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="对于2021年冬季学期由Stanford开设的CS224n课程的作业记录，这里是Assisnment3：依存分析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS224N作业A3：依存分析">
+<meta property="og:url" content="http://paopao0226.site/post/30fdab5f.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="对于2021年冬季学期由Stanford开设的CS224n课程的作业记录，这里是Assisnment3：依存分析">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-27T08:43:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.738Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="自然语言处理">
+<meta property="article:tag" content="Stanford CS224n">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CS224N作业A3：依存分析 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover4.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS224N作业A3：依存分析"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-27 16:43" pubdate>
+          2023年3月27日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          23k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          194 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CS224N作业A3：依存分析</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                
+
+	<div class="row">
+    <embed src="../download/a3_handout.pdf" width="100%" height="550" type="application/pdf">
+	</div>
+
+
+
+
+<h1 id="1、Machine-Learning-amp-Neural-Networks-8-points"><a href="#1、Machine-Learning-amp-Neural-Networks-8-points" class="headerlink" title="1、Machine Learning &amp; Neural Networks (8 points)"></a>1、<strong>Machine Learning &amp; Neural Networks (8 points)</strong></h1><h3 id="（a）Adam-Optimizer"><a href="#（a）Adam-Optimizer" class="headerlink" title="（a）Adam Optimizer"></a>（a）Adam Optimizer</h3><h4 id="（i）"><a href="#（i）" class="headerlink" title="（i）"></a>（i）</h4><p>$m$通过在每次更新时将历史方向和梯度方向进行比较，同向则矢量相加加快收敛速度，异向则减缓更新速度，这种含动量的更新方向可以减少梯度更新的动荡，这种低方差有助于保持梯度下降的效率。导致更快的收敛。</p>
+<h4 id="（ii）"><a href="#（ii）" class="headerlink" title="（ii）"></a>（ii）</h4><p>具有更少更新历史的模型参数将获得更大的更新。这规范化了更新步骤，避免超调或单调递减的学习速率，适度调整了学习率的大小</p>
+<h3 id="（b）Dropout"><a href="#（b）Dropout" class="headerlink" title="（b）Dropout"></a>（b）Dropout</h3><h4 id="（i）-1"><a href="#（i）-1" class="headerlink" title="（i）"></a>（i）</h4><p>$d\odot h$在$1-p_{drop}$的比例下降低了隐向量的规模，为了将其恢复到原规模，$\gamma &#x3D; \frac{1}{1-p_{drop} }$</p>
+<h4 id="（ii）-1"><a href="#（ii）-1" class="headerlink" title="（ii）"></a>（ii）</h4><p>训练时使用dropout可以提高训练模型的鲁棒性，防止过拟合现象发生，而评估时没有这个需要。</p>
+<h1 id="2-Neural-Transition-Based-Dependency-Parsing-46-points"><a href="#2-Neural-Transition-Based-Dependency-Parsing-46-points" class="headerlink" title="2. Neural Transition-Based Dependency Parsing (46 points)"></a><strong>2. Neural Transition-Based Dependency Parsing (46 points)</strong></h1><h3 id="（a）"><a href="#（a）" class="headerlink" title="（a）"></a>（a）</h3><table>
+<thead>
+<tr>
+<th>Stack</th>
+<th>Buffer</th>
+<th>New dependency</th>
+<th>Transition</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[ROOT]</td>
+<td>[I,attend,lectures,in,the,NLP,class]</td>
+<td></td>
+<td>Initial Configuration</td>
+</tr>
+<tr>
+<td>[ROOT,I]</td>
+<td>[attend,lectures,in,the,NLP,class]</td>
+<td></td>
+<td>SHIFT</td>
+</tr>
+<tr>
+<td>[ROOT,I,attend]</td>
+<td>[lectures,in,the,NLP,class]</td>
+<td></td>
+<td>SHIFT</td>
+</tr>
+<tr>
+<td>[ROOT,attend]</td>
+<td>[lectures,in,the,NLP,class]</td>
+<td>attend-&gt;I</td>
+<td>LEFT-ARC</td>
+</tr>
+<tr>
+<td>[ROOT,attend,lectures]</td>
+<td>[in,the,NLP,class]</td>
+<td></td>
+<td>SHIFT</td>
+</tr>
+<tr>
+<td>[ROOT,attend]</td>
+<td>[in,the,NLP,class]</td>
+<td>attend-&gt;lectures</td>
+<td>RIGHT-ARC</td>
+</tr>
+<tr>
+<td>[ROOT,attend,in]</td>
+<td>[the,NLP,class]</td>
+<td></td>
+<td>SHIFT</td>
+</tr>
+<tr>
+<td>[ROOT,attend,in,the]</td>
+<td>[NLP,class]</td>
+<td></td>
+<td>SHIFT</td>
+</tr>
+<tr>
+<td>[ROOT,attend,in,the,NLP]</td>
+<td>[class]</td>
+<td></td>
+<td>SHIFT</td>
+</tr>
+<tr>
+<td>[ROOT,attend,in,the,NLP,class]</td>
+<td>[]</td>
+<td></td>
+<td>SHIFT</td>
+</tr>
+<tr>
+<td>[ROOT,attend,in,the,class]</td>
+<td>[]</td>
+<td>class-&gt;NLP</td>
+<td>LEFT-ARC</td>
+</tr>
+<tr>
+<td>[ROOT,attend,in,class]</td>
+<td>[]</td>
+<td>class-&gt;the</td>
+<td>LEFT-ARC</td>
+</tr>
+<tr>
+<td>[ROOT,attend,class]</td>
+<td>[]</td>
+<td>class-&gt;in</td>
+<td>LEFT-ARC</td>
+</tr>
+<tr>
+<td>[ROOT,attend]</td>
+<td>[]</td>
+<td>attend-&gt;class</td>
+<td>RIGHT-ARC</td>
+</tr>
+<tr>
+<td>[ROOT]</td>
+<td>[]</td>
+<td>ROOT-&gt;attend</td>
+<td>RIGHT-ARC</td>
+</tr>
+<tr>
+<td>[ROOT]</td>
+<td>[]</td>
+<td></td>
+<td>Decline</td>
+</tr>
+</tbody></table>
+<h3 id="（b）"><a href="#（b）" class="headerlink" title="（b）"></a>（b）</h3><p>$2n$，每个词都执行一个SHIFT，并作为关系尾执行一次LEFT-ARC或RIGHT-ARC</p>
+<h3 id="（c）"><a href="#（c）" class="headerlink" title="（c）"></a>（c）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">PartialParse</span>(<span class="hljs-title class_ inherited__">object</span>):<br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, sentence</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;Initializes this partial parse.</span><br><span class="hljs-string"></span><br><span class="hljs-string">        @param sentence (list of str): The sentence to be parsed as a list of words.</span><br><span class="hljs-string">                                        Your code should not modify the sentence.</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-comment"># The sentence being parsed is kept for bookkeeping purposes. Do NOT alter it in your code.</span><br>        self.sentence = sentence<br><br>        <span class="hljs-comment">### YOUR CODE HERE (3 Lines)</span><br>        <span class="hljs-comment">### Your code should initialize the following fields:</span><br>        <span class="hljs-comment">###     self.stack: The current stack represented as a list with the top of the stack as the</span><br>        <span class="hljs-comment">###                 last element of the list.</span><br>        <span class="hljs-comment">###     self.buffer: The current buffer represented as a list with the first item on the</span><br>        <span class="hljs-comment">###                  buffer as the first item of the list</span><br>        <span class="hljs-comment">###     self.dependencies: The list of dependencies produced so far. Represented as a list of</span><br>        <span class="hljs-comment">###             tuples where each tuple is of the form (head, dependent).</span><br>        <span class="hljs-comment">###             Order for this list doesn&#x27;t matter.</span><br>        <span class="hljs-comment">###</span><br>        <span class="hljs-comment">### Note: The root token should be represented with the string &quot;ROOT&quot;</span><br>        <span class="hljs-comment">### Note: If you need to use the sentence object to initialize anything, make sure to not directly </span><br>        <span class="hljs-comment">###       reference the sentence object.  That is, remember to NOT modify the sentence object. </span><br><br>        self.stack = [<span class="hljs-string">&#x27;ROOT&#x27;</span>]<br>        self.buffer = sentence<br>        self.dependencies = []<br>        <span class="hljs-comment">### END YOUR CODE</span><br><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parse_step</span>(<span class="hljs-params">self, transition</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;Performs a single parse step by applying the given transition to this partial parse</span><br><span class="hljs-string"></span><br><span class="hljs-string">        @param transition (str): A string that equals &quot;S&quot;, &quot;LA&quot;, or &quot;RA&quot; representing the shift,</span><br><span class="hljs-string">                                left-arc, and right-arc transitions. You can assume the provided</span><br><span class="hljs-string">                                transition is a legal transition.</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-comment">### YOUR CODE HERE (~7-12 Lines)</span><br>        <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>        <span class="hljs-comment">###     Implement a single parsing step, i.e. the logic for the following as</span><br>        <span class="hljs-comment">###     described in the pdf handout:</span><br>        <span class="hljs-comment">###         1. Shift</span><br>        <span class="hljs-comment">###         2. Left Arc</span><br>        <span class="hljs-comment">###         3. Right Arc</span><br>        <span class="hljs-keyword">if</span> transition == <span class="hljs-string">&quot;S&quot;</span>:<br>            self.stack.append(self.buffer[<span class="hljs-number">0</span>])<br>            self.buffer = self.buffer[<span class="hljs-number">1</span>:]<br>        <span class="hljs-keyword">else</span>:<br>            r = self.stack[-<span class="hljs-number">1</span>]<br>            l = self.stack[-<span class="hljs-number">2</span>]<br>            <span class="hljs-keyword">if</span> transition == <span class="hljs-string">&quot;LA&quot;</span>:<br>                self.dependencies.append((r, l))<br>                self.stack = self.stack[:-<span class="hljs-number">2</span>]<br>                self.stack.append(r)<br>            <span class="hljs-keyword">else</span> :<br>                self.dependencies.append((l, r))<br>                self.stack = self.stack[:-<span class="hljs-number">1</span>]<br>        <span class="hljs-comment">### END YOUR CODE</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">parse</span>(<span class="hljs-params">self, transitions</span>):<br>        <span class="hljs-string">&quot;&quot;&quot;Applies the provided transitions to this PartialParse</span><br><span class="hljs-string"></span><br><span class="hljs-string">        @param transitions (list of str): The list of transitions in the order they should be applied</span><br><span class="hljs-string"></span><br><span class="hljs-string">        @return dependencies (list of string tuples): The list of dependencies produced when</span><br><span class="hljs-string">                                                        parsing the sentence. Represented as a list of</span><br><span class="hljs-string">                                                        tuples where each tuple is of the form (head, dependent).</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-keyword">for</span> transition <span class="hljs-keyword">in</span> transitions:<br>            self.parse_step(transition)<br>        <span class="hljs-keyword">return</span> self.dependencies<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs txt">parser_transitions.py:203: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?<br>  return [(&quot;RA&quot; if pp.stack[1] is &quot;right&quot; else &quot;LA&quot;) if len(pp.buffer) == 0 else &quot;S&quot;<br>SHIFT test passed!<br>LEFT-ARC test passed!<br>RIGHT-ARC test passed!<br>parse test passed!<br></code></pre></td></tr></table></figure>
+
+<h3 id="（d）"><a href="#（d）" class="headerlink" title="（d）"></a>（d）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">minibatch_parse</span>(<span class="hljs-params">sentences, model, batch_size</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;Parses a list of sentences in minibatches using a model.</span><br><span class="hljs-string"></span><br><span class="hljs-string">    @param sentences (list of list of str): A list of sentences to be parsed</span><br><span class="hljs-string">                                            (each sentence is a list of words and each word is of type string)</span><br><span class="hljs-string">    @param model (ParserModel): The model that makes parsing decisions. It is assumed to have a function</span><br><span class="hljs-string">                                model.predict(partial_parses) that takes in a list of PartialParses as input and</span><br><span class="hljs-string">                                returns a list of transitions predicted for each parse. That is, after calling</span><br><span class="hljs-string">                                    transitions = model.predict(partial_parses)</span><br><span class="hljs-string">                                transitions[i] will be the next transition to apply to partial_parses[i].</span><br><span class="hljs-string">    @param batch_size (int): The number of PartialParses to include in each minibatch</span><br><span class="hljs-string"></span><br><span class="hljs-string"></span><br><span class="hljs-string">    @return dependencies (list of dependency lists): A list where each element is the dependencies</span><br><span class="hljs-string">                                                    list for a parsed sentence. Ordering should be the</span><br><span class="hljs-string">                                                    same as in sentences (i.e., dependencies[i] should</span><br><span class="hljs-string">                                                    contain the parse for sentences[i]).</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    dependencies = []<br><br>    <span class="hljs-comment">### YOUR CODE HERE (~8-10 Lines)</span><br>    <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>    <span class="hljs-comment">###     Implement the minibatch parse algorithm.  Note that the pseudocode for this algorithm is given in the pdf handout.</span><br>    <span class="hljs-comment">###</span><br>    <span class="hljs-comment">###     Note: A shallow copy (as denoted in the PDF) can be made with the &quot;=&quot; sign in python, e.g.</span><br>    <span class="hljs-comment">###                 unfinished_parses = partial_parses[:].</span><br>    <span class="hljs-comment">###             Here `unfinished_parses` is a shallow copy of `partial_parses`.</span><br>    <span class="hljs-comment">###             In Python, a shallow copied list like `unfinished_parses` does not contain new instances</span><br>    <span class="hljs-comment">###             of the object stored in `partial_parses`. Rather both lists refer to the same objects.</span><br>    <span class="hljs-comment">###             In our case, `partial_parses` contains a list of partial parses. `unfinished_parses`</span><br>    <span class="hljs-comment">###             contains references to the same objects. Thus, you should NOT use the `del` operator</span><br>    <span class="hljs-comment">###             to remove objects from the `unfinished_parses` list. This will free the underlying memory that</span><br>    <span class="hljs-comment">###             is being accessed by `partial_parses` and may cause your code to crash.</span><br>    partial_parses = []<br>    <span class="hljs-keyword">for</span> each <span class="hljs-keyword">in</span> sentences:<br>        partial_parses.append(PartialParse(each))<br>    unfinished_parses = partial_parses[:]<br>    <span class="hljs-keyword">while</span> <span class="hljs-built_in">len</span>(unfinished_parses)&gt;<span class="hljs-number">0</span>:<br>        minibatch = unfinished_parses[:batch_size]<br>        <span class="hljs-comment"># print(&quot;minibatch&quot;,len(minibatch))</span><br>        transitions = model.predict(minibatch)<br>        <span class="hljs-comment"># print(&quot;transitions:&quot;,transitions)</span><br>        <span class="hljs-comment"># for idx in range(len(minibatch)):</span><br>        <span class="hljs-comment">#     p = minibatch[idx]</span><br>        <span class="hljs-comment">#     p.parse_step(transitions[idx])</span><br>        <span class="hljs-keyword">for</span> transition,unfinished_parse <span class="hljs-keyword">in</span> <span class="hljs-built_in">zip</span>(transitions,minibatch):<br>            unfinished_parse.parse_step(transition)<br>        unfinished_parses = [<br>            m <span class="hljs-keyword">for</span> m <span class="hljs-keyword">in</span> unfinished_parses <span class="hljs-keyword">if</span> <span class="hljs-keyword">not</span>(<span class="hljs-built_in">len</span>(m.buffer)==<span class="hljs-number">0</span> <span class="hljs-keyword">and</span> <span class="hljs-built_in">len</span>(m.stack)==<span class="hljs-number">1</span>)<br>        ]<br>    <span class="hljs-comment">### END YOUR CODE</span><br>    <span class="hljs-keyword">for</span> p <span class="hljs-keyword">in</span> partial_parses:<br>        dependencies.append(p.dependencies)<br>    <span class="hljs-keyword">return</span> dependencies<br><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs txt">parser_transitions.py:203: SyntaxWarning: &quot;is&quot; with a literal. Did you mean &quot;==&quot;?<br>  return [(&quot;RA&quot; if pp.stack[1] is &quot;right&quot; else &quot;LA&quot;) if len(pp.buffer) == 0 else &quot;S&quot;<br>minibatch_parse test passed!<br></code></pre></td></tr></table></figure>
+
+<h3 id="（e）"><a href="#（e）" class="headerlink" title="（e）"></a>（e）</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">class</span> <span class="hljs-title class_">ParserModel</span>(nn.Module):<br>    <span class="hljs-string">&quot;&quot;&quot; Feedforward neural network with an embedding layer and two hidden layers.</span><br><span class="hljs-string">    The ParserModel will predict which transition should be applied to a</span><br><span class="hljs-string">    given partial parse configuration.</span><br><span class="hljs-string"></span><br><span class="hljs-string">    PyTorch Notes:</span><br><span class="hljs-string">        - Note that &quot;ParserModel&quot; is a subclass of the &quot;nn.Module&quot; class. In PyTorch all neural networks</span><br><span class="hljs-string">            are a subclass of this &quot;nn.Module&quot;.</span><br><span class="hljs-string">        - The &quot;__init__&quot; method is where you define all the layers and parameters</span><br><span class="hljs-string">            (embedding layers, linear layers, dropout layers, etc.).</span><br><span class="hljs-string">        - &quot;__init__&quot; gets automatically called when you create a new instance of your class, e.g.</span><br><span class="hljs-string">            when you write &quot;m = ParserModel()&quot;.</span><br><span class="hljs-string">        - Other methods of ParserModel can access variables that have &quot;self.&quot; prefix. Thus,</span><br><span class="hljs-string">            you should add the &quot;self.&quot; prefix layers, values, etc. that you want to utilize</span><br><span class="hljs-string">            in other ParserModel methods.</span><br><span class="hljs-string">        - For further documentation on &quot;nn.Module&quot; please see https://pytorch.org/docs/stable/nn.html.</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">__init__</span>(<span class="hljs-params">self, embeddings, n_features=<span class="hljs-number">36</span>,</span><br><span class="hljs-params">        hidden_size=<span class="hljs-number">200</span>, n_classes=<span class="hljs-number">3</span>, dropout_prob=<span class="hljs-number">0.5</span></span>):<br>        <span class="hljs-string">&quot;&quot;&quot; Initialize the parser model.</span><br><span class="hljs-string"></span><br><span class="hljs-string">        @param embeddings (ndarray): word embeddings (num_words, embedding_size)</span><br><span class="hljs-string">        @param n_features (int): number of input features</span><br><span class="hljs-string">        @param hidden_size (int): number of hidden units</span><br><span class="hljs-string">        @param n_classes (int): number of output classes</span><br><span class="hljs-string">        @param dropout_prob (float): dropout probability</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-built_in">super</span>(ParserModel, self).__init__()<br>        self.n_features = n_features<br>        self.n_classes = n_classes<br>        self.dropout_prob = dropout_prob<br>        self.embed_size = embeddings.shape[<span class="hljs-number">1</span>]<br>        self.hidden_size = hidden_size<br>        self.embeddings = nn.Parameter(torch.tensor(embeddings))<br><br>        <span class="hljs-comment">### YOUR CODE HERE (~9-10 Lines)</span><br>        <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>        <span class="hljs-comment">###     1) Declare `self.embed_to_hidden_weight` and `self.embed_to_hidden_bias` as `nn.Parameter`.</span><br>        <span class="hljs-comment">###        Initialize weight with the `nn.init.xavier_uniform_` function and bias with `nn.init.uniform_`</span><br>        <span class="hljs-comment">###        with default parameters.</span><br>        <span class="hljs-comment">###     2) Construct `self.dropout` layer.</span><br>        <span class="hljs-comment">###     3) Declare `self.hidden_to_logits_weight` and `self.hidden_to_logits_bias` as `nn.Parameter`.</span><br>        <span class="hljs-comment">###        Initialize weight with the `nn.init.xavier_uniform_` function and bias with `nn.init.uniform_`</span><br>        <span class="hljs-comment">###        with default parameters.</span><br>        <span class="hljs-comment">###</span><br>        <span class="hljs-comment">### Note: Trainable variables are declared as `nn.Parameter` which is a commonly used API</span><br>        <span class="hljs-comment">###       to include a tensor into a computational graph to support updating w.r.t its gradient.</span><br>        <span class="hljs-comment">###       Here, we use Xavier Uniform Initialization for our Weight initialization.</span><br>        <span class="hljs-comment">###       It has been shown empirically, that this provides better initial weights</span><br>        <span class="hljs-comment">###       for training networks than random uniform initialization.</span><br>        <span class="hljs-comment">###       For more details checkout this great blogpost:</span><br>        <span class="hljs-comment">###             http://andyljones.tumblr.com/post/110998971763/an-explanation-of-xavier-initialization</span><br>        <span class="hljs-comment">###</span><br>        <span class="hljs-comment">### Please see the following docs for support:</span><br>        <span class="hljs-comment">###     nn.Parameter: https://pytorch.org/docs/stable/nn.html#parameters</span><br>        <span class="hljs-comment">###     Initialization: https://pytorch.org/docs/stable/nn.init.html</span><br>        <span class="hljs-comment">###     Dropout: https://pytorch.org/docs/stable/nn.html#dropout-layers</span><br>        <span class="hljs-comment">### </span><br>        <span class="hljs-comment">### See the PDF for hints.</span><br>        <span class="hljs-comment">#输入维度为特征数*嵌入size</span><br>        <span class="hljs-comment">#weight:从输入维度到权重维度</span><br>        self.embed_to_hidden_weight = nn.Parameter(torch.empty(self.embed_size*self.n_features,self.hidden_size))<br>        <span class="hljs-comment">#也可以</span><br>        <span class="hljs-comment">#self.embed_to_hidden_weight == nn.Parameter(nn.init.xavier_uniform_(....))</span><br>        nn.init.xavier_uniform_(self.embed_to_hidden_weight)<br>        <span class="hljs-comment">#和权重维度保持一致</span><br>        self.embed_to_hidden_bias = nn.Parameter(torch.empty(self.hidden_size))<br>        nn.init.uniform_(self.embed_to_hidden_bias)<br>        <span class="hljs-comment">#构建一个Dropout层</span><br>        self.dropout = nn.Dropout(p=dropout_prob)<br>        self.hidden_to_logits_weight = nn.Parameter(torch.empty(self.hidden_size,self.n_classes))<br>        nn.init.xavier_uniform_(self.hidden_to_logits_weight)<br>        self.hidden_to_logits_bias = nn.Parameter(torch.empty(self.n_classes))<br>        nn.init.uniform_(self.hidden_to_logits_bias)<br>        <span class="hljs-comment">### END YOUR CODE</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">embedding_lookup</span>(<span class="hljs-params">self, w</span>):<br>        <span class="hljs-string">&quot;&quot;&quot; Utilize `w` to select embeddings from embedding matrix `self.embeddings`</span><br><span class="hljs-string">            @param w (Tensor): input tensor of word indices (batch_size, n_features)</span><br><span class="hljs-string"></span><br><span class="hljs-string">            @return x (Tensor): tensor of embeddings for words represented in w</span><br><span class="hljs-string">                                (batch_size, n_features * embed_size)</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-comment">### YOUR CODE HERE (~1-4 Lines)</span><br>        <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>        <span class="hljs-comment">###     1) For each index `i` in `w`, select `i`th vector from self.embeddings</span><br>        <span class="hljs-comment">###     2) Reshape the tensor using `view` function if necessary</span><br>        <span class="hljs-comment">###</span><br>        <span class="hljs-comment">### Note: All embedding vectors are stacked and stored as a matrix. The model receives</span><br>        <span class="hljs-comment">###       a list of indices representing a sequence of words, then it calls this lookup</span><br>        <span class="hljs-comment">###       function to map indices to sequence of embeddings.</span><br>        <span class="hljs-comment">###</span><br>        <span class="hljs-comment">###       This problem aims to test your understanding of embedding lookup,</span><br>        <span class="hljs-comment">###       so DO NOT use any high level API like nn.Embedding</span><br>        <span class="hljs-comment">###       (we are asking you to implement that!). Pay attention to tensor shapes</span><br>        <span class="hljs-comment">###       and reshape if necessary. Make sure you know each tensor&#x27;s shape before you run the code!</span><br>        <span class="hljs-comment">###</span><br>        <span class="hljs-comment">### Pytorch has some useful APIs for you, and you can use either one</span><br>        <span class="hljs-comment">### in this problem (except nn.Embedding). These docs might be helpful:</span><br>        <span class="hljs-comment">###     Index select: https://pytorch.org/docs/stable/torch.html#torch.index_select</span><br>        <span class="hljs-comment">###     Gather: https://pytorch.org/docs/stable/torch.html#torch.gather</span><br>        <span class="hljs-comment">###     View: https://pytorch.org/docs/stable/tensors.html#torch.Tensor.view</span><br>        <span class="hljs-comment">###     Flatten: https://pytorch.org/docs/stable/generated/torch.flatten.html</span><br>        <span class="hljs-comment"># index_select函数:选择其中的部分</span><br>        x = []<br>        <span class="hljs-comment"># print(w.shape)</span><br>        <span class="hljs-keyword">for</span> batch <span class="hljs-keyword">in</span> w:<br>            <span class="hljs-comment"># dim=0选择行，batch用于lookup</span><br>            em = torch.index_select(self.embeddings,dim=<span class="hljs-number">0</span>,index=batch)<br>            <span class="hljs-comment"># 选择完之后的size就是n_features*embedding_size</span><br>            x.append(em)<br>        <span class="hljs-comment"># 要转换的list里面的元素包含多维的tensor</span><br>        x = torch.tensor([item.detach().numpy() <span class="hljs-keyword">for</span> item <span class="hljs-keyword">in</span> x]).view(w.shape[<span class="hljs-number">0</span>],-<span class="hljs-number">1</span>)<br>        <span class="hljs-comment"># 一行写完</span><br>        <span class="hljs-comment"># x = torch.tensor([torch.index_select(self.embeddings,dim=0,index=batch).detach().numpy() for batch in w])</span><br>        <span class="hljs-comment">### END YOUR CODE</span><br>        <span class="hljs-keyword">return</span> x<br><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">forward</span>(<span class="hljs-params">self, w</span>):<br>        <span class="hljs-string">&quot;&quot;&quot; Run the model forward.</span><br><span class="hljs-string"></span><br><span class="hljs-string">            Note that we will not apply the softmax function here because it is included in the loss function nn.CrossEntropyLoss</span><br><span class="hljs-string"></span><br><span class="hljs-string">            PyTorch Notes:</span><br><span class="hljs-string">                - Every nn.Module object (PyTorch model) has a `forward` function.</span><br><span class="hljs-string">                - When you apply your nn.Module to an input tensor `w` this function is applied to the tensor.</span><br><span class="hljs-string">                    For example, if you created an instance of your ParserModel and applied it to some `w` as follows,</span><br><span class="hljs-string">                    the `forward` function would called on `w` and the result would be stored in the `output` variable:</span><br><span class="hljs-string">                        model = ParserModel()</span><br><span class="hljs-string">                        output = model(w) # this calls the forward function</span><br><span class="hljs-string">                - For more details checkout: https://pytorch.org/docs/stable/nn.html#torch.nn.Module.forward</span><br><span class="hljs-string"></span><br><span class="hljs-string">        @param w (Tensor): input tensor of tokens (batch_size, n_features)</span><br><span class="hljs-string"></span><br><span class="hljs-string">        @return logits (Tensor): tensor of predictions (output after applying the layers of the network)</span><br><span class="hljs-string">                                 without applying softmax (batch_size, n_classes)</span><br><span class="hljs-string">        &quot;&quot;&quot;</span><br>        <span class="hljs-comment">### YOUR CODE HERE (~3-5 lines)</span><br>        <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>        <span class="hljs-comment">###     Complete the forward computation as described in write-up. In addition, include a dropout layer</span><br>        <span class="hljs-comment">###     as decleared in `__init__` after ReLU function.</span><br>        <span class="hljs-comment">###</span><br>        <span class="hljs-comment">### Note: We do not apply the softmax to the logits here, because</span><br>        <span class="hljs-comment">### the loss function (torch.nn.CrossEntropyLoss) applies it more efficiently.</span><br>        <span class="hljs-comment">###</span><br>        <span class="hljs-comment">### Please see the following docs for support:</span><br>        <span class="hljs-comment">###     Matrix product: https://pytorch.org/docs/stable/torch.html#torch.matmul</span><br>        <span class="hljs-comment">###     ReLU: https://pytorch.org/docs/stable/nn.html?highlight=relu#torch.nn.functional.relu</span><br>        <span class="hljs-comment"># forward：前向传播</span><br>        <span class="hljs-comment"># 执行embedding_lookup作为输入x</span><br>        emb = self.embedding_lookup(w)<br>        emb = self.dropout(emb)<br>        <span class="hljs-comment"># @:矩阵乘法，这里可以简化操作，省去detach().numpy()</span><br>        hidden_state = torch.nn.functional.relu(emb @ self.embed_to_hidden_weight+self.embed_to_hidden_bias)<br>        logits = hidden_state @ self.hidden_to_logits_weight+self.hidden_to_logits_bias<br>        <span class="hljs-comment">### END YOUR CODE</span><br>        <span class="hljs-keyword">return</span> logits<br></code></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">train</span>(<span class="hljs-params">parser, train_data, dev_data, output_path, batch_size=<span class="hljs-number">1024</span>, n_epochs=<span class="hljs-number">10</span>, lr=<span class="hljs-number">0.0005</span></span>):<br>    <span class="hljs-string">&quot;&quot;&quot; Train the neural dependency parser.</span><br><span class="hljs-string"></span><br><span class="hljs-string">    @param parser (Parser): Neural Dependency Parser</span><br><span class="hljs-string">    @param train_data ():</span><br><span class="hljs-string">    @param dev_data ():</span><br><span class="hljs-string">    @param output_path (str): Path to which model weights and results are written.</span><br><span class="hljs-string">    @param batch_size (int): Number of examples in a single batch</span><br><span class="hljs-string">    @param n_epochs (int): Number of training epochs</span><br><span class="hljs-string">    @param lr (float): Learning rate</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    best_dev_UAS = <span class="hljs-number">0</span><br><br><br>    <span class="hljs-comment">### YOUR CODE HERE (~2-7 lines)</span><br>    <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>    <span class="hljs-comment">###      1) Construct Adam Optimizer in variable `optimizer`</span><br>    <span class="hljs-comment">###      2) Construct the Cross Entropy Loss Function in variable `loss_func` with `mean`</span><br>    <span class="hljs-comment">###         reduction (default)</span><br>    <span class="hljs-comment">###</span><br>    <span class="hljs-comment">### Hint: Use `parser.model.parameters()` to pass optimizer</span><br>    <span class="hljs-comment">###       necessary parameters to tune.</span><br>    <span class="hljs-comment">### Please see the following docs for support:</span><br>    <span class="hljs-comment">###     Adam Optimizer: https://pytorch.org/docs/stable/optim.html</span><br>    <span class="hljs-comment">###     Cross Entropy Loss: https://pytorch.org/docs/stable/nn.html#crossentropyloss</span><br>    optimizer = torch.optim.Adam(parser.model.parameters(),lr=lr)<br>    loss_func = nn.CrossEntropyLoss()<br><br>    <span class="hljs-comment">### END YOUR CODE</span><br><br>    <span class="hljs-keyword">for</span> epoch <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(n_epochs):<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Epoch &#123;:&#125; out of &#123;:&#125;&quot;</span>.<span class="hljs-built_in">format</span>(epoch + <span class="hljs-number">1</span>, n_epochs))<br>        dev_UAS = train_for_epoch(parser, train_data, dev_data, optimizer, loss_func, batch_size)<br>        <span class="hljs-keyword">if</span> dev_UAS &gt; best_dev_UAS:<br>            best_dev_UAS = dev_UAS<br>            <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;New best dev UAS! Saving model.&quot;</span>)<br>            torch.save(parser.model.state_dict(), output_path)<br>        <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;&quot;</span>)<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">train_for_epoch</span>(<span class="hljs-params">parser, train_data, dev_data, optimizer, loss_func, batch_size</span>):<br>    <span class="hljs-string">&quot;&quot;&quot; Train the neural dependency parser for single epoch.</span><br><span class="hljs-string"></span><br><span class="hljs-string">    Note: In PyTorch we can signify train versus test and automatically have</span><br><span class="hljs-string">    the Dropout Layer applied and removed, accordingly, by specifying</span><br><span class="hljs-string">    whether we are training, `model.train()`, or evaluating, `model.eval()`</span><br><span class="hljs-string"></span><br><span class="hljs-string">    @param parser (Parser): Neural Dependency Parser</span><br><span class="hljs-string">    @param train_data ():</span><br><span class="hljs-string">    @param dev_data ():</span><br><span class="hljs-string">    @param optimizer (nn.Optimizer): Adam Optimizer</span><br><span class="hljs-string">    @param loss_func (nn.CrossEntropyLoss): Cross Entropy Loss Function</span><br><span class="hljs-string">    @param batch_size (int): batch size</span><br><span class="hljs-string"></span><br><span class="hljs-string">    @return dev_UAS (float): Unlabeled Attachment Score (UAS) for dev data</span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    parser.model.train() <span class="hljs-comment"># Places model in &quot;train&quot; mode, i.e. apply dropout layer</span><br>    n_minibatches = math.ceil(<span class="hljs-built_in">len</span>(train_data) / batch_size)<br>    loss_meter = AverageMeter()<br><br>    <span class="hljs-keyword">with</span> tqdm(total=(n_minibatches)) <span class="hljs-keyword">as</span> prog:<br>        <span class="hljs-keyword">for</span> i, (train_x, train_y) <span class="hljs-keyword">in</span> <span class="hljs-built_in">enumerate</span>(minibatches(train_data, batch_size)):<br>            optimizer.zero_grad()   <span class="hljs-comment"># remove any baggage in the optimizer</span><br>            loss = <span class="hljs-number">0.</span> <span class="hljs-comment"># store loss for this batch here</span><br>            train_x = torch.from_numpy(train_x).long()<br>            train_y = torch.from_numpy(train_y.nonzero()[<span class="hljs-number">1</span>]).long()<br><br>            <span class="hljs-comment">### YOUR CODE HERE (~4-10 lines)</span><br>            <span class="hljs-comment">### <span class="hljs-doctag">TODO:</span></span><br>            <span class="hljs-comment">###      1) Run train_x forward through model to produce `logits`</span><br>            <span class="hljs-comment">###      2) Use the `loss_func` parameter to apply the PyTorch CrossEntropyLoss function.</span><br>            <span class="hljs-comment">###         This will take `logits` and `train_y` as inputs. It will output the CrossEntropyLoss</span><br>            <span class="hljs-comment">###         between softmax(`logits`) and `train_y`. Remember that softmax(`logits`)</span><br>            <span class="hljs-comment">###         are the predictions (y^ from the PDF).</span><br>            <span class="hljs-comment">###      3) Backprop losses</span><br>            <span class="hljs-comment">###      4) Take step with the optimizer</span><br>            <span class="hljs-comment">### Please see the following docs for support:</span><br>            <span class="hljs-comment">###     Optimizer Step: https://pytorch.org/docs/stable/optim.html#optimizer-step</span><br>            logits = parser.model.forward(train_x)<br>            <span class="hljs-comment"># nn.CrossEntropyLoss的使用</span><br>            loss = loss_func(logits,train_y)<br>            loss.backward()<br>            optimizer.step()<br><br>            <span class="hljs-comment">### END YOUR CODE</span><br>            prog.update(<span class="hljs-number">1</span>)<br>            loss_meter.update(loss.item())<br><br>    <span class="hljs-built_in">print</span> (<span class="hljs-string">&quot;Average Train Loss: &#123;&#125;&quot;</span>.<span class="hljs-built_in">format</span>(loss_meter.avg))<br><br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;Evaluating on dev set&quot;</span>,)<br>    parser.model.<span class="hljs-built_in">eval</span>() <span class="hljs-comment"># Places model in &quot;eval&quot; mode, i.e. don&#x27;t apply dropout layer</span><br>    dev_UAS, _ = parser.parse(dev_data)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;- dev UAS: &#123;:.2f&#125;&quot;</span>.<span class="hljs-built_in">format</span>(dev_UAS * <span class="hljs-number">100.0</span>))<br>    <span class="hljs-keyword">return</span> dev_UAS<br><br></code></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br></pre></td><td class="code"><pre><code class="hljs shell">================================================================================<br>INITIALIZING<br>================================================================================<br>Loading data...<br>took 2.34 seconds<br>Building parser...<br>took 1.25 seconds<br>Loading pretrained embeddings...<br>took 3.19 seconds<br>Vectorizing data...<br>took 1.98 seconds<br>Preprocessing training data...<br>took 51.43 seconds<br>took 0.03 seconds<br><br>================================================================================<br>TRAINING<br>================================================================================<br>Epoch 1 out of 10<br><span class="hljs-meta prompt_">  0%</span><span class="language-bash">|                                                                                                                                                                                                                                                          | 0/1848 [00:00&lt;?, ?it/s]D</span><br>:\软件\安装目录\pycharm\projects\a3\parser_model.py:128: UserWarning: Creating a tensor from a list of numpy.ndarrays is extremely slow. Please consider converting the list to a single numpy.ndarray with numpy.array() before converting to a tensor. (Triggered internally at C:\acti<br>ons-runner\_work\pytorch\pytorch\builder\windows\pytorch\torch\csrc\utils\tensor_new.cpp:233.)<br>  x = torch.tensor([item.detach().numpy() for item in x]).view(w.shape[0],-1)<br><span class="hljs-meta prompt_">100%</span><span class="language-bash">|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1848/1848 [08:49&lt;00:00,  3.49it/s]</span><br>Average Train Loss: 0.26055007827069077<br>Evaluating on dev set<br>1445850it [00:00, 35055374.72it/s]<br>- dev UAS: 79.67<br>New best dev UAS! Saving model.<br><br>Epoch 2 out of 10<br><span class="hljs-meta prompt_">100%</span><span class="language-bash">|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1848/1848 [09:00&lt;00:00,  3.42it/s]</span><br>Average Train Loss: 0.16393936111378077<br>Evaluating on dev set<br>1445850it [00:00, 46227698.79it/s]<br>- dev UAS: 82.79<br>New best dev UAS! Saving model.<br><br>Epoch 3 out of 10<br><span class="hljs-meta prompt_">100%</span><span class="language-bash">|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1848/1848 [09:05&lt;00:00,  3.38it/s]</span><br>Average Train Loss: 0.14417635859897385<br>Evaluating on dev set<br>1445850it [00:00, 30844015.60it/s]<br>- dev UAS: 83.73<br>New best dev UAS! Saving model.<br><br>Epoch 4 out of 10<br><span class="hljs-meta prompt_">100%</span><span class="language-bash">|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1848/1848 [08:45&lt;00:00,  3.51it/s]</span><br>Average Train Loss: 0.13362910604967185<br>Evaluating on dev set<br>1445850it [00:00, 28795236.69it/s]<br>- dev UAS: 84.39<br>New best dev UAS! Saving model.<br><br>Epoch 5 out of 10<br><span class="hljs-meta prompt_">100%</span><span class="language-bash">|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1848/1848 [09:00&lt;00:00,  3.42it/s]</span><br>Average Train Loss: 0.12646352259434146<br>Evaluating on dev set<br>1445850it [00:00, 36683288.00it/s]<br>- dev UAS: 85.27<br>New best dev UAS! Saving model.<br><br>Epoch 6 out of 10<br><span class="hljs-meta prompt_">100%</span><span class="language-bash">|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1848/1848 [08:46&lt;00:00,  3.51it/s]</span><br>Average Train Loss: 0.12200444055825987<br>Evaluating on dev set<br>1445850it [00:00, 32126541.28it/s]<br>- dev UAS: 85.61<br>New best dev UAS! Saving model.<br><br>Epoch 7 out of 10<br><span class="hljs-meta prompt_">100%</span><span class="language-bash">|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1848/1848 [08:46&lt;00:00,  3.51it/s]</span><br>Average Train Loss: 0.11807776755729923<br>Evaluating on dev set<br>1445850it [00:00, 35243415.11it/s]<br>- dev UAS: 86.00<br>New best dev UAS! Saving model.<br><br>Epoch 8 out of 10<br><span class="hljs-meta prompt_">100%</span><span class="language-bash">|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1848/1848 [08:50&lt;00:00,  3.48it/s]</span><br>Average Train Loss: 0.11562635477841933<br>Evaluating on dev set<br>1445850it [00:00, 32848902.51it/s]<br>- dev UAS: 85.93<br><br>Epoch 9 out of 10<br><span class="hljs-meta prompt_">100%</span><span class="language-bash">|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1848/1848 [08:41&lt;00:00,  3.54it/s]</span><br>Average Train Loss: 0.1125802615318786<br>Evaluating on dev set<br>1445850it [00:00, 38039985.19it/s]<br>- dev UAS: 86.69<br>New best dev UAS! Saving model.<br><br>Epoch 10 out of 10<br><span class="hljs-meta prompt_">100%</span><span class="language-bash">|███████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 1848/1848 [08:17&lt;00:00,  3.72it/s]</span><br>Average Train Loss: 0.11088591745099077<br>Evaluating on dev set<br>1445850it [00:00, 38262233.51it/s]<br>- dev UAS: 86.71<br>New best dev UAS! Saving model.<br><br>================================================================================<br>TESTING<br>================================================================================<br>Restoring the best model weights found on the dev set<br>Final evaluation on test set<br>2919736it [00:00, 68380481.23it/s]<br>- test UAS: 86.79<br>Done!<br><br><br>dev UAS:86.71<br>test UAS:86.79<br></code></pre></td></tr></table></figure>
+
+<h3 id="（f）"><a href="#（f）" class="headerlink" title="（f）"></a>（f）</h3><h4 id="（i）-2"><a href="#（i）-2" class="headerlink" title="（i）"></a>（i）</h4><ul>
+<li><strong>Error type：</strong>Prepositional Phrase Attachment Error</li>
+<li><strong>Incorrect dependency：</strong>concerns-&gt;risks</li>
+<li><strong>Correct dependency：</strong>citing-&gt;risks</li>
+</ul>
+<h4 id="（ii）-2"><a href="#（ii）-2" class="headerlink" title="（ii）"></a>（ii）</h4><ul>
+<li><strong>Error type：</strong>Modifier Attachment Error</li>
+<li><strong>Incorrect dependency：</strong>left-&gt;early</li>
+<li><strong>Correct dependency：</strong>afternoon-&gt;early</li>
+</ul>
+<h4 id="（iii）"><a href="#（iii）" class="headerlink" title="（iii）"></a>（iii）</h4><ul>
+<li><strong>Error type：</strong>Verb Phrase Attachment Error</li>
+<li><strong>Incorrect dependency：</strong>declined-&gt;decision</li>
+<li><strong>Correct dependency：</strong>comment-&gt;decision</li>
+</ul>
+<h4 id="（iv）"><a href="#（iv）" class="headerlink" title="（iv）"></a>（iv）</h4><ul>
+<li><strong>Error type：</strong>Coordination Attachment Error</li>
+<li><strong>Incorrect dependency：</strong>affects-&gt;one</li>
+<li><strong>Correct dependency：</strong>plants-&gt;one</li>
+</ul>
+<h3 id="（g）"><a href="#（g）" class="headerlink" title="（g）"></a>（g）</h3><p>提高模型对词性的辨析能力，对基本的短语搭配有一定的学习能力。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">#自然语言处理</a>
+      
+        <a href="/tags/Stanford-CS224n/">#Stanford CS224n</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS224N作业A3：依存分析</div>
+      <div>http://paopao0226.site/post/30fdab5f.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月27日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/1ce6e410.html" title="CS224N作业A4：机器翻译">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS224N作业A4：机器翻译</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/38d31aac.html" title="CS224N作业A2：词向量训练">
+                        <span class="hidden-mobile">CS224N作业A2：词向量训练</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

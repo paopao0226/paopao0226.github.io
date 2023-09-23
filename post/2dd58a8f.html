@@ -1,0 +1,963 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="对于2021年冬季学期由Stanford开设的CS224n课程的学习笔记，这里是第八讲：模型预训练技巧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS224N课程P8：预训练技巧（Pretrain）">
+<meta property="og:url" content="http://paopao0226.site/post/2dd58a8f.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="对于2021年冬季学期由Stanford开设的CS224n课程的学习笔记，这里是第八讲：模型预训练技巧">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230315123209487.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230315123346566.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230315125002438.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230315165310431.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230315174056757.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317232212968.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230315233827342.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317233105537.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317233824627.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317233945273.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317161425473.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317161455115.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230316002223069.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230316002437234.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317232137877.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317232119220.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317161626222.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317163033916.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317163255579.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317164826700.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317164910788.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317214838337.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317220711590.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317220724206.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317221348067.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317231312248.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317231446618.png">
+<meta property="og:image" content="http://paopao0226.site/post/2dd58a8f/image-20230317231653307.png">
+<meta property="article:published_time" content="2023-03-14T06:59:30.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.702Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="自然语言处理">
+<meta property="article:tag" content="Stanford CS224n">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/2dd58a8f/image-20230315123209487.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CS224N课程P8：预训练技巧（Pretrain） - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover11.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS224N课程P8：预训练技巧（Pretrain）"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-03-14 14:59" pubdate>
+          2023年3月14日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          40 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CS224N课程P8：预训练技巧（Pretrain）</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="课程词汇"><a href="#课程词汇" class="headerlink" title="课程词汇"></a>课程词汇</h1><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs txt">morphology - 形态学<br>squash - 压缩<br>contrive - 发明；创造<br>caveat - 警告；警戒<br>interlude - 插曲<br>hedge - 保护；对冲<br>canonical - 典型的<br></code></pre></td></tr></table></figure>
+
+<h1 id="课程内容"><a href="#课程内容" class="headerlink" title="课程内容"></a>课程内容</h1><h2 id="子词模型"><a href="#子词模型" class="headerlink" title="子词模型"></a>子词模型</h2><p>在自然语言处理的基本任务上，对单词本身的处理可以有两种比较极端的方法。</p>
+<p>其一是从训练集建立起一个固定的数万个单词的词汇表，所有新的单词都映射为一个统一的UNK标志表示未知性。</p>
+<p><img src="/post/2dd58a8f/image-20230315123209487.png" srcset="/img/loading.gif" lazyload alt="image-20230315123209487"></p>
+<p>其二是以字符作为编码的基本单位，将单词表示为字符的集合，这在一些语法复杂的语言中效果比较好，因为这些语言的单词多而频率相对低。</p>
+<p><img src="/post/2dd58a8f/image-20230315123346566.png" srcset="/img/loading.gif" lazyload alt="image-20230315123346566"></p>
+<p>这两种方法各有优缺点，单词固定表示的映射效率高但很难处理新词，而字符表示拥有可变性但对单词的特点不太容易表示，因此目前主流的单词表示方法是两者的折中：子词模型（Subwords Model）。子词模型最初用于NLP机器翻译，现在类似的方法(WordPiece)被用于预训练模型。NLP中的子词建模包含了广泛的方法，用于推理词级以下的结构。(部分单词、字符、字节)，其构造方法大致如下：</p>
+<ol>
+<li>从只包含字符和“end-of-word”符号的词汇表开始；</li>
+<li>使用文本语料库，找到最常见的相邻字符（e.g. “a,b”）;添加“ab”作为子词</li>
+<li>用新的子词替换字符对的实例;重复直到所需的词汇表大小</li>
+</ol>
+<p>在子词生成过程中，常见词因为共现频率高，因此会被识别为一个单词，而新词会被切分为n个常见词。</p>
+<p><img src="/post/2dd58a8f/image-20230315125002438.png" srcset="/img/loading.gif" lazyload alt="image-20230315125002438"></p>
+<p>子词模型的一个缺点是对子词是否“常见”的界定，最坏的情况子词模型会将一个单词（n个字符）切分为n个单词，大致退化为字符级表示方法，这就违背了我们折中的意愿。</p>
+<h2 id="预训练的引入"><a href="#预训练的引入" class="headerlink" title="预训练的引入"></a>预训练的引入</h2><h3 id="词嵌入的预训练"><a href="#词嵌入的预训练" class="headerlink" title="词嵌入的预训练"></a>词嵌入的预训练</h3><p>预训练的首先使用是在词嵌入模型中，在Circa 2017<a target="_blank" rel="noopener" href="https://arxiv.org/abs/1511.01432">Semi-supervised Sequence Learning</a>中首次提到了预训练技术，其中将词嵌入的部分进行预训练保存嵌入向量，将上下文分析的部分（LSTM&#x2F;Transformer）作为下游任务处理。</p>
+<p><img src="/post/2dd58a8f/image-20230315165310431.png" srcset="/img/loading.gif" lazyload alt="image-20230315165310431"></p>
+<p>其中需要思考的一些问题:</p>
+<ul>
+<li>为下游任务(如问题回答)准备的训练数据必须足以教授语言的所有上下文</li>
+<li>网络中的大多数参数都是<strong>随机初始化</strong>的，没有进行预训练</li>
+</ul>
+<h3 id="整体模型的预训练"><a href="#整体模型的预训练" class="headerlink" title="整体模型的预训练"></a>整体模型的预训练</h3><p>在现代NLP模型中，预训练模型是将模型的所有参数通过预训练进行初始化，以进一步用于下游任务。预训练的基本思路都是一致的：<strong>隐藏部分输入，并通过模型重建这些输入</strong>，模型的参数就是我们需要保存的信息。</p>
+<p><img src="/post/2dd58a8f/image-20230315174056757.png" srcset="/img/loading.gif" lazyload alt="image-20230315174056757"></p>
+<p>整体模型预训练对于语言表示、strong nlp model的参数初始化、可采样的语言概率分布等方面有着十分突出的表现。</p>
+<p>对于重构后的输入，我们可以从中学习许多层次的知识，包括但不限于词汇的指代关系、相对位置关系、推理关系等等；</p>
+<p><img src="/post/2dd58a8f/image-20230317232212968.png" srcset="/img/loading.gif" lazyload alt="image-20230317232212968"></p>
+<h3 id="微调（Finetune）"><a href="#微调（Finetune）" class="headerlink" title="微调（Finetune）"></a>微调（Finetune）</h3><p>预训练模型在语言模型中，通过训练神经网络对大量文本进行语言建模，然后保存参数。<strong>预训练模型是对下游模型的训练起点进行移动</strong>，将起点放到一个更适合或更容易的位置。下游训练时通过少量数据对任务本身进行finetune。</p>
+<p><img src="/post/2dd58a8f/image-20230315233827342.png" srcset="/img/loading.gif" lazyload alt="image-20230315233827342"></p>
+<p>从“训练神经网络”的角度来看，预训练的过程是损失最小化$\mathcal L_{\rm pretrain}(\theta)$得到$\hat \theta$，然后微调是从$\hat \theta$开始最小化$\mathcal L_{\rm finetune}(\theta)$。在微调的随机梯度下降时，预训练得到的起始参数可能会和local minima或者global minima很接近，这也是预训练为什么能够高效的原因之一。</p>
+<h4 id="轻量化微调"><a href="#轻量化微调" class="headerlink" title="轻量化微调"></a>轻量化微调</h4><p>全微调技术虽然效果很好，但每次对所有参数进行微调会对内存有很高的要求，因此引入了轻量化微调的技术。</p>
+<p><img src="/post/2dd58a8f/image-20230317233105537.png" srcset="/img/loading.gif" lazyload alt="image-20230317233105537"></p>
+<p>轻量化微调技术引入了参数的prefix的概念，首先冻结所有预训练参数，并将参数前缀送到模型处理，对前缀的处理和单词一样。推理时批次的每个元素都可以运行不同的调优模型。</p>
+<p><img src="/post/2dd58a8f/image-20230317233824627.png" srcset="/img/loading.gif" lazyload alt="image-20230317233824627"></p>
+<h4 id="低秩适应"><a href="#低秩适应" class="headerlink" title="低秩适应"></a>低秩适应</h4><p>低秩适应学习预训练和微调权重矩阵之间的低秩“差异”，是微调技术本身的优化。虽然模型的参数众多，但其实模型主要依赖low intrinsic dimension ，那adaption应该也依赖于此，所以提出了Low-Rank Adaptation。低秩适应允许通过优化适应过程中密集层变化的秩分解矩阵来间接训练神经网络中的一些密集层，同时保持预训练的权重不变。</p>
+<p>低秩适应的思路在于，在原始Pretrained Language model旁边增加一个旁路，做一个降维再升维的操作，来模拟所谓的 <code>intrinsic rank</code> 。训练的时候固定PLM的参数，只训练降维矩阵A与升维矩阵B。</p>
+<p><img src="/post/2dd58a8f/image-20230317233945273.png" srcset="/img/loading.gif" lazyload alt="image-20230317233945273"></p>
+<h2 id="预训练模型的结构"><a href="#预训练模型的结构" class="headerlink" title="预训练模型的结构"></a>预训练模型的结构</h2><h3 id="Pretrained-Decoder"><a href="#Pretrained-Decoder" class="headerlink" title="Pretrained Decoder"></a>Pretrained Decoder</h3><p>Decoder预训练可以有两种模式：</p>
+<ol>
+<li><p>不考虑Decoder用于概率分布$p(w_t|w_{1:t-1})$预测的用途，即不将其看作语言模型，在Decoder的最后一个隐状态加上一个分类器（线性或非线性）<br>$$<br>\begin{align}<br>h_1,…,h_T&amp;&#x3D;{\rm Decoder}(w_1,…,w_T) \\<br>y &amp;\sim Ah_T+b<br>\end{align}<br>$$<br><img src="/post/2dd58a8f/image-20230317161425473.png" srcset="/img/loading.gif" lazyload alt="image-20230317161425473"></p>
+<p>需要注意的是，这里的线性模型$A$和$b$都是外部参数，没有进行预训练；但是在预训练模型上finetune（梯度下降）的过程需要走整个模型（从上走到下)</p>
+</li>
+<li><p>将Decoder用作语言模型，建模$p(w_t|w_{1:t-1})$，微调概率分布中的参数$\theta$。这在训练前有充足的序列数据、且输出同样为序列数据时很有效，如对话、文本总结等等。<br>$$<br>\begin{align}<br>h_1,…,h_T&amp;&#x3D;{\rm Decoder}(w_1,…,w_T) \\<br>w_t &amp;\sim Ah_{t-1}+b<br>\end{align}<br>$$<br><img src="/post/2dd58a8f/image-20230317161455115.png" srcset="/img/loading.gif" lazyload alt="image-20230317161455115"></p>
+<p>在这种模式下，参数$A$和$b$都是预训练中需要训练的参数，因此会更有一般性，更容易进行下游任务的建构。</p>
+</li>
+</ol>
+<h4 id="GPT（Generative-Pretrained-Transformer）"><a href="#GPT（Generative-Pretrained-Transformer）" class="headerlink" title="GPT（Generative Pretrained Transformer）"></a>GPT（Generative Pretrained Transformer）</h4><p>2018年，GPT作为Decoder预训练模型获得了巨大成功。</p>
+<p><img src="/post/2dd58a8f/image-20230316002223069.png" srcset="/img/loading.gif" lazyload alt="image-20230316002223069"></p>
+<p>在GPT中，为了微调方便（Finetune），也为了能够让更多的任务适配，微调的输入都有着一个格式规定，定义一些特殊的token表示训练时的动作信息，如</p>
+<p><img src="/post/2dd58a8f/image-20230316002437234.png" srcset="/img/loading.gif" lazyload alt="image-20230316002437234"></p>
+<p>这其中有[start]、[delim]和[extract]，分类任务就是从结尾的[extract]标记的表示作为输入进行训练。</p>
+<h4 id="GPT-2"><a href="#GPT-2" class="headerlink" title="GPT-2"></a>GPT-2</h4><p>GPT-2基于GPT，GPT-2 是在更多数据上训练的更大版本 (1.5B) 的 GPT，它被证明可以生成相对令人信服的自然语言样本。</p>
+<h4 id="GPT-3"><a href="#GPT-3" class="headerlink" title="GPT-3"></a>GPT-3</h4><p>GPT-3基于GPT-2的部分，作为一个非常大的语言模型，其可以简单地从您在其<strong>上下文中提供的示例中</strong>执行某种没有梯度步骤的学习，从而降低模型学习步骤的复杂度。GPT-3 有 1750 亿个参数。</p>
+<p><img src="/post/2dd58a8f/image-20230317232137877.png" srcset="/img/loading.gif" lazyload alt="image-20230317232137877"></p>
+<p>在GPT-3的模型训练学习过程中，其认为上下文中的例子指定了要执行的任务，条件分布在一定程度上模拟了执行任务，从而可以通过直接学习上下文来获得有效的表示与信息。</p>
+<p><img src="/post/2dd58a8f/image-20230317232119220.png" srcset="/img/loading.gif" lazyload alt="image-20230317232119220"></p>
+<h3 id="Pretrained-Encoder"><a href="#Pretrained-Encoder" class="headerlink" title="Pretrained Encoder"></a>Pretrained Encoder</h3><p>和Decoder面向于语言模型建模不同，Encoder的主要目标为对语句构建有效的表示，Encoder是双向模型，其可以获取到双向的上下文信息，为了能够实现语言的缺失表示，可以引入屏蔽技术。具体来说，将Encoder的输入覆盖掉一部分，用[MASK]代替，然后Encoder训练时来预测这些词，训练的损失只从这些屏蔽掉的词中获取，令$\tilde x$是单词$x$的被屏蔽版本，那么模型的损失函数就是$p_\theta(x|\tilde x)$的最大化，即两者越相似越好。<br>$$<br>\begin{align}<br>h_1,…,h_T &amp;&#x3D; {\rm Encoder}(w_1,…,w_T) \\<br>y_i &amp;\sim Aw_i+b<br>\end{align}<br>$$</p>
+<p><img src="/post/2dd58a8f/image-20230317161626222.png" srcset="/img/loading.gif" lazyload alt="image-20230317161626222"></p>
+<h4 id="BERT"><a href="#BERT" class="headerlink" title="BERT"></a>BERT</h4><p>基于此，Devlin 等人在 2018 年提出了“Masked LM”目标并发布了预训练Transformer的权重，他们将这个模型标记为 BERT。在BERT中，对于[MASK]的使用，论文中希望不要让模型确定的知道[MASK]的具体位置，如果模型知道了[MASK]固定会在哪些位置出现，那么模型就不会对没有屏蔽的单词提供强大的表示，这样就违背了模型对语句所有位置提供强大表示的目标。具体的，BERT对[MASK]的使用有如下规则：</p>
+<ul>
+<li>随机选择15%的子词标记（Tokens）：<ul>
+<li>对其中输入单词的80%用[MASK]替换</li>
+<li>对其中输入单词的10%用其他随机token替换</li>
+<li>剩下的10%不变</li>
+</ul>
+</li>
+</ul>
+<p>[MASK]的应用更多的是让模型的表示能力加强，而不是在训练完成之后作为采样来用于下游，因为[MASK]生成的结果仍然有随机性。</p>
+<p><img src="/post/2dd58a8f/image-20230317163033916.png" srcset="/img/loading.gif" lazyload alt="image-20230317163033916"></p>
+<p>BERT的输入包括了两个独立的连续的chunks，其中BERT训练时需要判断两个chunks中后面的chunk是前面chunk在数据集中紧随的语句，还是一个随机采样的语句，这样BERT也提高了数据集输入分布的随机性。</p>
+<p><img src="/post/2dd58a8f/image-20230317163255579.png" srcset="/img/loading.gif" lazyload alt="image-20230317163255579"></p>
+<p>但这种随机性的作用大小有待考究，目前也有研究在致力于将BERT的这个随机输入直接改成更长的语句，以提高模型的长文本表达能力。</p>
+<p>BERT的模型架构细节如下，其中需要注意，BERT的预训练时间成本比较高，但Finetune十分实用而且可以多次微调。</p>
+<p><img src="/post/2dd58a8f/image-20230317164826700.png" srcset="/img/loading.gif" lazyload alt="image-20230317164826700"></p>
+<p>BERT在许多任务上都有十分显著的效果。</p>
+<p><img src="/post/2dd58a8f/image-20230317164910788.png" srcset="/img/loading.gif" lazyload alt="image-20230317164910788"></p>
+<p>虽然Pretrained Encoder在很多任务上效果都很好，但因为Encoder在语言建模上主要是对词语离散性的去预测， BERT和其他预训练编码器不会自然地导致良好的自回归（一次一个字）生成方法。因此在语言模型上还是Decoder比较出色。</p>
+<p><img src="/post/2dd58a8f/image-20230317214838337.png" srcset="/img/loading.gif" lazyload alt="image-20230317214838337"></p>
+<h4 id="BERT的扩展"><a href="#BERT的扩展" class="headerlink" title="BERT的扩展"></a>BERT的扩展</h4><p>RoBERTa：去掉下一句预测的环节；BERT的训练时长更长，参数规模更大。</p>
+<p><img src="/post/2dd58a8f/image-20230317220711590.png" srcset="/img/loading.gif" lazyload alt="image-20230317220711590"></p>
+<p>SpanBERT：连续屏蔽多个词，使模型更难去预测序列。</p>
+<p><img src="/post/2dd58a8f/image-20230317220724206.png" srcset="/img/loading.gif" lazyload alt="image-20230317220724206"></p>
+<h3 id="Pretrained-Encoder-Decoder"><a href="#Pretrained-Encoder-Decoder" class="headerlink" title="Pretrained Encoder-Decoder"></a>Pretrained Encoder-Decoder</h3><p>预训练Encoder-Decoder结构是由Encoder和Decoder两个部分构成，其中Encoder接收输入用于获得强大的语言表示，Decoder接收输入和Encoder表示用于语言建模。对于Encoder-Decoder，我们可以做一些类似语言建模的事情，但是每个输入的前缀都提供给编码器而不是预测。<br>$$<br>\begin{align}<br>h_1,…,h_T &amp; &#x3D; {\rm Encoder}(w_1,…,w_T) \\<br>h_{T+1},…,h_{2T} &amp;&#x3D; {\rm Decoder}(w_1,…,w_T,h_1,…,h_T)\\<br>y_i &amp;\sim Ah_i+b,\ \ \ \  i&gt;T<br>\end{align}<br>$$<br><img src="/post/2dd58a8f/image-20230317221348067.png" srcset="/img/loading.gif" lazyload alt="image-20230317221348067"></p>
+<p>目前在业界，Encoder-Decoder中比较优秀的是Raffel et al., 2018所提出的T5模型，在其中加入了span corruption的技术，即Encoder部分替换不同长度的spans并用独一无二的标记表示，Decoder解码出被删除的部分。</p>
+<p><img src="/post/2dd58a8f/image-20230317231312248.png" srcset="/img/loading.gif" lazyload alt="image-20230317231312248"></p>
+<p><img src="/post/2dd58a8f/image-20230317231446618.png" srcset="/img/loading.gif" lazyload alt="image-20230317231446618"></p>
+<p>在T5模型中，一个比较出众的部分是在微调阶段，T5可以根据问答的结果从其参数中检索知识，并微调模型以逐渐适配问题，这种类动态性十分厉害。</p>
+<p><img src="/post/2dd58a8f/image-20230317231653307.png" srcset="/img/loading.gif" lazyload alt="image-20230317231653307"></p>
+<h1 id="课后问题"><a href="#课后问题" class="headerlink" title="课后问题"></a>课后问题</h1><h4 id="Q：子词模型中的”-”代表的是什么意思？"><a href="#Q：子词模型中的”-”代表的是什么意思？" class="headerlink" title="Q：子词模型中的”##”代表的是什么意思？"></a>Q：子词模型中的”##”代表的是什么意思？</h4><p>A：代表的是类似于分词的符号，##告诉我们其前面的单词不是一个单独的完整单词，比如subwords也许会被模型分为sub和words，表示为sub##words，这里的sub是属于原词的一部分而不是一个单独完整的词。	</p>
+<h4 id="Q：预训练模型有没有过拟合的风险在？"><a href="#Q：预训练模型有没有过拟合的风险在？" class="headerlink" title="Q：预训练模型有没有过拟合的风险在？"></a>Q：预训练模型有没有过拟合的风险在？</h4><p>A：目前的大模型训练来说，更多的风险在于欠拟合而不是过拟合。</p>
+<h4 id="Q：T5模型中的-lt-x-gt-、-lt-y-gt-是怎么继承的呢？"><a href="#Q：T5模型中的-lt-x-gt-、-lt-y-gt-是怎么继承的呢？" class="headerlink" title="Q：T5模型中的&lt;x&gt;、&lt;y&gt;是怎么继承的呢？"></a>Q：T5模型中的<code>&lt;x&gt;、&lt;y&gt;</code>是怎么继承的呢？</h4><p>A：Decoder的预测部分首先需要取到标记，知道这块需要预测，然后模型预测出结果，这里就已经实现了一一对应。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">#自然语言处理</a>
+      
+        <a href="/tags/Stanford-CS224n/">#Stanford CS224n</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS224N课程P8：预训练技巧（Pretrain）</div>
+      <div>http://paopao0226.site/post/2dd58a8f.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年3月14日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/bf57f2be.html" title="CS224N课程P9：问答技巧（Question &amp; Answering）">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS224N课程P9：问答技巧（Question &amp; Answering）</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/d7b08fd6.html" title="CS224N课程P7：注意力机制与Transformer">
+                        <span class="hidden-mobile">CS224N课程P7：注意力机制与Transformer</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

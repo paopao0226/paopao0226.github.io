@@ -1,0 +1,954 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="对于2021年冬季学期由Stanford开设的CS224n课程的学习笔记，这里是第六讲：LSTM RNN和神经网络机器翻译">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CS224N课程P6：LSTM和机器翻译">
+<meta property="og:url" content="http://paopao0226.site/post/c4e50226.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="对于2021年冬季学期由Stanford开设的CS224n课程的学习笔记，这里是第六讲：LSTM RNN和神经网络机器翻译">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230227181945218.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230227193921320.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230227234457318.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230227235820182.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230228124754455.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230228132603867.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230302153041359.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230302154357091.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230302163546790.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230302221042200.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230302222256755.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230302224039510.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230302224913920.png">
+<meta property="og:image" content="http://paopao0226.site/post/c4e50226/image-20230303000923604.png">
+<meta property="article:published_time" content="2023-02-27T08:31:30.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.670Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="自然语言处理">
+<meta property="article:tag" content="Stanford CS224n">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/c4e50226/image-20230227181945218.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>CS224N课程P6：LSTM和机器翻译 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover15.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="CS224N课程P6：LSTM和机器翻译"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-02-27 16:31" pubdate>
+          2023年2月27日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">CS224N课程P6：LSTM和机器翻译</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="课程词汇"><a href="#课程词汇" class="headerlink" title="课程词汇"></a>课程词汇</h1><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs txt">allude - 暗示；提到<br>residual - 残余的；剩余的<br>versatile - 万能的；多种用途的<br>canonical - 经典的；规范的<br>rule of thumb - 经验法则；概测法<br>tractable - 易处理的；易控制的<br>beam - 横梁；光束；船宽<br>utterance - 话语；意义<br>augmentation - 增强；扩增<br>specify - 指定；详列<br></code></pre></td></tr></table></figure>
+
+<h1 id="课程内容"><a href="#课程内容" class="headerlink" title="课程内容"></a>课程内容</h1><h2 id="LSTM"><a href="#LSTM" class="headerlink" title="LSTM"></a>LSTM</h2><h3 id="引入：梯度消失问题的解决"><a href="#引入：梯度消失问题的解决" class="headerlink" title="引入：梯度消失问题的解决"></a>引入：梯度消失问题的解决</h3><p>需要解决梯度消失的问题，本质上是需要解决经过多个时间步之后，远处的信息如何得到保存的问题，为了解决这个问题，LSTM引入了一个分开的存储来保存信息。</p>
+<p><img src="/post/c4e50226/image-20230227181945218.png" srcset="/img/loading.gif" lazyload alt="image-20230227181945218"></p>
+<h3 id="LSTM的结构"><a href="#LSTM的结构" class="headerlink" title="LSTM的结构"></a>LSTM的结构</h3><p>LSTM的结构如下：在每一步$t$中设置一个隐状态（hidden state）$\pmb h^{(t)}$和一个细胞状态（cell state）$\pmb c^{(t)}$：</p>
+<ul>
+<li>两个都是$n$维向量</li>
+<li>细胞状态存储的是长程信息</li>
+<li>LSTM可以从细胞状态中读取、修改或写入信息，决定信息的操作的是三个对应的门，门的开关通过现有上下文来进行计算。</li>
+</ul>
+<p>LSTM的两个状态的计算公式如下：</p>
+<p><img src="/post/c4e50226/image-20230227193921320.png" srcset="/img/loading.gif" lazyload alt="image-20230227193921320"></p>
+<p>需要注意的是每个门对应的信息。其中遗忘门对应于遗忘之前cell state里的信息，输入门对应于写入cell state，输出门对应于将cell state的信息输出到hidden state。这里用到了Hadamard乘积。</p>
+<p>LSTM的可视化解释为：</p>
+<p><img src="/post/c4e50226/image-20230227234457318.png" srcset="/img/loading.gif" lazyload alt="image-20230227234457318"></p>
+<p>这张图给出了LSTM的运行机理，首先神经元是沿着从$c_{t-1}$到$c_t$的<strong>主干道</strong>传送长程信息，然后在主干道上，先通过遗忘门判断保存$c_{t-1}$的哪些信息，然后过输入门，并计算新的cell信息，给到cell state，最后过输出门，判断是否将$c_i$的部分信息输出到$h_t$，从而实现整体运行。</p>
+<p>LSTM相对于Vanilla RNN，其在保留长程信息上表现十分优秀，甚至来说，将遗忘门置1并将输入门置0，则cell state的信息会无限的保存下去，而RNN中一直使用的$\pmb W_h$会导致其容易出现梯度问题。实践下来，LSTM可以保存近百步的信息，而Vanilla RNN大概只能保存7步左右。</p>
+<h3 id="其他解决梯度消失的结构"><a href="#其他解决梯度消失的结构" class="headerlink" title="其他解决梯度消失的结构"></a>其他解决梯度消失的结构</h3><p>梯度消失的问题在各个深层神经网络中都有出现，其中以时序网络更为明显，为了解决梯度消失的问题，一些神经网络引入了直连边，允许梯度在边上流动，如十分重要的ResNet：</p>
+<p><img src="/post/c4e50226/image-20230227235820182.png" srcset="/img/loading.gif" lazyload alt="image-20230227235820182"></p>
+<p>更多的，在状态之间引入稠密连接，每层都与其他未来的层进行相连，就是DenseNet的主要思路。以及像LSTM一样设置一个主干道连接，这是HighwayNet的基本思路。总而言之，梯度消失是在网络中十分普遍的问题，如今的人们也在致力于完美解决这个问题。</p>
+<h2 id="LSTM的优化结构"><a href="#LSTM的优化结构" class="headerlink" title="LSTM的优化结构"></a>LSTM的优化结构</h2><h3 id="BiLSTM"><a href="#BiLSTM" class="headerlink" title="BiLSTM"></a>BiLSTM</h3><p>如果将LSTM中的隐状态看作单词的一种表示（如词嵌入），则LSTM也可以理解成对句子的上下文表示进行学习，不过LSTM只有一个方向（左边）的context作为特征来学习，故引入了双向LSTM网络（BiLSTM），分别从左边和右边构建一个LSTM网络，最后将两个方向的结果简单连接起来。</p>
+<p><img src="/post/c4e50226/image-20230228124754455.png" srcset="/img/loading.gif" lazyload alt="image-20230228124754455"></p>
+<p>在第$t$个时间步：<br>$$<br>\begin{align}<br>{\rm Forward\ RNN }\ \ \overrightarrow {\pmb h}^{\ (t)} &amp; &#x3D; {\rm RNN_ {FM} }\left( \overrightarrow {\pmb h}^{\ (t-1)}, \pmb x^{(t)} \right) \\<br>{\rm Backward\ RNN }\ \overleftarrow {\pmb h}^{(t)} &amp; &#x3D; {\rm RNN_ {BM} }\left( \overleftarrow {\pmb h}^{\ (t+1)}, \pmb x^{(t)} \right) \\<br>{\rm Hidden\ State}\ {\pmb h}^{(t)} &amp; &#x3D;[\overrightarrow {\pmb h}^{\ (t)} ; \overleftarrow {\pmb h}^{(t)} ]<br>\end{align}<br>$$<br>BiLSTM在图示上可以简化为：</p>
+<p><img src="/post/c4e50226/image-20230228132603867.png" srcset="/img/loading.gif" lazyload alt="image-20230228132603867"></p>
+<p>BiLSTM适用于需要处理整体输入序列，双方向的任务（如编码），而不适用于像语言模型这样单方向的语言任务，BiLSTM在现有的语言领域中使用十分广泛，如现在十分火热的BERT架构，其中的“B”就是BiLSTM的缩写。</p>
+<h3 id="Multi-layer-RNN"><a href="#Multi-layer-RNN" class="headerlink" title="Multi-layer RNN"></a>Multi-layer RNN</h3><p>上文所讲述的RNN都是基于一个维度的加深，即从左到右深度较深，timestep许多但在另一个维度上很窄，因此引入了多层RNN的架构，在层数上加深。这能够使RNN计算出更为复杂，更高层的表示信息，Muiti-layer RNNs又称为stacked RNNs。</p>
+<p>目前来说，表现较好的RNN模型通常都为多层结构（不像卷积网络或前馈网络那么深层），进入到更深层（超过4层）则通常需要使用skip-connections或dense-connections来防止梯度问题，基于Transformer的RNN网络则在深度上会更高（一般在12或24层）。</p>
+<p><img src="/post/c4e50226/image-20230302153041359.png" srcset="/img/loading.gif" lazyload alt="image-20230302153041359"></p>
+<h2 id="机器翻译"><a href="#机器翻译" class="headerlink" title="机器翻译"></a>机器翻译</h2><p>机器翻译任务（Machine Translation,MT）是将基于一种语言的句子（Source language）翻译到另一种语言（Target language），其中心思想为从语料数据中学习一个概率模型，下文均基于法译英展开。</p>
+<p>机器翻译的任务可以表示为：<br>$$<br>{\rm argmax}_y P(y|x)<br>$$<br>使用贝叶斯公式可以将任务拆分为两个部分：<br>$$<br>{\rm argmax}_y P(y|x) &#x3D; {\rm argmax}_yP(x|y)P(y)<br>$$<br><img src="/post/c4e50226/image-20230302154357091.png" srcset="/img/loading.gif" lazyload alt="image-20230302154357091"></p>
+<h3 id="统计机器翻译（SMT，1990s—2010s）"><a href="#统计机器翻译（SMT，1990s—2010s）" class="headerlink" title="统计机器翻译（SMT，1990s—2010s）"></a>统计机器翻译（SMT，1990s—2010s）</h3><p>统计机器翻译在当时是一个十分巨大的研究领域，其最优的系统都十分复杂，有数以百计的重要细节需要考量。而且系统中包含了许多分别设计的子部件，因此需要十分庞大的特征工程，额外的资源和人力。</p>
+<h3 id="神经网络机器翻译（NMT，2010s至今）"><a href="#神经网络机器翻译（NMT，2010s至今）" class="headerlink" title="神经网络机器翻译（NMT，2010s至今）"></a>神经网络机器翻译（NMT，2010s至今）</h3><p>神经网络机器翻译是通过单个的端到端网络来实现机器翻译的方法，其中神经网络的架构被称为<strong>Sequence-to-sequence</strong>模型（seq2seq），其中包括两个RNN，一个为编码器（Encoder），一个为解码器（Decoder）。</p>
+<p><img src="/post/c4e50226/image-20230302163546790.png" srcset="/img/loading.gif" lazyload alt="image-20230302163546790"></p>
+<p>如图所示，左边的红色部分为Encoder部分，负责将源句子编码表示，其中Encoder的结果作为Decoder的初始隐状态，Decoder负责基于Encoder的条件，作为语言模型生成目标语句。这体现了<strong>条件网络</strong>的概念，即将之前的Encoder的结果作为一种条件指导Decoder的训练。目前来说，条件网络的条件可以有以下几种：</p>
+<ul>
+<li>作为初始隐状态</li>
+<li>作为下个网络的输入</li>
+</ul>
+<h4 id="Seq2seq"><a href="#Seq2seq" class="headerlink" title="Seq2seq"></a>Seq2seq</h4><p><img src="/post/c4e50226/image-20230302221042200.png" srcset="/img/loading.gif" lazyload alt="image-20230302221042200"></p>
+<p>Seq2seq在nlp的许多应用场景中都有所使用，如：</p>
+<ul>
+<li>Summarization（long text $\rightarrow$ short text）</li>
+<li>Dialogue（previous utterances $\rightarrow$ next utterance）</li>
+<li>Parsing（input text $\rightarrow$ output parse as sequence）</li>
+<li>Code generation（natural language$\rightarrow$ Python code）</li>
+</ul>
+<p>Seq2seq在这里的模型是一个典型的条件语言模型的例子：</p>
+<ul>
+<li><strong>语言模型：</strong>Decoder每个隐状态预测一次目标语句中的下一个单词</li>
+<li><strong>条件：</strong>Decoder的预测由源语句经Encoder编码后条件约束。</li>
+</ul>
+<p>NMT直接计算了概率分布$P(y|x)$以给出机器翻译结果，具体来说是不断计算$P(y|x)$在贝叶斯分解后的每个部分，其训练主要是需要一个相对大的并行语料，但目前也有无监督NMT和数据增强等一些新兴的工作。</p>
+<p><img src="/post/c4e50226/image-20230302222256755.png" srcset="/img/loading.gif" lazyload alt="image-20230302222256755"></p>
+<h4 id="NMT的训练和多层NMT"><a href="#NMT的训练和多层NMT" class="headerlink" title="NMT的训练和多层NMT"></a>NMT的训练和多层NMT</h4><p>NMT的<strong>前向训练</strong>就如上文中的图示一样，先训练Encoder获取表示，后Decoder训练语言模型，其中每个隐状态都需要计算真实语句和预测语句中对应位置的<strong>负对数损失</strong>，最后做加和；反向传播的过程中，Seq2seq通常被看作一个整体。Encoder的输出也有将之前的隐状态做一次平均的情况存在，但大多数就是从前到后做训练。</p>
+<p><img src="/post/c4e50226/image-20230302224039510.png" srcset="/img/loading.gif" lazyload alt="image-20230302224039510"></p>
+<p>将NMT加深层次，多层NMT就可以更有效地捕捉语句信息。</p>
+<p><img src="/post/c4e50226/image-20230302224913920.png" srcset="/img/loading.gif" lazyload alt="image-20230302224913920"></p>
+<h2 id="机器翻译的评估"><a href="#机器翻译的评估" class="headerlink" title="机器翻译的评估"></a>机器翻译的评估</h2><p>机器翻译的评估通常采用BLEU（Bilingual Evaluation Understudy）。BLEU通过比较机器翻译和人类手工翻译并计算其中的相似度分数，分数的计算基于两个部分：</p>
+<ol>
+<li>n-gram precision（Usually for 1,2,3 and 4-grams）</li>
+<li>对系统翻译过短的惩罚项</li>
+</ol>
+<p>具体的细节要到A4作业看，BLEU作为评估指标上是很有效的，但其确实也有一些缺点，因为好的翻译的评价是很多元化的，因此可能会出现翻译在我们人类看来是很出色但是BLEU分数很低（因为用词不一样）的情况出现。故BLEU也只是覆盖到了大部分的情况。</p>
+<h2 id="机器翻译的分析"><a href="#机器翻译的分析" class="headerlink" title="机器翻译的分析"></a>机器翻译的分析</h2><p>对比SMT，NMT有以下<strong>优点：</strong></p>
+<ul>
+<li>更好的翻译表现<ul>
+<li>更加流利的译后语言</li>
+<li>对context和phrase similarities利用得更完备</li>
+</ul>
+</li>
+<li>一个单一的神经网络可以端到端优化<ul>
+<li>没有子组件需要特别进行优化</li>
+</ul>
+</li>
+<li>人力和特征工程资源要求降低<ul>
+<li>没有特征工程</li>
+<li>对所有语言方法一致</li>
+</ul>
+</li>
+</ul>
+<p>但NMT也有以下<strong>弱点</strong>需要注意：</p>
+<ul>
+<li>NMT的可解释性更差<ul>
+<li>难以debug</li>
+</ul>
+</li>
+<li>NMT的可控性更差<ul>
+<li>例如：无法轻松指定翻译规则或准则</li>
+<li>安全性考量</li>
+</ul>
+</li>
+</ul>
+<p>最后，NMT近些年的优秀表现，使得绝大部分的企业都选择了NMT作为机器翻译的首选。</p>
+<p><img src="/post/c4e50226/image-20230303000923604.png" srcset="/img/loading.gif" lazyload alt="image-20230303000923604"></p>
+<h1 id="课后问题"><a href="#课后问题" class="headerlink" title="课后问题"></a>课后问题</h1><h4 id="Q：门的工作原理"><a href="#Q：门的工作原理" class="headerlink" title="Q：门的工作原理"></a>Q：门的工作原理</h4><p>所有的门控都需要学习，都是在模型中学习出来的，实际上效果是可以的</p>
+<h4 id="Q：为什么LSTM中的加和操作-Add-是十分重要的？"><a href="#Q：为什么LSTM中的加和操作-Add-是十分重要的？" class="headerlink" title="Q：为什么LSTM中的加和操作(Add)是十分重要的？"></a>Q：为什么LSTM中的加和操作(Add)是十分重要的？</h4><p>因为加和相对于乘积，其梯度的不断下降的程度会弱一些，这也间接防止了梯度消失的快速出现。而且加和操作可以大致实现信息的整合，需要加哪些信息，需要忘记哪些信息。</p>
+<h4 id="Q：在多层RNN中，低级语义和高级语义分别指什么？示例？"><a href="#Q：在多层RNN中，低级语义和高级语义分别指什么？示例？" class="headerlink" title="Q：在多层RNN中，低级语义和高级语义分别指什么？示例？"></a>Q：在多层RNN中，低级语义和高级语义分别指什么？示例？</h4><p>低级特征是在句子中更为基础的特征，如单词的词性等等，而高级特征更关注于高维的表示，如句子的结构、句子的情绪价值等等。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86/">#自然语言处理</a>
+      
+        <a href="/tags/Stanford-CS224n/">#Stanford CS224n</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>CS224N课程P6：LSTM和机器翻译</div>
+      <div>http://paopao0226.site/post/c4e50226.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年2月27日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/d7b08fd6.html" title="CS224N课程P7：注意力机制与Transformer">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS224N课程P7：注意力机制与Transformer</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/858fce89.html" title="CS224N课程P5：语言模型和循环神经网络RNN">
+                        <span class="hidden-mobile">CS224N课程P5：语言模型和循环神经网络RNN</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

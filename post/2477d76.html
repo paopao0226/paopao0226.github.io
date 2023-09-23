@@ -1,0 +1,875 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/apple-touch-icon.png">
+  <link rel="icon" href="/img/logo.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#f9e4eb96">
+  <meta name="author" content="Ywj226">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="记录线性模型的题解和注释笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nndl编程练习2：线性模型练习题解">
+<meta property="og:url" content="http://paopao0226.site/post/2477d76.html">
+<meta property="og:site_name" content="Ywj226">
+<meta property="og:description" content="记录线性模型的题解和注释笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://paopao0226.site/post/2477d76/image-20230131184451988.png">
+<meta property="og:image" content="http://paopao0226.site/post/2477d76/image-20230131184539586.png">
+<meta property="og:image" content="http://paopao0226.site/post/2477d76/image-20230131184620340.png">
+<meta property="article:published_time" content="2023-01-31T09:54:00.000Z">
+<meta property="article:modified_time" content="2023-09-23T08:14:35.534Z">
+<meta property="article:author" content="Ywj226">
+<meta property="article:tag" content="神经网络与深度学习">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="http://paopao0226.site/post/2477d76/image-20230131184451988.png">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>nndl编程练习2：线性模型练习题解 - Ywj226</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="/css/extra_css.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"paopao0226.site","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":false},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<!-- hexo injector head_end start --><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/font-awesome-animation.min.css" media="defer" onload="this.media='all'"><link rel="stylesheet" href="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/tag_plugins.css" media="defer" onload="this.media='all'"><script src="https://npm.elemecdn.com/hexo-butterfly-tag-plugins-plus@latest/lib/assets/carousel-touch.js"></script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>YWJ226</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/message/">
+                <i class="iconfont icon-note"></i>
+                <span>留言板</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/download/">
+                <i class="iconfont icon-books"></i>
+                <span>文件</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/cover6.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="nndl编程练习2：线性模型练习题解"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        Ywj226
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-01-31 17:54" pubdate>
+          2023年1月31日 下午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.1k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          35 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">nndl编程练习2：线性模型练习题解</h1>
+            
+              <p class="note note-success">
+                
+                  
+                    本文最后更新于：几秒前
+                  
+                
+              </p>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h2><p>请按照填空顺序编号分别完成 参数优化，不同基函数的实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><span class="hljs-keyword">import</span> matplotlib.pyplot <span class="hljs-keyword">as</span> plt<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">load_data</span>(<span class="hljs-params">filename</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;载入数据。&quot;&quot;&quot;</span><br>    xys = []<br>    <span class="hljs-keyword">with</span> <span class="hljs-built_in">open</span>(filename, <span class="hljs-string">&#x27;r&#x27;</span>) <span class="hljs-keyword">as</span> f:<br>        <span class="hljs-keyword">for</span> line <span class="hljs-keyword">in</span> f:<br>            xys.append(<span class="hljs-built_in">map</span>(<span class="hljs-built_in">float</span>, line.strip().split()))<br>        xs, ys = <span class="hljs-built_in">zip</span>(*xys)<br>        <span class="hljs-keyword">return</span> np.asarray(xs), np.asarray(ys)<br></code></pre></td></tr></table></figure>
+
+<h2 id="不同的基函数-basis-function-的实现"><a href="#不同的基函数-basis-function-的实现" class="headerlink" title="不同的基函数 (basis function)的实现"></a>不同的基函数 (basis function)的实现</h2><h4 id="填空顺序-2"><a href="#填空顺序-2" class="headerlink" title="填空顺序 2"></a>填空顺序 2</h4><p>请分别在这里实现“多项式基函数”以及“高斯基函数”</p>
+<p>其中以及训练集的x的范围在0-25之间</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">identity_basis</span>(<span class="hljs-params">x</span>):<br>    ret = np.expand_dims(x, axis=<span class="hljs-number">1</span>)<br>    <span class="hljs-keyword">return</span> ret<br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">multinomial_basis</span>(<span class="hljs-params">x, feature_num=<span class="hljs-number">10</span></span>):<br>    x = np.expand_dims(x, axis=<span class="hljs-number">1</span>) <span class="hljs-comment"># shape(N, 1)</span><br>    ret = [x]<br>    <span class="hljs-comment"># 分别乘幂</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">2</span>,feature_num+<span class="hljs-number">1</span>):<br>        ret.append(x**i)<br>    <span class="hljs-comment">#将乘幂的结果连起来</span><br>    ret=np.concatenate(ret,axis=<span class="hljs-number">1</span>)<br>    <span class="hljs-built_in">print</span>(ret.shape)<br>    <span class="hljs-keyword">return</span> ret<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">gaussian_basis</span>(<span class="hljs-params">x, feature_num=<span class="hljs-number">10</span></span>):<br>    <span class="hljs-string">&#x27;&#x27;&#x27;高斯基函数&#x27;&#x27;&#x27;</span><br>    <span class="hljs-comment">#==========</span><br>    <span class="hljs-comment">#todo &#x27;&#x27;&#x27;请实现高斯基函数&#x27;&#x27;&#x27;</span><br>    <span class="hljs-comment">#==========</span><br>    <span class="hljs-comment"># 高斯基函数</span><br>    centers = np.linspace(<span class="hljs-number">0</span>,<span class="hljs-number">25</span>,feature_num)<br>    s = centers[<span class="hljs-number">1</span>]-centers[<span class="hljs-number">0</span>]<br>    phi = np.expand_dims(x,axis=<span class="hljs-number">1</span>)<br>    x = np.concatenate([phi]*feature_num,axis=<span class="hljs-number">1</span>)<br>    t =( x - centers)/s<br>    ret = np.exp(- <span class="hljs-number">0.5</span> * t ** <span class="hljs-number">2</span>)<br>    <span class="hljs-keyword">return</span> ret<br></code></pre></td></tr></table></figure>
+
+<p>多项式基函数：<br>$$<br>\phi_j(x) &#x3D; x^j<br>$$<br>高斯基函数：<br>$$<br>\phi_j(x) &#x3D; \exp\lbrace -{ {(x-\mu_j)^2} \over {2s^2} } \rbrace &#x3D; \exp \lbrace - {1\over 2} ({ (x-\mu_j)\over s}) ^2 \rbrace<br>$$</p>
+<h2 id="返回一个训练好的模型"><a href="#返回一个训练好的模型" class="headerlink" title="返回一个训练好的模型"></a>返回一个训练好的模型</h2><h4 id="填空顺序-1-用最小二乘法进行模型优化"><a href="#填空顺序-1-用最小二乘法进行模型优化" class="headerlink" title="填空顺序 1 用最小二乘法进行模型优化"></a>填空顺序 1 用最小二乘法进行模型优化</h4><h4 id="填空顺序-3-用梯度下降进行模型优化"><a href="#填空顺序-3-用梯度下降进行模型优化" class="headerlink" title="填空顺序 3 用梯度下降进行模型优化"></a>填空顺序 3 用梯度下降进行模型优化</h4><blockquote>
+<p>先完成最小二乘法的优化 (参考书中第二章 2.3中的公式)</p>
+</blockquote>
+<blockquote>
+<p>再完成梯度下降的优化 (参考书中第二章 2.3中的公式)</p>
+</blockquote>
+<p>在main中利用训练集训练好模型的参数，并且返回一个训练好的模型。</p>
+<p>计算出一个优化后的w，请分别使用最小二乘法以及梯度下降两种办法优化w</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">main</span>(<span class="hljs-params">x_train, y_train,</span>):<br>    <span class="hljs-string">&quot;&quot;&quot;</span><br><span class="hljs-string">    训练模型，并返回从x到y的映射。</span><br><span class="hljs-string">    </span><br><span class="hljs-string">    &quot;&quot;&quot;</span><br>    <span class="hljs-comment">#加入1序列，作为训练时的常量$b$</span><br>    <br>    <span class="hljs-comment">#在这里更换基函数</span><br>    basis_func = multinomial_basis<br>    phi0 = np.expand_dims(np.ones_like(x_train), axis=<span class="hljs-number">1</span>)<br>    phi1 = basis_func(x_train)<br>    phi = np.concatenate([phi0, phi1], axis=<span class="hljs-number">1</span>)<br>    <br>    <br>    <span class="hljs-comment">#==========</span><br>    <span class="hljs-comment">#todo &#x27;&#x27;&#x27;计算出一个优化后的w，请分别使用最小二乘法以及梯度下降两种办法优化w&#x27;&#x27;&#x27;</span><br>    <span class="hljs-comment">#==========</span><br>    <span class="hljs-comment">#最小二乘法，其中np.linalg.pinv()求的是phi的伪逆矩阵</span><br>    w = np.dot(np.linalg.pinv(phi),y_train)<br>    <span class="hljs-comment">#梯度下降</span><br>    <span class="hljs-comment">#损失函数</span><br><span class="hljs-comment">#     def dj(theta,phi,y):</span><br><span class="hljs-comment">#         return phi.T.dot(np.dot(phi,theta)-y) * 2.0 / len(phi)</span><br>    <br><span class="hljs-comment">#     def gradient(phi,y,initial_theta, eta=0.001, n_iters=10000):</span><br><span class="hljs-comment">#         w = initial_theta</span><br><span class="hljs-comment">#         for i in range(n_iters):</span><br><span class="hljs-comment">#             w = w - eta * dj(w,phi,y)</span><br><span class="hljs-comment">#         return w</span><br><span class="hljs-comment">#     initial_theta = np.zeros(phi.shape[1])</span><br><span class="hljs-comment">#     w = gradient(phi,y_train,initial_theta)</span><br><br>    <span class="hljs-keyword">def</span> <span class="hljs-title function_">f</span>(<span class="hljs-params">x</span>):<br>        phi0 = np.expand_dims(np.ones_like(x), axis=<span class="hljs-number">1</span>)<br>        phi1 = basis_func(x)<br>        phi = np.concatenate([phi0, phi1], axis=<span class="hljs-number">1</span>)<br>        y = np.dot(phi, w)<br>        <span class="hljs-keyword">return</span> y<br><br>    <span class="hljs-keyword">return</span> f<br></code></pre></td></tr></table></figure>
+
+<p>最小二乘法训练模型是直接计算解<br>$$<br>\pmb w^* &#x3D; (\pmb {XX}^\top)^{-1} \pmb X\pmb y<br>$$<br>其中，$(\pmb {XX}^\top)^{-1} \pmb X$被称为$\pmb X^\top$的伪逆矩阵，因为$\pmb X^{-1}$不是满秩的，所以需要用伪逆矩阵表示，伪逆矩阵可以用<code>np.linalg.pinv()</code>计算。</p>
+<p>梯度下降分为两步，其一是计算梯度，其二是梯度下降</p>
+<p>首先，梯度计算式可以表示为<br>$$<br>\begin{align}<br>{\partial \mathcal L} \over {\partial w} &amp; &#x3D; { {\partial {1\over n} \sum_{n&#x3D;1}^n (wx^{(i)}+b-y^{(i)})}^2 \over {\partial w} } \\<br>&amp; &#x3D; {1\over n} \sum_{n&#x3D;1}^n { {\partial (wx^{(i)}+b-y^{(i)})}^2 \over {\partial w} }  \\<br>&amp; &#x3D; {1\over n}\sum_{n&#x3D;1}^n \ 2 ·  (wx^{(i)}+b-y^{(i)}) · { {\partial (wx^{(i)}+b-y^{(i)})} \over {\partial w} }  \\<br>&amp; &#x3D; {2\over n}\sum_{n&#x3D;1}^n \ (wx^{(i)}+b-y^{(i)}) ·x^{(i)}<br>\end{align}<br>$$<br>最后的式子可以转写为矩阵表达式<br>$$<br>{ {\partial \mathcal L} \over {\partial \pmb w} } &#x3D; {2\over n} ·\pmb x^\top (\pmb w\pmb x-\pmb y)<br>$$<br>然后，梯度下降表达式为<br>$$<br>\pmb w &#x3D; \pmb w-\eta { \partial L \over {\partial \pmb w} }<br>$$<br>权重的初始值可以全部赋0，这样就完成了梯度下降的搭建。</p>
+<h2 id="评估结果"><a href="#评估结果" class="headerlink" title="评估结果"></a>评估结果</h2><blockquote>
+<p>没有需要填写的代码，但是建议读懂</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">def</span> <span class="hljs-title function_">evaluate</span>(<span class="hljs-params">ys, ys_pred</span>):<br>    <span class="hljs-comment"># 计算标准差</span><br>    <span class="hljs-string">&quot;&quot;&quot;评估模型。&quot;&quot;&quot;</span><br>    std = np.sqrt(np.mean(np.<span class="hljs-built_in">abs</span>(ys - ys_pred) ** <span class="hljs-number">2</span>))<br>    <span class="hljs-keyword">return</span> std<br><br><span class="hljs-comment"># 程序主入口（建议不要改动以下函数的接口）</span><br><span class="hljs-keyword">if</span> __name__ == <span class="hljs-string">&#x27;__main__&#x27;</span>:<br>    train_file = <span class="hljs-string">&#x27;train.txt&#x27;</span><br>    test_file = <span class="hljs-string">&#x27;test.txt&#x27;</span><br>    <span class="hljs-comment"># 载入数据</span><br>    x_train, y_train = load_data(train_file)<br>    x_test, y_test = load_data(test_file)<br>    <span class="hljs-built_in">print</span>(x_train.shape)<br>    <span class="hljs-built_in">print</span>(x_test.shape)<br>    <span class="hljs-comment"># 使用线性回归训练模型，返回一个函数f()使得y = f(x)</span><br>    <span class="hljs-comment"># 定义训练函数</span><br>    f = main(x_train, y_train)<br>    <br>    y_train_pred = f(x_train)<br>    std = evaluate(y_train, y_train_pred)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;训练集预测值与真实值的标准差：&#123;:.1f&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(std))<br>    <br>    <span class="hljs-comment"># 计算预测的输出值</span><br>    y_test_pred = f(x_test)<br>    <span class="hljs-comment"># 使用测试集评估模型</span><br>    std = evaluate(y_test, y_test_pred)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;预测值与真实值的标准差：&#123;:.1f&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(std))<br>    <br>    <span class="hljs-comment"># 用plt输出图像</span><br>    <span class="hljs-comment">#显示结果</span><br>    plt.plot(x_train, y_train, <span class="hljs-string">&#x27;ro&#x27;</span>, markersize=<span class="hljs-number">3</span>)<br><span class="hljs-comment">#     plt.plot(x_test, y_test, &#x27;k&#x27;)</span><br>    plt.plot(x_test, y_test_pred, <span class="hljs-string">&#x27;k&#x27;</span>)<br>    plt.xlabel(<span class="hljs-string">&#x27;x&#x27;</span>)<br>    plt.ylabel(<span class="hljs-string">&#x27;y&#x27;</span>)<br>    plt.title(<span class="hljs-string">&#x27;original basis&#x27;</span>)<br>    plt.legend([<span class="hljs-string">&#x27;train&#x27;</span>, <span class="hljs-string">&#x27;test&#x27;</span>, <span class="hljs-string">&#x27;pred&#x27;</span>])<br>    plt.show()<br>    <br></code></pre></td></tr></table></figure>
+
+<h2 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h2><h3 id="原始基函数"><a href="#原始基函数" class="headerlink" title="原始基函数"></a>原始基函数</h3><p><img src="/post/2477d76/image-20230131184451988.png" srcset="/img/loading.gif" lazyload alt="image-20230131184451988"></p>
+<h3 id="多项式基函数"><a href="#多项式基函数" class="headerlink" title="多项式基函数"></a>多项式基函数</h3><p><img src="/post/2477d76/image-20230131184539586.png" srcset="/img/loading.gif" lazyload alt="image-20230131184539586"></p>
+<h3 id="高斯基函数"><a href="#高斯基函数" class="headerlink" title="高斯基函数"></a>高斯基函数</h3><p><img src="/post/2477d76/image-20230131184620340.png" srcset="/img/loading.gif" lazyload alt="image-20230131184620340"></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" class="category-chain-item">学习笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E4%B8%8E%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">#神经网络与深度学习</a>
+      
+        <a href="/tags/python/">#python</a>
+      
+    </div>
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>nndl编程练习2：线性模型练习题解</div>
+      <div>http://paopao0226.site/post/2477d76.html</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Ywj226</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年1月31日</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>更新于</div>
+          <div>2023年9月23日</div>
+        </div>
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="NC - 非商业性使用">
+                    <i class="iconfont icon-nc"></i>
+                  </span>
+                </a>
+              
+                <a target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                    <i class="iconfont icon-sa"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/post/f552d4fb.html" title="CS224N课程P2：词向量与神经网络分类器">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">CS224N课程P2：词向量与神经网络分类器</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/post/a60c703c.html" title="CS224N课程P1：简介和词向量">
+                        <span class="hidden-mobile">CS224N课程P1：简介和词向量</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+  
+  
+    <article id="comments" lazyload>
+      
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#comments', function() {
+      var light = 'boxy-light';
+      var dark = 'photon-dark';
+      var schema = document.documentElement.getAttribute('data-user-color-scheme');
+      if (schema === 'dark') {
+        schema = dark;
+      } else {
+        schema = light;
+      }
+      window.UtterancesThemeLight = light;
+      window.UtterancesThemeDark = dark;
+      var s = document.createElement('script');
+      s.setAttribute('src', 'https://utteranc.es/client.js');
+      s.setAttribute('repo', 'paopao0226/Commit-Utterance');
+      s.setAttribute('issue-term', 'title');
+      
+      s.setAttribute('label', '✨');
+      
+      s.setAttribute('theme', schema);
+      s.setAttribute('crossorigin', 'anonymous');
+      document.getElementById('comments').appendChild(s);
+    })
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+    </article>
+  
+
+
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a>   Thanks for Watching 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.2/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://lib.baomitu.com/mathjax/3.2.2/es5/tex-mml-chtml.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  
+<script src="/js/code-unfold.js"></script>
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --> <script data-pjax>if(document.getElementById('recent-posts') && (location.pathname ==='/'|| '/' ==='all')){
+    var parent = document.getElementById('recent-posts');
+    var child = '<div class="recent-post-item" style="width:100%;height: auto"><div id="catalog_magnet"><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学习笔记/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📚 学习笔记 (41)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/日常tips/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🎮 救命教程 (15)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/学生工作记录/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">🐱‍👓 学生工作 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/实验室工作/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">👩‍💻 打工记录 (3)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item"><a class="magnet_link" href="http://paopao0226.site/categories/经验分享/"><div class="magnet_link_context" style=""><span style="font-weight:500;flex:1">📒 浅谈经验 (1)</span><span style="padding:0px 4px;border-radius: 8px;"><i class="fas fa-arrow-circle-right"></i></span></div></a></div><div class="magnet_item" style="visibility: hidden"></div><a class="magnet_link_more"  href="http://paopao0226.site/categories" style="flex:1;text-align: center;margin-bottom: 10px;">查看更多...</a></div></div>';
+    console.log('已挂载magnet')
+    parent.insertAdjacentHTML("afterbegin",child)}
+     </script><style>#catalog_magnet{flex-wrap: wrap;display: flex;width:100%;justify-content:space-between;padding: 10px 10px 0 10px;align-content: flex-start;}.magnet_item{flex-basis: calc(50% - 5px);background: #ebedf0;margin-bottom: 10px;border-radius: 8px;transition: all 0.2s ease-in-out;}.magnet_item:hover{background: #fdcdec}.magnet_link_more{color:#555}.magnet_link{color:black}.magnet_link:hover{color:white}@media screen and (max-width: 600px) {.magnet_item {flex-basis: 100%;}}.magnet_link_context{display:flex;padding: 10px;font-size:16px;transition: all 0.2s ease-in-out;}.magnet_link_context:hover{padding: 10px 20px;}</style>
+    <style></style><script async src="//at.alicdn.com/t/font_2032782_8d5kxvn09md.js"></script><!-- hexo injector body_end end --><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"jsonPath":"/live2dw/assets/hijiki.model.json"},"display":{"position":"left","width":225,"height":350},"mobile":{"show":false},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
